@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const ManageJobs = () => {
   const [jobs, setJobs] = useState([]);
@@ -45,12 +46,23 @@ const ManageJobs = () => {
   };
 
   const handleDelete = async (id) => {
-    if(window.confirm('Delete this job listing?')) {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#dc2626',
+      cancelButtonColor: '#6e7881',
+      confirmButtonText: 'Yes, delete it!'
+    });
+
+    if (result.isConfirmed) {
       try {
         await axios.delete(`/api/jobs/${id}`, getAuthHeaders());
         fetchJobs();
+        Swal.fire('Deleted!', 'The job listing has been deleted.', 'success');
       } catch (err) {
-        alert('Failed to delete job');
+        Swal.fire('Error!', err.response?.data?.message || 'Failed to delete job.', 'error');
       }
     }
   };

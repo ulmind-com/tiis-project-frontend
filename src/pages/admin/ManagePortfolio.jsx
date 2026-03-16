@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Plus } from 'lucide-react';
+import Swal from 'sweetalert2';
 
 const ManagePortfolio = () => {
   const [items, setItems] = useState([]);
@@ -52,9 +53,24 @@ const ManagePortfolio = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Delete this project?')) {
-      await axios.delete(`/api/portfolio/${id}`, getAuthHeaders());
-      fetchItems();
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#dc2626',
+      cancelButtonColor: '#6e7881',
+      confirmButtonText: 'Yes, delete it!'
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axios.delete(`/api/portfolio/${id}`, getAuthHeaders());
+        fetchItems();
+        Swal.fire('Deleted!', 'The project has been deleted.', 'success');
+      } catch (err) {
+        Swal.fire('Error!', err.response?.data?.message || 'Failed to delete project.', 'error');
+      }
     }
   };
 

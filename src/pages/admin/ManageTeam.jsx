@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Plus } from 'lucide-react';
+import Swal from 'sweetalert2';
 
 const ManageTeam = () => {
   const [items, setItems] = useState([]);
@@ -52,9 +53,24 @@ const ManageTeam = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Delete this team member?')) {
-      await axios.delete(`/api/team/${id}`, getAuthHeaders());
-      fetchItems();
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#dc2626',
+      cancelButtonColor: '#6e7881',
+      confirmButtonText: 'Yes, delete it!'
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axios.delete(`/api/team/${id}`, getAuthHeaders());
+        fetchItems();
+        Swal.fire('Deleted!', 'The team member has been deleted.', 'success');
+      } catch (err) {
+        Swal.fire('Error!', err.response?.data?.message || 'Failed to delete team member.', 'error');
+      }
     }
   };
 
