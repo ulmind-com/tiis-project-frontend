@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Plus } from 'lucide-react';
 import Swal from 'sweetalert2';
@@ -8,13 +8,18 @@ const ManageNews = () => {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [currentId, setCurrentId] = useState(null);
-  const [formData, setFormData] = useState({ title: '', content: '', author: 'Admin', isPublished: true });
+  const [formData, setFormData] = useState({ title: '', content: '', author: 'Admin', isPublished: true, image: null, existingImageUrl: '' });
+  const fileInputRef = useRef(null);
 
-  const getAuthHeaders = () => {
+  const getAuthHeaders = (isMultipart = false) => {
     const adminStr = localStorage.getItem('adminInfo');
     if (!adminStr) return {};
     const admin = JSON.parse(adminStr);
-    return { headers: { Authorization: `Bearer ${admin.token}` } };
+    const headers = { Authorization: `Bearer ${admin.token}` };
+    if (isMultipart) {
+      headers['Content-Type'] = 'multipart/form-data';
+    }
+    return { headers };
   };
 
   const fetchItems = async () => {
@@ -33,13 +38,23 @@ const ManageNews = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (isEditing) {
-        await axios.put(`/api/news/${currentId}`, formData, getAuthHeaders());
-      } else {
-        await axios.post('/api/news', formData, getAuthHeaders());
+      const dataToSubmit = new FormData();
+      dataToSubmit.append('title', formData.title);
+      dataToSubmit.append('content', formData.content);
+      dataToSubmit.append('author', formData.author);
+      dataToSubmit.append('isPublished', formData.isPublished);
+      if (formData.image) {
+        dataToSubmit.append('image', formData.image);
       }
-      setFormData({ title: '', content: '', author: 'Admin', isPublished: true });
-      setIsEditing(false);
+
+      const config = getAuthHeaders(true);
+
+      if (isEditing) {
+        await axios.put(`/api/news/${currentId}`, dataToSubmit, config);
+      } else {
+        await axios.post('/api/news', dataToSubmit, config);
+      }
+      resetForm();
       fetchItems();
     } catch (error) {
       alert('Error saving news item');
@@ -49,8 +64,16 @@ const ManageNews = () => {
   const handleEdit = (item) => {
     setIsEditing(true);
     setCurrentId(item._id);
-    setFormData({ title: item.title, content: item.content, author: item.author, isPublished: item.isPublished });
+    setFormData({ title: item.title, content: item.content, author: item.author, isPublished: item.isPublished, image: null, existingImageUrl: item.imageUrl || '' });
+    if(fileInputRef.current) fileInputRef.current.value = "";
   };
+
+  const resetForm = () => {
+    setIsEditing(false);
+    setCurrentId(null);
+    setFormData({ title: '', content: '', author: 'Admin', isPublished: true, image: null, existingImageUrl: '' });
+    if(fileInputRef.current) fileInputRef.current.value = "";
+  }
 
   const handleDelete = async (id) => {
     const result = await Swal.fire({
@@ -74,6 +97,12 @@ const ManageNews = () => {
     }
   };
 
+  const handleImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setFormData({ ...formData, image: e.target.files[0] });
+    }
+  };
+
   return (
     <div style={{ display: 'flex', gap: '2rem' }}>
       <div style={{ flex: '2', backgroundColor: 'white', padding: '1.5rem', borderRadius: '8px', boxShadow: 'var(--shadow-sm)' }}>
@@ -82,6 +111,7 @@ const ManageNews = () => {
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ backgroundColor: '#f8fafc', textAlign: 'left' }}>
+                <th style={{ padding: '1rem', borderBottom: '1px solid #e2e8f0' }}>Image</th>
                 <th style={{ padding: '1rem', borderBottom: '1px solid #e2e8f0' }}>Title</th>
                 <th style={{ padding: '1rem', borderBottom: '1px solid #e2e8f0' }}>Status</th>
                 <th style={{ padding: '1rem', borderBottom: '1px solid #e2e8f0' }}>Actions</th>
@@ -90,6 +120,9 @@ const ManageNews = () => {
             <tbody>
               {items.map(item => (
                 <tr key={item._id} style={{ borderBottom: '1px solid #eee' }}>
+                  <td style={{ padding: '1rem' }}>
+                    {item.imageUrl ? <img src={item.imageUrl} alt={item.title} style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }} /> : 'No Image'}
+                  </td>
                   <td style={{ padding: '1rem', fontWeight: '500' }}>{item.title}</td>
                   <td style={{ padding: '1rem' }}>
                     <span style={{ 
@@ -126,6 +159,13 @@ const ManageNews = () => {
             <label style={{ display: 'block', marginBottom: '0.2rem' }}>Content</label>
             <textarea required rows="4" value={formData.content} onChange={e => setFormData({...formData, content: e.target.value})} style={{ width: '100%', padding: '0.5rem', border: '1px solid #ccc', borderRadius: '4px' }}></textarea>
           </div>
+          <div>
+              <label style={{ display: 'block', marginBottom: '0.2rem' }}>Featured Image</label>
+              <input type="file" accept="image/*" onChange={handleImageChange} ref={fileInputRef} style={{ width: '100%', padding: '0.5rem', border: '1px solid #ccc', borderRadius: '4px' }} />
+              {isEditing && formData.existingImageUrl && !formData.image && (
+                  <div style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: '#666' }}>Current: <a href={formData.existingImageUrl} target="_blank" rel="noreferrer">View Image</a></div>
+              )}
+          </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.5rem' }}>
               <input type="checkbox" id="isPub" checked={formData.isPublished} onChange={e => setFormData({...formData, isPublished: e.target.checked})} />
               <label htmlFor="isPub" style={{ fontSize: '0.9rem', color: '#555' }}>Publish Immediately</label>
@@ -133,7 +173,7 @@ const ManageNews = () => {
           <button type="submit" className="btn-primary" style={{ marginTop: '0.5rem' }}>
             {isEditing ? 'Update News' : 'Save News'}
           </button>
-          {isEditing && <button type="button" onClick={() => { setIsEditing(false); setFormData({ title: '', content: '', author: 'Admin', isPublished: true }); }} style={{ marginTop: '0.5rem', padding: '0.5rem', cursor: 'pointer' }}>Cancel</button>}
+          {isEditing && <button type="button" onClick={resetForm} style={{ marginTop: '0.5rem', padding: '0.5rem', cursor: 'pointer' }}>Cancel</button>}
         </form>
       </div>
     </div>

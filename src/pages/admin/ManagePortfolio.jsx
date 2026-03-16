@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Plus } from 'lucide-react';
 import Swal from 'sweetalert2';
@@ -8,13 +8,18 @@ const ManagePortfolio = () => {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [currentId, setCurrentId] = useState(null);
-  const [formData, setFormData] = useState({ title: '', description: '', clientName: '' });
+  const [formData, setFormData] = useState({ title: '', description: '', clientName: '', image: null, existingImageUrl: '' });
+  const fileInputRef = useRef(null);
 
-  const getAuthHeaders = () => {
+  const getAuthHeaders = (isMultipart = false) => {
     const adminStr = localStorage.getItem('adminInfo');
     if (!adminStr) return {};
     const admin = JSON.parse(adminStr);
-    return { headers: { Authorization: `Bearer ${admin.token}` } };
+    const headers = { Authorization: `Bearer ${admin.token}` };
+    if (isMultipart) {
+      headers['Content-Type'] = 'multipart/form-data';
+    }
+    return { headers };
   };
 
   const fetchItems = async () => {
@@ -33,13 +38,22 @@ const ManagePortfolio = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (isEditing) {
-        await axios.put(`/api/portfolio/${currentId}`, formData, getAuthHeaders());
-      } else {
-        await axios.post('/api/portfolio', formData, getAuthHeaders());
+      const dataToSubmit = new FormData();
+      dataToSubmit.append('title', formData.title);
+      dataToSubmit.append('description', formData.description);
+      dataToSubmit.append('clientName', formData.clientName);
+      if (formData.image) {
+        dataToSubmit.append('image', formData.image);
       }
-      setFormData({ title: '', description: '', clientName: '' });
-      setIsEditing(false);
+
+      const config = getAuthHeaders(true);
+
+      if (isEditing) {
+        await axios.put(`/api/portfolio/${currentId}`, dataToSubmit, config);
+      } else {
+        await axios.post('/api/portfolio', dataToSubmit, config);
+      }
+      resetForm();
       fetchItems();
     } catch (error) {
       alert('Error saving portfolio item');
@@ -49,8 +63,16 @@ const ManagePortfolio = () => {
   const handleEdit = (item) => {
     setIsEditing(true);
     setCurrentId(item._id);
-    setFormData({ title: item.title, description: item.description, clientName: item.clientName || '' });
+    setFormData({ title: item.title, description: item.description, clientName: item.clientName || '', image: null, existingImageUrl: item.imageUrl || '' });
+    if(fileInputRef.current) fileInputRef.current.value = "";
   };
+
+  const resetForm = () => {
+    setIsEditing(false);
+    setCurrentId(null);
+    setFormData({ title: '', description: '', clientName: '', image: null, existingImageUrl: '' });
+    if(fileInputRef.current) fileInputRef.current.value = "";
+  }
 
   const handleDelete = async (id) => {
     const result = await Swal.fire({
@@ -74,6 +96,13 @@ const ManagePortfolio = () => {
     }
   };
 
+  const handleImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setFormData({ ...formData, image: e.target.files[0] });
+    }
+  };
+
+
   return (
     <div style={{ display: 'flex', gap: '2rem' }}>
       <div style={{ flex: '2', backgroundColor: 'white', padding: '1.5rem', borderRadius: '8px', boxShadow: 'var(--shadow-sm)' }}>
@@ -82,6 +111,7 @@ const ManagePortfolio = () => {
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ backgroundColor: '#f8fafc', textAlign: 'left' }}>
+                <th style={{ padding: '1rem', borderBottom: '1px solid #e2e8f0' }}>Image</th>
                 <th style={{ padding: '1rem', borderBottom: '1px solid #e2e8f0' }}>Project Title</th>
                 <th style={{ padding: '1rem', borderBottom: '1px solid #e2e8f0' }}>Client</th>
                 <th style={{ padding: '1rem', borderBottom: '1px solid #e2e8f0' }}>Actions</th>
@@ -90,6 +120,9 @@ const ManagePortfolio = () => {
             <tbody>
               {items.map(item => (
                 <tr key={item._id} style={{ borderBottom: '1px solid #eee' }}>
+                  <td style={{ padding: '1rem' }}>
+                    {item.imageUrl ? <img src={item.imageUrl} alt={item.title} style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }} /> : 'No Image'}
+                  </td>
                   <td style={{ padding: '1rem', fontWeight: '500' }}>{item.title}</td>
                   <td style={{ padding: '1rem' }}>{item.clientName || 'N/A'}</td>
                   <td style={{ padding: '1rem' }}>
@@ -120,10 +153,17 @@ const ManagePortfolio = () => {
             <label style={{ display: 'block', marginBottom: '0.2rem' }}>Description</label>
             <textarea required rows="4" value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} style={{ width: '100%', padding: '0.5rem', border: '1px solid #ccc', borderRadius: '4px' }}></textarea>
           </div>
+          <div>
+              <label style={{ display: 'block', marginBottom: '0.2rem' }}>Project Image</label>
+              <input type="file" accept="image/*" onChange={handleImageChange} ref={fileInputRef} style={{ width: '100%', padding: '0.5rem', border: '1px solid #ccc', borderRadius: '4px' }} />
+              {isEditing && formData.existingImageUrl && !formData.image && (
+                  <div style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: '#666' }}>Current: <a href={formData.existingImageUrl} target="_blank" rel="noreferrer">View Image</a></div>
+              )}
+          </div>
           <button type="submit" className="btn-primary" style={{ marginTop: '0.5rem' }}>
             {isEditing ? 'Update Project' : 'Save Project'}
           </button>
-          {isEditing && <button type="button" onClick={() => { setIsEditing(false); setFormData({ title: '', description: '', clientName: '' }); }} style={{ marginTop: '0.5rem', padding: '0.5rem', cursor: 'pointer' }}>Cancel</button>}
+          {isEditing && <button type="button" onClick={resetForm} style={{ marginTop: '0.5rem', padding: '0.5rem', cursor: 'pointer' }}>Cancel</button>}
         </form>
       </div>
     </div>

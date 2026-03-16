@@ -139,15 +139,19 @@ const About = () => {
                 >
                   {/* Top Section: Avatar + Name/Role */}
                   <div style={{ padding: '1.5rem 1.5rem 1rem 1.5rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <div style={{ 
-                      width: '48px', 
-                      height: '48px', 
-                      backgroundColor: '#e2e8f0', 
-                      borderRadius: '50%', 
-                      flexShrink: 0,
-                      border: '2px solid white',
-                      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-                    }}></div>
+                    {member.imageUrl ? (
+                      <div style={{ 
+                        width: '48px', height: '48px', borderRadius: '50%', flexShrink: 0,
+                        border: '2px solid white', boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                        backgroundImage: `url(${member.imageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center'
+                      }}></div>
+                    ) : (
+                      <div style={{ 
+                        width: '48px', height: '48px', backgroundColor: '#e2e8f0', borderRadius: '50%', flexShrink: 0,
+                        border: '2px solid white', boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                      }}></div>
+                    )}
+                    
                     <div style={{ flex: 1 }}>
                       <h3 style={{ color: 'var(--color-primary)', fontSize: '1.05rem', margin: '0 0 0.2rem 0', fontWeight: 'bold' }}>{member.name}</h3>
                       <p style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', margin: 0 }}>{member.role}</p>

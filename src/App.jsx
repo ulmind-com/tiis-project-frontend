@@ -19,8 +19,6 @@ import ManageNews from './pages/admin/ManageNews';
 import ManageTeam from './pages/admin/ManageTeam';
 import ViewApplications from './pages/admin/ViewApplications';
 
-import './index.css';
-
 function App() {
   return (
     <Router>
