@@ -27,7 +27,6 @@ const AdminLayout = () => {
     { path: '/admin/enquiries',     icon: <Users size={20} />,           label: 'Enquiries' },
     { path: '/admin/careers',       icon: <FileText size={20} />,        label: 'Manage Jobs' },
     { path: '/admin/applications',  icon: <FileText size={20} />,        label: 'Job Applications' },
-    { path: '/admin/content',       icon: <Settings size={20} />,        label: 'General Content' },
     { path: '/admin/admins',        icon: <Users size={20} />,           label: 'Manage Admins' }
   ];
 

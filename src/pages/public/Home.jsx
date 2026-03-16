@@ -190,178 +190,185 @@ const Home = () => {
         </section>
       )}
 
-      {/* Dynamic News Bento Grid Section (Tailwind) */}
+      {/* Dynamic News Bento Grid Section */}
       {news.length > 0 && (
-        <section className="py-24 bg-[#f4f6f0]">
-          <div className="container max-w-[1400px] mx-auto px-4">
+        <section style={{ minHeight: '100vh', backgroundColor: '#f4f6f0', display: 'flex', flexDirection: 'column', padding: '5rem 0' }}>
+          <div className="container" style={{ maxWidth: '1400px', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
             
-            {/* Header */}
-            <div className="flex justify-between items-end mb-10">
-              <h2 className="text-6xl font-black tracking-tighter text-black uppercase">Blog</h2>
-              <Link to="/news" className="flex items-center gap-2 px-6 py-3 bg-[#ebebe9] rounded-full text-sm font-medium hover:bg-gray-200 transition-colors">
-                Read Our Blog <ArrowRight size={16} />
-              </Link>
-            </div>
+            {/* Section Header — centered */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              style={{ textAlign: 'center', marginBottom: '3rem' }}
+            >
+              <h2 className="section-title" style={{ marginBottom: '0' }}>Latest Insights &amp; Blog</h2>
+            </motion.div>
 
-            {/* Bento Grid layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 auto-rows-[250px] lg:auto-rows-[280px]">
+            {/* Bento Grid — fills remaining height */}
+            <div style={{ flexGrow: 1, display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gridTemplateRows: '1fr 1fr', gap: '1.25rem', minHeight: '600px' }}>
               
-              {/* Item 1: Large Featured Left Area (Cols 1-5, Span 2 rows) */}
+              {/* Item 1: Large Featured Left (Col 1-5, Row 1-2) */}
               {news[0] && (
-                <div 
-                  className="lg:col-span-5 row-span-2 relative rounded-[32px] overflow-hidden group cursor-pointer bg-[#f1eed9]"
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
+                  style={{ gridColumn: 'span 5', gridRow: 'span 2', borderRadius: '24px', overflow: 'hidden', position: 'relative', cursor: 'pointer', backgroundColor: '#f1eed9', transition: 'transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.4s ease' }}
+                  className="group"
+                  onMouseEnter={e => { e.currentTarget.style.transform='translateY(-8px) scale(1.01)'; e.currentTarget.style.boxShadow='0 30px 60px rgba(0,0,0,0.2)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform='translateY(0) scale(1)'; e.currentTarget.style.boxShadow='none'; }}
                   onClick={() => setSelectedNews(news[0])}
                 >
                   <div 
-                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                    style={{ backgroundImage: `url(${news[0].imageUrl || 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1000&auto=format&fit=crop'})`, clipPath: 'polygon(0 0, 100% 0, 100% 100%, 75% 100%, 75% calc(100% - 60px), 0 calc(100% - 60px))' }}
-                  ></div>
-                  
-                  {/* Fire Badge */}
-                  <div className="absolute top-6 left-6 w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-xl shadow-lg border border-white/30 z-10">
+                    style={{ 
+                      position: 'absolute', inset: 0, backgroundSize: 'cover', backgroundPosition: 'center',
+                      backgroundImage: `url(${news[0].imageUrl || 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1000&auto=format&fit=crop'})`,
+                      clipPath: 'polygon(0 0, 100% 0, 100% 100%, 75% 100%, 75% calc(100% - 60px), 0 calc(100% - 60px))',
+                      transition: 'transform 0.7s ease'
+                    }}
+                    className="group-hover:scale-105"
+                  />
+                  {/* Fire badge */}
+                  <div style={{ position: 'absolute', top: '1.5rem', left: '1.5rem', width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', border: '1px solid rgba(255,255,255,0.3)', zIndex: 10, boxShadow: '0 8px 20px rgba(0,0,0,0.15)' }}>
                     🔥
                   </div>
-
-                  {/* Date & Category Tag */}
-                  <div className="absolute bottom-[80px] left-6 flex items-center text-sm font-semibold tracking-wide z-10">
-                    <span className="text-black">Category . Insight</span>
-                    <span className="mx-2 text-gray-400">|</span>
-                    <span className="text-gray-400">{new Date(news[0].createdAt).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })}</span>
+                  {/* Date tag */}
+                  <div style={{ position: 'absolute', bottom: '5.5rem', left: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', zIndex: 10 }}>
+                    <span style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--color-primary)' }}>Insight</span>
+                    <span style={{ color: '#999', fontSize: '0.8rem' }}>|  {new Date(news[0].createdAt).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })}</span>
                   </div>
-
-                  <h3 className="absolute bottom-6 left-6 right-6 text-3xl font-black text-black leading-none uppercase z-10">
+                  <h3 style={{ position: 'absolute', bottom: '1.5rem', left: '1.5rem', right: '1.5rem', fontSize: '1.6rem', fontWeight: '900', color: '#111', lineHeight: 1.1, textTransform: 'uppercase', zIndex: 10 }}>
                     {news[0].title}
                   </h3>
-
-                  {/* Hover Overlay Detail */}
-                  <div className="absolute inset-0 bg-black/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 p-8">
-                    <p className="text-white text-lg leading-relaxed text-center">
-                      {news[0].content.substring(0, 120)}...
-                    </p>
-                    <span className="absolute bottom-6 font-bold text-white border-b-2 border-white pb-1">Read Post</span>
+                  {/* Hover overlay */}
+                  <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.82)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', opacity: 0, transition: 'opacity 0.35s ease', zIndex: 20, padding: '2rem' }} className="group-hover:opacity-100">
+                    <p style={{ color: 'white', fontSize: '1rem', lineHeight: 1.7, textAlign: 'center', marginBottom: '1.5rem' }}>{news[0].content.substring(0, 140)}...</p>
+                    <span style={{ color: 'white', fontWeight: '700', borderBottom: '2px solid white', paddingBottom: '4px', fontSize: '0.9rem' }}>Read Post →</span>
                   </div>
-                </div>
+                </motion.div>
               )}
 
-              {/* Item 2: Top Middle Area (Cols 6-10, Span 1 row) */}
+              {/* Item 2: Top Middle (Col 6-10, Row 1) */}
               {news[1] && (
-                <div 
-                  className="lg:col-span-5 row-span-1 rounded-[32px] overflow-hidden bg-[#defabb] p-8 relative flex flex-col justify-between group cursor-pointer"
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.65, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+                  style={{ gridColumn: 'span 5', borderRadius: '24px', overflow: 'hidden', backgroundColor: '#defabb', padding: '2rem', position: 'relative', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer', transition: 'transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.4s ease' }}
+                  className="group"
+                  onMouseEnter={e => { e.currentTarget.style.transform='translateY(-8px) scale(1.01)'; e.currentTarget.style.boxShadow='0 30px 60px rgba(0,0,0,0.15)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform='translateY(0) scale(1)'; e.currentTarget.style.boxShadow='none'; }}
                   onClick={() => setSelectedNews(news[1])}
                 >
-                   {/* Top arrow icon badge */}
-                   <div className="absolute top-6 right-6 w-10 h-10 rounded-full border border-black/10 flex items-center justify-center -rotate-45 group-hover:rotate-0 transition-transform bg-white/50">
-                    <ArrowRight size={18} />
-                   </div>
-
-                   <div>
-                     <div className="text-xs font-bold tracking-widest uppercase mb-4">Category . Strategy</div>
-                     <h3 className="text-3xl font-black leading-none uppercase max-w-[80%] line-clamp-3">
-                       {news[1].title}
-                     </h3>
-                   </div>
-                   
-                   <p className="text-sm font-medium opacity-80 line-clamp-2 pr-12">
-                     {news[1].content.substring(0, 80)}... <span className="underline font-bold">More</span>
-                   </p>
-
-                   {/* Hover Overlay */}
-                   <div className="absolute inset-0 bg-black/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 p-8 text-white text-center">
-                     <p>{news[1].content.substring(0, 100)}...</p>
-                   </div>
-                </div>
+                  <div style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', width: '40px', height: '40px', borderRadius: '50%', border: '1px solid rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.5)', transform: 'rotate(-45deg)', transition: 'transform 0.3s ease' }} className="group-hover:rotate-0">
+                    <ArrowRight size={16} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.7rem', fontWeight: '800', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '1rem', color: '#444' }}>Strategy . Analysis</div>
+                    <h3 style={{ fontSize: '1.5rem', fontWeight: '900', lineHeight: 1.1, textTransform: 'uppercase', maxWidth: '80%', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                      {news[1].title}
+                    </h3>
+                  </div>
+                  <p style={{ fontSize: '0.875rem', fontWeight: '500', opacity: 0.75, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', paddingRight: '3rem' }}>
+                    {news[1].content.substring(0, 90)}... <span style={{ textDecoration: 'underline', fontWeight: '700' }}>More</span>
+                  </p>
+                  <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.88)', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0, transition: 'opacity 0.35s ease', zIndex: 20, padding: '2rem' }} className="group-hover:opacity-100">
+                    <p style={{ color: 'white', textAlign: 'center', fontSize: '0.95rem', lineHeight: 1.7 }}>{news[1].content.substring(0, 110)}...</p>
+                  </div>
+                </motion.div>
               )}
 
-              {/* Item 3: Top Right Area (Cols 11-12, Span 1 row) */}
+              {/* Item 3: Top Right (Col 11-12, Row 1) */}
               {news[2] && (
-                <div 
-                   className="lg:col-span-2 row-span-1 rounded-[32px] overflow-hidden relative group cursor-pointer bg-slate-200"
-                   onClick={() => setSelectedNews(news[2])}
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.65, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+                  style={{ gridColumn: 'span 2', borderRadius: '24px', overflow: 'hidden', position: 'relative', cursor: 'pointer', backgroundColor: '#cbd5e1', transition: 'transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.4s ease' }}
+                  className="group"
+                  onMouseEnter={e => { e.currentTarget.style.transform='translateY(-8px) scale(1.01)'; e.currentTarget.style.boxShadow='0 30px 60px rgba(0,0,0,0.2)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform='translateY(0) scale(1)'; e.currentTarget.style.boxShadow='none'; }}
+                  onClick={() => setSelectedNews(news[2])}
                 >
-                  <div 
-                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                    style={{ backgroundImage: `url(${news[2].imageUrl || 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=800&auto=format&fit=crop'})` }}
-                  ></div>
-                  <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent"></div>
-                  
-                  <div className="absolute top-6 left-6 right-6 z-10">
-                    <div className="text-[10px] text-white font-bold tracking-widest uppercase mb-1">Category . Update</div>
-                    <div className="text-[10px] text-white/70 mb-2">Hot . {new Date(news[2].createdAt).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })}</div>
-                    <h3 className="text-xl font-black text-white leading-tight uppercase line-clamp-3">
+                  <div style={{ position: 'absolute', inset: 0, backgroundSize: 'cover', backgroundPosition: 'center', backgroundImage: `url(${news[2].imageUrl || 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=800&auto=format&fit=crop'})`, transition: 'transform 0.7s ease' }} className="group-hover:scale-110" />
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.4), transparent)' }} />
+                  <div style={{ position: 'absolute', top: '1.25rem', left: '1.25rem', right: '1.25rem', zIndex: 10 }}>
+                    <div style={{ fontSize: '0.65rem', color: 'white', fontWeight: '800', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '0.4rem' }}>Update</div>
+                    <h3 style={{ fontSize: '1rem', fontWeight: '900', color: 'white', lineHeight: 1.2, textTransform: 'uppercase', display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                       {news[2].title}
                     </h3>
                   </div>
-
-                  {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-black/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 p-4 text-white text-center text-sm">
-                    {news[2].content.substring(0, 60)}...
+                  <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0, transition: 'opacity 0.35s ease', zIndex: 20, padding: '1rem' }} className="group-hover:opacity-100">
+                    <p style={{ color: 'white', textAlign: 'center', fontSize: '0.8rem', lineHeight: 1.6 }}>{news[2].content.substring(0, 70)}...</p>
                   </div>
-                </div>
+                </motion.div>
               )}
 
-              {/* Item 4: Bottom Middle Area (Cols 6-9, Span 1 row, video style) */}
+              {/* Item 4: Bottom Row (Col 6-12, Row 2) */}
               {news[3] ? (
-                 <div 
-                 className="lg:col-span-4 row-span-1 rounded-[32px] overflow-hidden relative group cursor-pointer"
-                 onClick={() => setSelectedNews(news[3])}
-               >
-                 <div 
-                   className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                   style={{ backgroundImage: `url(${news[3].imageUrl || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop'})` }}
-                 ></div>
-                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors"></div>
-                 
-                 <div className="absolute inset-0 flex items-center justify-center z-10">
-                    <div className="w-16 h-16 rounded-full bg-white/30 backdrop-blur-md flex items-center justify-center text-white border border-white/50 group-hover:bg-white/50 transition-colors">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.65, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
+                  style={{ gridColumn: 'span 7', borderRadius: '24px', overflow: 'hidden', position: 'relative', cursor: 'pointer', transition: 'transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.4s ease' }}
+                  className="group"
+                  onMouseEnter={e => { e.currentTarget.style.transform='translateY(-8px) scale(1.01)'; e.currentTarget.style.boxShadow='0 30px 60px rgba(0,0,0,0.25)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform='translateY(0) scale(1)'; e.currentTarget.style.boxShadow='none'; }}
+                  onClick={() => setSelectedNews(news[3])}
+                >
+                  <div style={{ position: 'absolute', inset: 0, backgroundSize: 'cover', backgroundPosition: 'center', backgroundImage: `url(${news[3].imageUrl || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop'})`, transition: 'transform 0.7s ease' }} className="group-hover:scale-105" />
+                  <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.22)', transition: 'background-color 0.3s ease' }} className="group-hover:bg-black/40" />
+                  {/* Play icon */}
+                  <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10 }}>
+                    <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(255,255,255,0.25)', backdropFilter: 'blur(10px)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(255,255,255,0.5)', transition: 'background 0.3s ease' }} className="group-hover:bg-white/50">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                     </div>
-                 </div>
-
-                 <div className="absolute top-6 left-6 text-xs text-white font-bold tracking-widest uppercase z-10 drop-shadow-md">
-                   Category . Media
-                 </div>
-
-                 <div className="absolute bottom-6 left-6 right-6 z-10 text-white">
-                   <div className="text-xs mb-1 opacity-80 font-medium">5 Min . {new Date(news[3].createdAt).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })}</div>
-                   <h3 className="text-lg font-black uppercase leading-tight line-clamp-2 drop-shadow-md">
-                     {news[3].title}
-                   </h3>
-                 </div>
-
-                 {/* Hover Overlay */}
-                 <div className="absolute inset-0 bg-black/90 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 p-6 text-white text-center">
-                    <p className="text-sm mb-4">{news[3].content.substring(0, 80)}...</p>
-                    <span className="font-bold underline">Read More</span>
-                 </div>
-               </div>
+                  </div>
+                  <div style={{ position: 'absolute', top: '1.5rem', left: '1.5rem', fontSize: '0.7rem', color: 'white', fontWeight: '800', letterSpacing: '2px', textTransform: 'uppercase', zIndex: 10 }}>
+                    Media
+                  </div>
+                  <div style={{ position: 'absolute', bottom: '1.5rem', left: '1.5rem', right: '1.5rem', zIndex: 10, color: 'white' }}>
+                    <div style={{ fontSize: '0.75rem', opacity: 0.8, marginBottom: '0.4rem' }}>{new Date(news[3].createdAt).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })}</div>
+                    <h3 style={{ fontSize: '1.35rem', fontWeight: '900', textTransform: 'uppercase', lineHeight: 1.15, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                      {news[3].title}
+                    </h3>
+                  </div>
+                  <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.88)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', opacity: 0, transition: 'opacity 0.35s ease', zIndex: 20, padding: '2rem' }} className="group-hover:opacity-100">
+                    <p style={{ color: 'white', fontSize: '0.95rem', textAlign: 'center', marginBottom: '1rem', lineHeight: 1.7 }}>{news[3].content.substring(0, 90)}...</p>
+                    <span style={{ color: 'white', fontWeight: '700', textDecoration: 'underline' }}>Read More</span>
+                  </div>
+                </motion.div>
               ) : (
-                <div className="lg:col-span-4 row-span-1 rounded-[32px] bg-slate-100 border-2 border-dashed border-slate-300 flex items-center justify-center text-slate-400 font-bold uppercase tracking-widest">
+                <div style={{ gridColumn: 'span 7', borderRadius: '24px', backgroundColor: '#e2e8f0', border: '2px dashed #94a3b8', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.85rem' }}>
                   More Coming Soon
                 </div>
               )}
 
-              {/* Bottom Right Area: Category Tags (Cols 10-12, Span 1 row) */}
-              <div className="lg:col-span-3 row-span-1 rounded-[32px] bg-[#d7c4fc] p-8 flex flex-col justify-between relative overflow-hidden">
-                <div className="flex flex-wrap gap-2 relative z-10">
-                  {['Consulting', 'Leadership', 'Hiring', 'Growth', 'Strategy', 'Updates'].map(cat => (
-                    <span key={cat} className="px-4 py-2 bg-[#feffcd] rounded-full text-xs font-bold whitespace-nowrap hover:bg-white cursor-pointer transition-colors shadow-sm">
-                      {cat}
-                    </span>
-                  ))}
-                </div>
-                
-                <div className="flex justify-between items-end relative z-10">
-                  <span className="font-bold text-black tracking-tight">View All Categories</span>
-                  <Link to="/news" className="w-12 h-12 rounded-full bg-white flex items-center justify-center hover:scale-110 transition-transform shadow-md">
-                    <ArrowRight size={18} />
-                  </Link>
-                </div>
-                
-                {/* Decorative blob */}
-                <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-white/20 rounded-full blur-2xl pointer-events-none"></div>
-              </div>
-
             </div>
+
+            {/* View All Posts — Bottom Right */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '2rem' }}
+            >
+              <Link 
+                to="/news" 
+                className="btn-pill-secondary"
+                style={{ border: '2px solid var(--color-primary)', fontSize: '0.85rem' }}
+              >
+                View All Posts <ArrowRight size={15} />
+              </Link>
+            </motion.div>
+
           </div>
         </section>
       )}

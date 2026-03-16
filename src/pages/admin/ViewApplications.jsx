@@ -27,10 +27,12 @@ const ViewApplications = () => {
   const fetchApplications = async () => {
     setLoading(true);
     try {
+      console.log('Fetching applications...');
       const { data } = await axios.get('/api/applications', getAuthHeaders());
+      console.log('Applications data received:', data);
       setApplications(data);
     } catch (error) {
-      console.error('Failed to fetch applications', error);
+      console.error('Failed to fetch applications', error.response?.data || error);
     } finally {
       setLoading(false);
     }

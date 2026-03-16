@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { Mail, Phone, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -9,11 +10,37 @@ const Contact = () => {
   });
   const [status, setStatus] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    if (name === 'attachment') {
+      setFormData({ ...formData, attachment: files[0] });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('submitting');
-    // Simulate API call
-    setTimeout(() => setStatus('success'), 1500);
+    try {
+      const data = new FormData();
+      Object.keys(formData).forEach(key => {
+        if (formData[key] !== null) {
+          data.append(key, formData[key]);
+        }
+      });
+      await axios.post('/api/enquiries', data, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      setStatus('success');
+      setFormData({
+        companyName: '', contactPerson: '', designation: '', 
+        email: '', phone: '', serviceRequired: '', briefRequirement: '', attachment: null
+      });
+    } catch (err) {
+      console.error('Error submitting enquiry:', err);
+      setStatus('error');
+    }
   };
 
   return (
@@ -93,33 +120,33 @@ const Contact = () => {
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '1.5rem' }}>
                   <div>
                     <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Company Name *</label>
-                    <input required type="text" style={{ width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '4px' }} />
+                    <input name="companyName" value={formData.companyName} onChange={handleChange} required type="text" style={{ width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '4px' }} />
                   </div>
                   <div>
                     <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Contact Person *</label>
-                    <input required type="text" style={{ width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '4px' }} />
+                    <input name="contactPerson" value={formData.contactPerson} onChange={handleChange} required type="text" style={{ width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '4px' }} />
                   </div>
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '1.5rem' }}>
                   <div>
                     <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Designation</label>
-                    <input type="text" style={{ width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '4px' }} />
+                    <input name="designation" value={formData.designation} onChange={handleChange} type="text" style={{ width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '4px' }} />
                   </div>
                   <div>
                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Email *</label>
-                    <input required type="email" style={{ width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '4px' }} />
+                    <input name="email" value={formData.email} onChange={handleChange} required type="email" style={{ width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '4px' }} />
                   </div>
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '1.5rem' }}>
                   <div>
                     <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Phone *</label>
-                    <input required type="tel" style={{ width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '4px' }} />
+                    <input name="phone" value={formData.phone} onChange={handleChange} required type="tel" style={{ width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '4px' }} />
                   </div>
                   <div>
                     <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Service Required *</label>
-                    <select required style={{ width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '4px', backgroundColor: 'white' }}>
+                    <select name="serviceRequired" value={formData.serviceRequired} onChange={handleChange} required style={{ width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '4px', backgroundColor: 'white' }}>
                       <option value="">Select a service...</option>
                       <option value="business">Business Solutions</option>
                       <option value="talent">Talent Hiring</option>
@@ -132,14 +159,14 @@ const Contact = () => {
 
                 <div style={{ marginBottom: '1.5rem' }}>
                   <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Brief Requirement *</label>
-                  <textarea required rows="4" style={{ width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '4px', resize: 'vertical' }}></textarea>
+                  <textarea name="briefRequirement" value={formData.briefRequirement} onChange={handleChange} required rows="4" style={{ width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '4px', resize: 'vertical' }}></textarea>
                 </div>
 
                 <div style={{ marginBottom: '2rem' }}>
                   <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Attachment (Optional)</label>
-                  <input type="file" style={{ border: '1px dashed #ccc', padding: '1rem', width: '100%', borderRadius: '4px', backgroundColor: '#fafafa' }} />
+                  <input name="attachment" onChange={handleChange} type="file" style={{ border: '1px dashed #ccc', padding: '1rem', width: '100%', borderRadius: '4px', backgroundColor: '#fafafa' }} />
                 </div>
-
+                {status === 'error' && <p style={{ color: 'red', marginBottom: '1rem' }}>Failed to submit enquiry. Please try again.</p>}
                 <button type="submit" className="btn-primary" style={{ width: '100%' }} disabled={status === 'submitting'}>
                   {status === 'submitting' ? 'Submitting...' : 'Submit Enquiry'}
                 </button>

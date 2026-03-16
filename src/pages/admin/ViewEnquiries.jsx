@@ -15,10 +15,12 @@ const ViewEnquiries = () => {
   const fetchEnquiries = async () => {
     setLoading(true);
     try {
+      console.log('Fetching enquiries...');
       const { data } = await axios.get('/api/enquiries', getAuthHeaders());
+      console.log('Enquiries data received:', data);
       setEnquiries(data);
     } catch (error) {
-      console.error('Failed to fetch enquiries');
+      console.error('Failed to fetch enquiries', error.response?.data || error);
     } finally {
       setLoading(false);
     }
