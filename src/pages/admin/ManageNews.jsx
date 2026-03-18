@@ -9,17 +9,14 @@ const ManageNews = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentId, setCurrentId] = useState(null);
   const [formData, setFormData] = useState({ title: '', content: '', author: 'Admin', isPublished: true, image: null, existingImageUrl: '' });
+  const [isSaving, setIsSaving] = useState(false);
   const fileInputRef = useRef(null);
 
-  const getAuthHeaders = (isMultipart = false) => {
+  const getAuthHeaders = () => {
     const adminStr = localStorage.getItem('adminInfo');
     if (!adminStr) return {};
     const admin = JSON.parse(adminStr);
-    const headers = { Authorization: `Bearer ${admin.token}` };
-    if (isMultipart) {
-      headers['Content-Type'] = 'multipart/form-data';
-    }
-    return { headers };
+    return { headers: { Authorization: `Bearer ${admin.token}` } };
   };
 
   const fetchItems = async () => {
@@ -47,7 +44,8 @@ const ManageNews = () => {
         dataToSubmit.append('image', formData.image);
       }
 
-      const config = getAuthHeaders(true);
+      setIsSaving(true);
+      const config = getAuthHeaders();
 
       if (isEditing) {
         await axios.put(`/api/news/${currentId}`, dataToSubmit, config);
@@ -170,10 +168,10 @@ const ManageNews = () => {
               <input type="checkbox" id="isPub" checked={formData.isPublished} onChange={e => setFormData({...formData, isPublished: e.target.checked})} />
               <label htmlFor="isPub" style={{ fontSize: '0.9rem', color: '#555' }}>Publish Immediately</label>
           </div>
-          <button type="submit" className="btn-primary" style={{ marginTop: '0.5rem' }}>
-            {isEditing ? 'Update News' : 'Save News'}
+          <button type="submit" className="btn-primary" style={{ marginTop: '0.5rem' }} disabled={isSaving}>
+            {isSaving ? 'Saving...' : (isEditing ? 'Update News' : 'Save News')}
           </button>
-          {isEditing && <button type="button" onClick={resetForm} style={{ marginTop: '0.5rem', padding: '0.5rem', cursor: 'pointer' }}>Cancel</button>}
+          {isEditing && <button type="button" onClick={resetForm} style={{ marginTop: '0.5rem', padding: '0.5rem', cursor: 'pointer' }} disabled={isSaving}>Cancel</button>}
         </form>
       </div>
     </div>

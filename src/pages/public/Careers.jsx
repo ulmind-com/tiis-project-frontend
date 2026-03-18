@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Search, MapPin, Briefcase, Filter } from 'lucide-react';
+import { Search, MapPin, Briefcase } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Careers = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState({ location: '', industry: '', experience: '' });
   
   // Application Form State
   const [selectedJob, setSelectedJob] = useState(null);
@@ -67,40 +66,10 @@ const Careers = () => {
         </motion.div>
       </section>
 
-      <div className="container" style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
+      <div className="container" style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start', justifyContent: 'center' }}>
         
-        {/* Sidebar Filters */}
-        <motion.aside 
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          style={{ flex: '0 0 250px', backgroundColor: 'white', padding: '2rem', borderRadius: '8px', boxShadow: 'var(--shadow-sm)' }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', color: 'var(--color-primary)', fontWeight: 'bold' }}>
-            <Filter size={20} /> Filters
-          </div>
-          
-          <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--color-text-muted)' }}>Location</label>
-            <select style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ddd' }}>
-              <option value="">All Locations</option>
-              <option value="bangalore">Bangalore</option>
-              <option value="mumbai">Mumbai</option>
-            </select>
-          </div>
-          
-          <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--color-text-muted)' }}>Industry</label>
-            <select style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ddd' }}>
-              <option value="">All Industries</option>
-              <option value="consulting">Consulting</option>
-              <option value="legal">Legal/Compliance</option>
-            </select>
-          </div>
-        </motion.aside>
-
         {/* Job Listings / App Form */}
-        <main style={{ flex: '1' }}>
+        <main style={{ flex: '1', maxWidth: '800px' }}>
           
           {!selectedJob ? (
             <>

@@ -9,17 +9,14 @@ const ManageTeam = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentId, setCurrentId] = useState(null);
   const [formData, setFormData] = useState({ name: '', role: '', bio: '', linkedIn: '', image: null, existingImageUrl: '' });
+  const [isSaving, setIsSaving] = useState(false);
   const fileInputRef = useRef(null);
 
-  const getAuthHeaders = (isMultipart = false) => {
+  const getAuthHeaders = () => {
     const adminStr = localStorage.getItem('adminInfo');
     if (!adminStr) return {};
     const admin = JSON.parse(adminStr);
-    const headers = { Authorization: `Bearer ${admin.token}` };
-    if (isMultipart) {
-      headers['Content-Type'] = 'multipart/form-data';
-    }
-    return { headers };
+    return { headers: { Authorization: `Bearer ${admin.token}` } };
   };
 
   const fetchItems = async () => {
@@ -37,6 +34,7 @@ const ManageTeam = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSaving(true);
     try {
       const dataToSubmit = new FormData();
       dataToSubmit.append('name', formData.name);
@@ -47,17 +45,22 @@ const ManageTeam = () => {
         dataToSubmit.append('image', formData.image);
       }
 
-      const config = getAuthHeaders(true);
+      const config = getAuthHeaders();
 
       if (isEditing) {
         await axios.put(`/api/team/${currentId}`, dataToSubmit, config);
+        Swal.fire('Success', 'Team member updated successfully', 'success');
       } else {
         await axios.post('/api/team', dataToSubmit, config);
+        Swal.fire('Success', 'Team member added successfully', 'success');
       }
       resetForm();
       fetchItems();
     } catch (error) {
-      alert('Error saving team member');
+      console.error("Error submitting team form:", error);
+      Swal.fire('Error', error.response?.data?.message || 'Failed to save team member', 'error');
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -165,10 +168,10 @@ const ManageTeam = () => {
                   <div style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: '#666' }}>Current: <a href={formData.existingImageUrl} target="_blank" rel="noreferrer">View Image</a></div>
               )}
           </div>
-          <button type="submit" className="btn-primary" style={{ marginTop: '0.5rem' }}>
-            {isEditing ? 'Update Member' : 'Save Member'}
+          <button type="submit" className="btn-primary" style={{ marginTop: '0.5rem' }} disabled={isSaving}>
+            {isSaving ? 'Saving...' : (isEditing ? 'Update Member' : 'Save Member')}
           </button>
-          {isEditing && <button type="button" onClick={resetForm} style={{ marginTop: '0.5rem', padding: '0.5rem', cursor: 'pointer' }}>Cancel</button>}
+          {isEditing && <button type="button" onClick={resetForm} style={{ marginTop: '0.5rem', padding: '0.5rem', cursor: 'pointer' }} disabled={isSaving}>Cancel</button>}
         </form>
       </div>
     </div>

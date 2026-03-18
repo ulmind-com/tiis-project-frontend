@@ -83,23 +83,107 @@ const Contact = () => {
               <MapPin color="var(--color-secondary)" />
               <div>
                 <p style={{ fontWeight: 'bold' }}>Office Location</p>
-                <p style={{ opacity: '0.8' }}>TIIS Corporate Hub<br/>Bangalore, India</p>
+                <p style={{ opacity: '0.8' }}>107, Malibu Towne, Sector 47<br/>Gurugram, Haryana 122018</p>
               </div>
             </div>
 
-            {/* Map Placeholder */}
-            <div style={{ 
-              width: '100%', 
-              height: '150px', 
-              backgroundColor: 'rgba(255,255,255,0.1)', 
-              borderRadius: '4px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              border: '1px dashed rgba(255,255,255,0.3)'
-            }}>
-              Map View
+            {/* Premium Map Embed */}
+            <div style={{ position: 'relative', marginTop: '0.5rem' }}>
+              {/* Glow ring */}
+              <div style={{
+                position: 'absolute', inset: '-3px',
+                borderRadius: '14px',
+                background: 'linear-gradient(135deg, var(--color-secondary), rgba(255,255,255,0.15), var(--color-secondary))',
+                backgroundSize: '200% 200%',
+                animation: 'mapGlow 3s ease infinite',
+                zIndex: 0,
+              }} />
+
+              {/* Map container */}
+              <div style={{
+                position: 'relative',
+                borderRadius: '12px',
+                overflow: 'hidden',
+                zIndex: 1,
+                boxShadow: '0 8px 32px rgba(0,0,0,0.35)',
+              }}>
+                {/* Location label bar */}
+                <div style={{
+                  background: 'rgba(0,0,0,0.55)',
+                  backdropFilter: 'blur(10px)',
+                  padding: '0.5rem 0.85rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                }}>
+                  {/* Pulsing dot */}
+                  <span style={{
+                    width: '8px', height: '8px',
+                    borderRadius: '50%',
+                    backgroundColor: 'var(--color-secondary)',
+                    display: 'inline-block',
+                    boxShadow: '0 0 0 0 var(--color-secondary)',
+                    animation: 'mapPulse 1.8s ease infinite',
+                    flexShrink: 0,
+                  }} />
+                  <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.9)', fontWeight: 600, letterSpacing: '0.03em' }}>
+                    TIIS · Malibu Towne, Gurugram
+                  </span>
+                </div>
+
+                <iframe
+                  title="TIIS Office Location"
+                  src="https://maps.google.com/maps?q=107,+Malibu+Towne,+Sector+47,+Gurugram,+Haryana+122018&output=embed&z=16"
+                  width="100%"
+                  height="200"
+                  style={{ border: 'none', display: 'block', filter: 'saturate(1.1) brightness(0.92)' }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+
+                {/* Get Directions button */}
+                <a
+                  href="https://maps.app.goo.gl/WvBKLRN4BcsXSwyR6"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.4rem',
+                    background: 'linear-gradient(135deg, var(--color-secondary) 0%, #f59e0b 100%)',
+                    color: '#0a0a0a',
+                    fontWeight: 700,
+                    fontSize: '0.78rem',
+                    letterSpacing: '0.06em',
+                    padding: '0.6rem 1rem',
+                    textDecoration: 'none',
+                    transition: 'filter 0.2s, transform 0.2s',
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.filter = 'brightness(1.1)'; e.currentTarget.style.transform = 'scale(1.02)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.filter = 'brightness(1)';  e.currentTarget.style.transform = 'scale(1)'; }}
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  GET DIRECTIONS
+                </a>
+              </div>
             </div>
+
+            <style>{`
+              @keyframes mapGlow {
+                0%   { background-position: 0% 50%; }
+                50%  { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+              }
+              @keyframes mapPulse {
+                0%   { box-shadow: 0 0 0 0 var(--color-secondary); }
+                70%  { box-shadow: 0 0 0 6px rgba(245,158,11,0); }
+                100% { box-shadow: 0 0 0 0 rgba(245,158,11,0); }
+              }
+            `}</style>
           </motion.div>
 
           {/* Business Query Form */}

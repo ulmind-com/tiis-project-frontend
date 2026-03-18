@@ -6,6 +6,9 @@ import About from './pages/public/About';
 import Services from './pages/public/Services';
 import Careers from './pages/public/Careers';
 import Contact from './pages/public/Contact';
+import News from './pages/public/News';
+import Portfolio from './pages/public/Portfolio';
+import Team from './pages/public/Team';
 
 // Admin Components
 import AdminLayout from './components/admin/AdminLayout';
@@ -31,6 +34,9 @@ function App() {
             <Route path="/services" element={<Services />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/news" element={<News />} />
+            <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/team" element={<Team />} />
           </Routes>
         </main>
         

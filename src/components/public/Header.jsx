@@ -1,243 +1,362 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+
+const navLinks = [
+  { name: 'Home',     href: '/' },
+  { name: 'About Us', href: '/about' },
+  { name: 'Services', href: '/services' },
+  { name: 'Careers',  href: '/careers' },
+  { name: 'Team',     href: '/team' },
+  { name: 'Contact',  href: '/contact' },
+];
 
 const Header = () => {
-  const location = useLocation();
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const location  = useLocation();
+  const navigate  = useNavigate();
+
+  const [isOpen,    setIsOpen]    = useState(false);
+  const [isCompact, setIsCompact] = useState(false);
+
+  const lastY   = useRef(0);
+  const ticking = useRef(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', onScroll);
+    const onScroll = () => {
+      if (ticking.current) return;
+      ticking.current = true;
+
+      requestAnimationFrame(() => {
+        const currentY = window.scrollY;
+
+        if (currentY < 80) {
+          // Always full at top
+          setIsCompact(false);
+        } else if (currentY > lastY.current + 4) {
+          // Scrolling DOWN → compact
+          setIsCompact(true);
+        } else if (currentY < lastY.current - 4) {
+          // Scrolling UP → expand
+          setIsCompact(false);
+        }
+
+        lastY.current   = currentY;
+        ticking.current = false;
+      });
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   // Close mobile menu on route change
-  useEffect(() => { setMobileOpen(false); }, [location.pathname]);
+  useEffect(() => { setIsOpen(false); }, [location.pathname]);
 
-  const navLinks = [
-    { path: '/',         label: 'Home' },
-    { path: '/about',    label: 'About Us' },
-    { path: '/services', label: 'Services' },
-    { path: '/careers',  label: 'Careers' },
-    { path: '/contact',  label: 'Contact' },
-  ];
+  // If mobile menu open, force full expand
+  const compact = isCompact && !isOpen;
 
-  const isActive = (path) =>
-    path === '/' ? location.pathname === '/' : location.pathname.startsWith(path);
+  const isActive = (href) =>
+    href === '/' ? location.pathname === '/' : location.pathname.startsWith(href);
 
   return (
     <>
-      <header
+      {/* ─── Styles ─── */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        .tiis-header * { font-family: 'Inter', system-ui, sans-serif; box-sizing: border-box; }
+
+        .tiis-nav-btn {
+          position: relative;
+          background: none; border: none; cursor: pointer;
+          font-size: 0.91rem; font-weight: 500;
+          color: #2d3748; padding: 0;
+          transition: color 0.22s ease;
+          text-decoration: none; letter-spacing: 0.01em;
+          white-space: nowrap;
+        }
+        .tiis-nav-btn::after {
+          content: '';
+          position: absolute; left: 0; bottom: -5px;
+          width: 100%; height: 2px;
+          background: #b12023; border-radius: 2px;
+          transform: scaleX(0); transform-origin: left;
+          transition: transform 0.26s ease;
+        }
+        .tiis-nav-btn.active  { color: #b12023; font-weight: 700; }
+        .tiis-nav-btn.active::after { transform: scaleX(1); }
+        .tiis-nav-btn:hover   { color: #b12023; }
+        .tiis-nav-btn:hover::after { transform: scaleX(1); }
+
+        /* Blinking dot */
+        @keyframes tiis-ping {
+          0%   { transform: scale(1);   opacity: 0.80; }
+          70%  { transform: scale(2.4); opacity: 0; }
+          100% { transform: scale(2.4); opacity: 0; }
+        }
+        .tiis-dot-ring {
+          position: absolute; inset: 0; border-radius: 50%;
+          background: #b12023; opacity: 0.75;
+          animation: tiis-ping 1.4s ease-out infinite;
+        }
+
+        /* CTA shimmer */
+        @keyframes tiis-shimmer {
+          0%   { left: -65%; }
+          60%  { left: 120%; }
+          100% { left: 120%; }
+        }
+        .tiis-cta-shimmer {
+          position: absolute; top: 0; left: -65%;
+          width: 55%; height: 100%; pointer-events: none;
+          background: linear-gradient(120deg, transparent 25%, rgba(255,255,255,0.24) 50%, transparent 75%);
+          animation: tiis-shimmer 2.6s ease-in-out infinite;
+        }
+
+        /* Mobile link */
+        .tiis-mob-link {
+          display: block; width: 100%; text-align: left;
+          background: none; border: none; cursor: pointer;
+          font-size: 0.97rem; font-weight: 500; color: #2d3748;
+          text-decoration: none; padding: 0.8rem 1rem;
+          border-radius: 12px; border-left: 3px solid transparent;
+          transition: background 0.15s, color 0.15s, border-color 0.15s;
+        }
+        .tiis-mob-link.active { color: #b12023; font-weight: 700; background: rgba(177,32,35,0.07); border-left-color: #b12023; }
+        .tiis-mob-link:hover:not(.active) { background: rgba(1,50,78,0.05); color: #01324e; }
+
+        /* Responsive */
+        @media (min-width: 769px) {
+          .tiis-hamburger { display: none !important; }
+        }
+        @media (max-width: 768px) {
+          .tiis-hamburger  { display: flex !important; }
+          .tiis-desktop-nav { display: none !important; }
+          .tiis-cta-btn     { display: none !important; }
+        }
+      `}</style>
+
+      {/* ─── Floating Navbar ─── */}
+      <div
+        className="tiis-header"
         style={{
-          position: 'sticky',
-          top: 0,
+          position: 'fixed',
+          top: 0, left: 0, right: 0,
           zIndex: 1000,
-          padding: '0.6rem 1.5rem',
           display: 'flex',
           justifyContent: 'center',
-          backgroundColor: scrolled ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.98)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-          boxShadow: scrolled
-            ? '0 2px 24px rgba(0,0,0,0.1)'
-            : '0 1px 0 rgba(0,0,0,0.06)',
-          transition: 'box-shadow 0.3s ease, background-color 0.3s ease',
+          padding: compact ? '12px 1rem' : '10px 1rem',
+          pointerEvents: 'none',
+          transition: 'padding 0.4s ease',
         }}
       >
-        {/* Inner pill container */}
-        <div
+        <motion.div
+          layout
+          transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
           style={{
-            width: '100%',
-            maxWidth: '1200px',
+            pointerEvents: 'auto',
+            width: compact ? 'auto' : '100%',
+            maxWidth: compact ? '520px' : '1260px',
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+            backgroundColor: 'rgba(255,255,255,0.92)',
+            backdropFilter: 'blur(22px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(22px) saturate(180%)',
+            borderRadius: compact ? '999px' : '22px',
+            border: '1px solid rgba(1,50,78,0.10)',
+            boxShadow: compact
+              ? '0 8px 40px rgba(1,50,78,0.16), 0 2px 0 rgba(255,255,255,0.7) inset'
+              : '0 4px 28px rgba(1,50,78,0.10), 0 1px 0 rgba(255,255,255,0.8) inset',
+          }}
+        >
+          {/* ── Main Row ── */}
+          <div style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            height: '52px',
+            padding: compact ? '0.3rem 0.5rem 0.3rem 0.6rem' : '0.35rem 0.6rem 0.35rem 0.4rem',
             gap: '1rem',
-          }}
-        >
-          {/* ── Logo (rounded pill left) ── */}
-          <Link
-            to="/"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              backgroundColor: '#01324e',
-              color: 'white',
-              padding: '0.45rem 1.1rem',
-              borderRadius: '999px',
-              fontWeight: '800',
-              fontSize: '1.05rem',
-              letterSpacing: '0.06em',
-              textDecoration: 'none',
-              flexShrink: 0,
-              boxShadow: '0 2px 8px rgba(1,50,78,0.25)',
-              transition: 'transform 0.15s, box-shadow 0.15s',
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.transform = 'scale(1.04)';
-              e.currentTarget.style.boxShadow = '0 4px 16px rgba(1,50,78,0.35)';
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.transform = 'scale(1)';
-              e.currentTarget.style.boxShadow = '0 2px 8px rgba(1,50,78,0.25)';
-            }}
-          >
-            {/* Small accent dot */}
-            <span style={{
-              width: '8px', height: '8px', borderRadius: '50%',
-              backgroundColor: '#b12023', display: 'inline-block', flexShrink: 0,
-            }} />
-            TIIS
-          </Link>
+            transition: 'padding 0.4s ease',
+          }}>
 
-          {/* ── Desktop Nav Links (center) ── */}
-          <nav style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-            {navLinks.map(link => {
-              const active = isActive(link.path);
-              return (
+            {/* Logo */}
+            <motion.div
+              layout
+              onClick={() => { navigate('/'); setIsOpen(false); }}
+              style={{ cursor: 'pointer', flexShrink: 0, display: 'flex', alignItems: 'center' }}
+              whileHover={{ filter: 'drop-shadow(0 4px 12px rgba(1,50,78,0.20))' }}
+              transition={{ duration: 0.18 }}
+            >
+              <motion.img
+                layout
+                src="/icons.png"
+                alt="TIIS Logo"
+                style={{
+                  height: compact ? '46px' : '76px',
+                  width: 'auto',
+                  objectFit: 'contain',
+                  display: 'block',
+                  transition: 'height 0.42s cubic-bezier(0.22,1,0.36,1)',
+                }}
+              />
+            </motion.div>
+
+            {/* Center */}
+            <motion.div
+              layout
+              style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}
+            >
+              <AnimatePresence mode="popLayout" initial={false}>
+                {!compact ? (
+                  /* Full nav links */
+                  <motion.div
+                    key="full-nav"
+                    className="tiis-desktop-nav"
+                    initial={{ opacity: 0, filter: 'blur(6px)', scale: 0.97 }}
+                    animate={{ opacity: 1, filter: 'blur(0px)', scale: 1 }}
+                    exit={{    opacity: 0, filter: 'blur(6px)', scale: 0.97 }}
+                    transition={{ duration: 0.28, ease: 'easeInOut' }}
+                    style={{ display: 'flex', alignItems: 'center', gap: '2.2rem' }}
+                  >
+                    {navLinks.map(item => (
+                      <button
+                        key={item.name}
+                        onClick={() => navigate(item.href)}
+                        className={`tiis-nav-btn${isActive(item.href) ? ' active' : ''}`}
+                      >
+                        {item.name}
+                      </button>
+                    ))}
+                  </motion.div>
+                ) : (
+                  /* Compact "Available for work" */
+                  <motion.button
+                    key="compact-pill"
+                    onClick={() => navigate('/contact')}
+                    initial={{ opacity: 0, filter: 'blur(6px)', scale: 0.92 }}
+                    animate={{ opacity: 1, filter: 'blur(0px)', scale: 1 }}
+                    exit={{    opacity: 0, filter: 'blur(6px)', scale: 0.92 }}
+                    transition={{ duration: 0.28, ease: 'easeInOut' }}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: '10px',
+                      padding: '0.42rem 1.1rem',
+                      borderRadius: '999px',
+                      background: 'rgba(241,245,248,0.90)',
+                      border: '1px solid rgba(1,50,78,0.09)',
+                      cursor: 'pointer',
+                      boxShadow: '0 1px 6px rgba(0,0,0,0.07)',
+                      transition: 'background 0.18s',
+                    }}
+                  >
+                    <span style={{ fontSize: '0.92rem', fontWeight: '700', color: '#1a202c', whiteSpace: 'nowrap', letterSpacing: '0.01em' }}>
+                      Available for work
+                    </span>
+                    {/* Blinking dot */}
+                    <span style={{ position: 'relative', width: '10px', height: '10px', display: 'inline-flex', flexShrink: 0, alignItems: 'center', justifyContent: 'center' }}>
+                      <span className="tiis-dot-ring" />
+                      <span style={{ position: 'relative', width: '10px', height: '10px', borderRadius: '50%', background: '#b12023', boxShadow: '0 0 8px rgba(177,32,35,0.65)', display: 'block' }} />
+                    </span>
+                  </motion.button>
+                )}
+              </AnimatePresence>
+            </motion.div>
+
+            {/* Right — CTA + Hamburger */}
+            <motion.div layout style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexShrink: 0 }}>
+              {/* CTA — desktop only, hidden when compact */}
+              {!compact && (
                 <Link
-                  key={link.path}
-                  to={link.path}
+                  to="/contact"
+                  className="tiis-cta-btn"
                   style={{
-                    padding: '0.45rem 1rem',
-                    borderRadius: '999px',
-                    fontSize: '0.92rem',
-                    fontWeight: active ? '700' : '500',
-                    color: active ? '#01324e' : '#444',
-                    backgroundColor: active ? '#e8f1f7' : 'transparent',
-                    textDecoration: 'none',
-                    transition: 'all 0.18s',
-                    whiteSpace: 'nowrap',
+                    display: 'inline-flex', alignItems: 'center', gap: '0.45rem',
+                    background: 'linear-gradient(135deg, #c0272a 0%, #8f1416 100%)',
+                    color: 'white', padding: '0.52rem 1.35rem',
+                    borderRadius: '999px', fontWeight: '700', fontSize: '0.87rem',
+                    textDecoration: 'none', letterSpacing: '0.03em',
+                    boxShadow: '0 4px 16px rgba(177,32,35,0.38)',
+                    border: '1px solid rgba(255,255,255,0.10)',
+                    whiteSpace: 'nowrap', position: 'relative', overflow: 'hidden',
+                    transition: 'transform 0.18s ease, box-shadow 0.18s ease',
                   }}
                   onMouseEnter={e => {
-                    if (!active) {
-                      e.currentTarget.style.backgroundColor = '#f3f4f6';
-                      e.currentTarget.style.color = '#01324e';
-                    }
+                    e.currentTarget.style.transform = 'scale(1.05) translateY(-1px)';
+                    e.currentTarget.style.boxShadow = '0 8px 28px rgba(177,32,35,0.50)';
                   }}
                   onMouseLeave={e => {
-                    if (!active) {
-                      e.currentTarget.style.backgroundColor = 'transparent';
-                      e.currentTarget.style.color = '#444';
-                    }
+                    e.currentTarget.style.transform = 'scale(1)';
+                    e.currentTarget.style.boxShadow = '0 4px 16px rgba(177,32,35,0.38)';
                   }}
                 >
-                  {link.label}
+                  <span className="tiis-cta-shimmer" />
+                  Get a Quote
+                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" style={{ opacity: 0.9 }}>
+                    <path d="M2 6.5h9M7.5 3 11 6.5 7.5 10" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
                 </Link>
-              );
-            })}
-          </nav>
+              )}
 
-          {/* ── Right: Get a Quote pill + hamburger ── */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexShrink: 0 }}>
-            <Link
-              to="/contact"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-                backgroundColor: '#b12023',
-                color: 'white',
-                padding: '0.5rem 1.3rem',
-                borderRadius: '999px',
-                fontWeight: '700',
-                fontSize: '0.9rem',
-                textDecoration: 'none',
-                boxShadow: '0 2px 10px rgba(177,32,35,0.35)',
-                transition: 'transform 0.15s, box-shadow 0.15s, background-color 0.15s',
-                whiteSpace: 'nowrap',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.backgroundColor = '#c4242b';
-                e.currentTarget.style.transform = 'scale(1.04)';
-                e.currentTarget.style.boxShadow = '0 4px 18px rgba(177,32,35,0.45)';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.backgroundColor = '#b12023';
-                e.currentTarget.style.transform = 'scale(1)';
-                e.currentTarget.style.boxShadow = '0 2px 10px rgba(177,32,35,0.35)';
-              }}
-            >
-              Get a Quote
-            </Link>
-
-            {/* Hamburger – shown only on small screens (we fake it here, CSS handles display) */}
-            <button
-              aria-label="Toggle menu"
-              onClick={() => setMobileOpen(p => !p)}
-              style={{
-                display: 'none', // hidden on desktop via inline — override with CSS class
-                background: 'none', border: 'none', cursor: 'pointer',
-                padding: '0.5rem', borderRadius: '8px',
-              }}
-              className="mobile-hamburger"
-            >
-              {mobileOpen ? <X size={22} color="#01324e" /> : <Menu size={22} color="#01324e" />}
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* ── Mobile Dropdown ── */}
-      {mobileOpen && (
-        <div
-          style={{
-            position: 'fixed', top: '68px', left: 0, right: 0,
-            backgroundColor: 'white', zIndex: 999,
-            padding: '1rem 1.5rem 1.5rem',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
-            borderTop: '1px solid #f0f0f0',
-            display: 'flex', flexDirection: 'column', gap: '0.5rem',
-          }}
-        >
-          {navLinks.map(link => {
-            const active = isActive(link.path);
-            return (
-              <Link
-                key={link.path}
-                to={link.path}
+              {/* Hamburger — mobile */}
+              <button
+                aria-label="Toggle menu"
+                onClick={() => setIsOpen(p => !p)}
+                className="tiis-hamburger"
                 style={{
-                  padding: '0.75rem 1rem',
-                  borderRadius: '10px',
-                  fontWeight: active ? '700' : '500',
-                  color: active ? '#01324e' : '#333',
-                  backgroundColor: active ? '#e8f1f7' : 'transparent',
-                  textDecoration: 'none', fontSize: '1rem',
+                  display: 'none', alignItems: 'center', justifyContent: 'center',
+                  background: 'rgba(1,50,78,0.06)',
+                  border: '1px solid rgba(1,50,78,0.10)',
+                  borderRadius: '10px', padding: '0.45rem', cursor: 'pointer',
                 }}
               >
-                {link.label}
-              </Link>
-            );
-          })}
-          <Link
-            to="/contact"
-            style={{
-              marginTop: '0.5rem',
-              padding: '0.75rem 1rem',
-              borderRadius: '10px',
-              backgroundColor: '#b12023',
-              color: 'white',
-              fontWeight: '700',
-              textAlign: 'center',
-              textDecoration: 'none',
-            }}
-          >
-            Get a Quote
-          </Link>
-        </div>
-      )}
+                {isOpen ? <X size={20} color="#01324e" /> : <Menu size={20} color="#01324e" />}
+              </button>
+            </motion.div>
+          </div>
 
-      <style>{`
-        @media (max-width: 768px) {
-          .mobile-hamburger { display: flex !important; }
-          header nav { display: none !important; }
-          header a[href="/contact"]:not(.mobile-hamburger) { display: none !important; }
-        }
-      `}</style>
+          {/* ── Mobile Dropdown ── */}
+          <AnimatePresence>
+            {isOpen && (
+              <motion.div
+                key="mobile-menu"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{    opacity: 0, height: 0 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                style={{ borderTop: '1px solid rgba(1,50,78,0.07)', overflow: 'hidden' }}
+              >
+                <div style={{ padding: '0.9rem 0.9rem 1.2rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                  {navLinks.map(item => (
+                    <button
+                      key={item.name}
+                      onClick={() => { navigate(item.href); setIsOpen(false); }}
+                      className={`tiis-mob-link${isActive(item.href) ? ' active' : ''}`}
+                    >
+                      {item.name}
+                    </button>
+                  ))}
+                  <Link
+                    to="/contact"
+                    onClick={() => setIsOpen(false)}
+                    style={{
+                      marginTop: '0.5rem', display: 'block', textAlign: 'center',
+                      padding: '0.8rem 1rem', borderRadius: '12px',
+                      background: 'linear-gradient(135deg, #c0272a 0%, #8f1416 100%)',
+                      color: 'white', fontWeight: '700', textDecoration: 'none',
+                      boxShadow: '0 4px 14px rgba(177,32,35,0.30)',
+                    }}
+                  >
+                    Get a Quote →
+                  </Link>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      </div>
+
+      {/* Spacer so page content starts below navbar */}
+      <div style={{ height: '96px' }} />
     </>
   );
 };

@@ -41,6 +41,13 @@ const About = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             style={{
+              background: 'rgba(255, 255, 255, 0.6)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              border: '1px solid rgba(255, 255, 255, 0.8)',
+              borderRadius: '24px',
+              padding: '3rem',
+              boxShadow: '0 20px 40px rgba(0,0,0,0.03), inset 0 1px 0 rgba(255,255,255,1)',
               marginTop: '3rem',
               textAlign: 'left'
             }}
@@ -54,7 +61,7 @@ const About = () => {
             }}>
               Thoughtful Institute of Innovative Solutions
             </h2>
-            <div style={{ color: 'var(--color-text-muted)', fontSize: '1.15rem', lineHeight: '1.8', display: 'flex', flexDirection: 'column', gap: '1.2rem', textAlign: 'justify' }}>
+            <div style={{ color: 'var(--color-text-muted)', fontSize: '1.15rem', lineHeight: '1.8', display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
               <p>
                 We at TIIS offer customized-based solutions that help increase productivity, performance, and profitability. We believe in customizing and developing specific solutions through a collaborative process designed to identify a client’s needs. Our approach is based on experiential learning combined with the technology and strong faculty of experts and competent solutions providers.
               </p>
@@ -174,92 +181,76 @@ const About = () => {
           </motion.div>
         </div>
 
-        {/* Our Solutions Section */}
-        <section style={{ paddingTop: '6rem', paddingBottom: '2rem' }}>
-          <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
-            <motion.div
+        {/* Alternating Clipart Sections */}
+        <section style={{ padding: '6rem 5%' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8rem', maxWidth: '1200px', margin: '0 auto' }}>
+            
+            {/* Section 1: Text Left, Image Right */}
+            <motion.div 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6 }}
-              style={{ marginBottom: '4rem' }}
+              style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '4rem' }}
             >
-              <h2 style={{ fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: '900', color: 'var(--color-primary-dark)', letterSpacing: '-1px', marginBottom: '1.5rem' }}>
-                Our Solutions
-              </h2>
-              <p style={{ color: 'var(--color-text-muted)', fontSize: '1.15rem', lineHeight: '1.8', maxWidth: '900px', margin: '0 auto' }}>
-                TIIS offers the full spectrum of thoughtful researched-based innovative solutions to help organizations and institutions plan better, work better & deliver better in this VUCA world. We design and develop thoughtful innovative solutions to optimize the potential of human capital to strive for the desired business objective and self-satisfaction.
-              </p>
+              <div style={{ flex: '1 1 400px', paddingRight: '2rem' }}>
+                <h2 style={{ fontSize: 'clamp(2rem, 3.5vw, 3.5rem)', fontWeight: '800', color: 'var(--color-primary-dark)', lineHeight: '1.2', marginBottom: '1.5rem', letterSpacing: '-0.5px' }}>
+                  Envisioning the Future
+                </h2>
+                <div style={{ color: 'var(--color-text-muted)', fontSize: '1.1rem', lineHeight: '1.8', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <p>The working methodologies and conceptualization of ideologies at Capsitech IT Services are premised upon the effectual implementation of business strategies and protocols to ensure a leap in the trajectory of progress.</p>
+                </div>
+              </div>
+              <div style={{ flex: '1 1 400px', display: 'flex', justifyContent: 'center' }}>
+                <img src="/src/assets/images/about_future.svg" alt="Envisioning Future" style={{ width: '100%', maxWidth: '500px', height: 'auto', dropShadow: '0 20px 40px rgba(0,0,0,0.05)' }} />
+              </div>
             </motion.div>
 
-            <motion.div
+            {/* Section 2: Image Left, Text Right */}
+            <motion.div 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6, delay: 0.15 }}
+              transition={{ duration: 0.6 }}
+              style={{ display: 'flex', flexWrap: 'wrap-reverse', alignItems: 'center', gap: '4rem' }}
             >
-              <h3 style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--color-primary)', marginBottom: '3rem' }}>
-                Our key services are
-              </h3>
-              
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                gap: '2rem',
-                justifyItems: 'center'
-              }}>
-                {[
-                  { name: 'Hiring Solutions', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg> },
-                  { name: 'Learning & Development', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> },
-                  { name: 'Content Development', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> },
-                  { name: 'Business Solutions', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> },
-                  { name: 'Compliance Services', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg> },
-                  { name: 'Caregiver Services', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> }
-                ].map((service, index) => (
-                  <motion.div
-                    key={index}
-                    whileHover={{ y: -8, scale: 1.02 }}
-                    style={{
-                      background: 'rgba(255, 255, 255, 0.9)',
-                      backdropFilter: 'blur(16px)',
-                      border: '1px solid rgba(226, 232, 240, 0.8)',
-                      borderRadius: '16px',
-                      padding: '2rem',
-                      width: '100%',
-                      maxWidth: '350px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      gap: '1rem',
-                      boxShadow: '0 10px 30px rgba(0,0,0,0.03)'
-                    }}
-                  >
-                    <div style={{
-                      width: '64px',
-                      height: '64px',
-                      borderRadius: '50%',
-                      background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%)',
-                      color: 'var(--color-primary)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginBottom: '0.5rem'
-                    }}>
-                      {service.icon}
-                    </div>
-                    <h4 style={{
-                      fontSize: '1.25rem',
-                      fontWeight: '700',
-                      color: 'var(--color-primary-dark)',
-                      margin: 0,
-                      textAlign: 'center'
-                    }}>
-                      {service.name}
-                    </h4>
-                  </motion.div>
-                ))}
+              <div style={{ flex: '1 1 400px', display: 'flex', justifyContent: 'center' }}>
+                <img src="/src/assets/images/about_tech.svg" alt="Technical Proficiency" style={{ width: '100%', maxWidth: '500px', height: 'auto', dropShadow: '0 20px 40px rgba(0,0,0,0.05)' }} />
+              </div>
+              <div style={{ flex: '1 1 400px', paddingLeft: '2rem' }}>
+                <h2 style={{ fontSize: 'clamp(2rem, 3.5vw, 3.5rem)', fontWeight: '800', color: 'var(--color-primary-dark)', lineHeight: '1.2', marginBottom: '1.5rem', letterSpacing: '-0.5px' }}>
+                  Technical Proficiency
+                </h2>
+                <div style={{ color: 'var(--color-text-muted)', fontSize: '1.1rem', lineHeight: '1.8', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <p>Our team has mastery in comprehending the business challenges and then develop ideal solutions to ameliorate the business process by placing the technical platform as a medium of increasing the productivity of the businesses processes.</p>
+                  <p>The technical team at Capsitech is skilled to develop technical tools and mobile applications by using the latest technologies available. The intent of the technical team is to develop solutions that are smooth, error-free, and easy to operate. The technical team firmly follows the business requirements and develop the most efficacious portals without compromising on any aspect of the overall business.</p>
+                </div>
               </div>
             </motion.div>
+
+            {/* Section 3: Text Left, Image Right */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6 }}
+              style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '4rem' }}
+            >
+              <div style={{ flex: '1 1 400px', paddingRight: '2rem' }}>
+                <h2 style={{ fontSize: 'clamp(2rem, 3.5vw, 3.5rem)', fontWeight: '800', color: 'var(--color-primary-dark)', lineHeight: '1.2', marginBottom: '1.5rem', letterSpacing: '-0.5px' }}>
+                  Research and Development
+                </h2>
+                <div style={{ color: 'var(--color-text-muted)', fontSize: '1.1rem', lineHeight: '1.8', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <p>Our research and development wing makes attempts to examine the business processes and then identify the existing problems or sections that requires an added technical support for better functioning.</p>
+                  <p>We, at Capsitech, understand the significance of focusing on meticulous details of a business before developing a solution for it and hence, a copious amount of importance is given to the research wing.</p>
+                  <p>In the course of the development of our products, the results and the analysis made during the research phase plays the biggest role in determining the development strategies for the technical team.</p>
+                </div>
+              </div>
+              <div style={{ flex: '1 1 400px', display: 'flex', justifyContent: 'center' }}>
+                <img src="/src/assets/images/about_rnd.svg" alt="Research and Development" style={{ width: '100%', maxWidth: '500px', height: 'auto', dropShadow: '0 20px 40px rgba(0,0,0,0.05)' }} />
+              </div>
+            </motion.div>
+
           </div>
         </section>
       </div>
