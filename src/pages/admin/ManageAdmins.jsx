@@ -101,15 +101,15 @@ const ManageAdmins = () => {
 
         <form onSubmit={handleCreateAdmin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div>
-            <label style={{ fontSize: '0.9rem', color: '#555', marginBottom: '0.2rem', display: 'block' }}>Full Name</label>
+            <label style={{ fontSize: '0.9rem', color: '#666', marginBottom: '0.2rem', display: 'block' }}>Full Name</label>
             <input required value={name} onChange={e => setName(e.target.value)} style={{ width: '100%', padding: '0.5rem', border: '1px solid #ccc', borderRadius: '4px' }} />
           </div>
           <div>
-            <label style={{ fontSize: '0.9rem', color: '#555', marginBottom: '0.2rem', display: 'block' }}>Email Address</label>
+            <label style={{ fontSize: '0.9rem', color: '#666', marginBottom: '0.2rem', display: 'block' }}>Email Address</label>
             <input required type="email" value={email} onChange={e => setEmail(e.target.value)} style={{ width: '100%', padding: '0.5rem', border: '1px solid #ccc', borderRadius: '4px' }} />
           </div>
           <div>
-            <label style={{ fontSize: '0.9rem', color: '#555', marginBottom: '0.2rem', display: 'block' }}>Temporary Password</label>
+            <label style={{ fontSize: '0.9rem', color: '#666', marginBottom: '0.2rem', display: 'block' }}>Temporary Password</label>
             <input required type="password" value={password} onChange={e => setPassword(e.target.value)} style={{ width: '100%', padding: '0.5rem', border: '1px solid #ccc', borderRadius: '4px' }} />
           </div>
           <button type="submit" className="btn-primary" style={{ marginTop: '0.5rem' }} disabled={loading}>

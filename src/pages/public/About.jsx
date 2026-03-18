@@ -4,13 +4,13 @@ import { CheckCircle } from 'lucide-react';
 
 const About = () => {
   return (
-    <div className="about-page animate-fade-in" style={{ paddingBottom: '4rem', overflow: 'hidden' }}>
+    <div className="about-page animate-fade-in" style={{ paddingBottom: '4rem', overflow: 'hidden', background: 'var(--color-page-grad)', minHeight: '100vh' }}>
       
       {/* Premium Hero Section */}
       <section style={{ 
         position: 'relative', 
         padding: '8rem 5% 6rem',
-        background: 'linear-gradient(135deg, var(--color-background) 0%, #f1f5f9 100%)',
+        background: 'transparent',
         textAlign: 'center',
         borderBottom: '1px solid rgba(226, 232, 240, 0.8)'
       }}>
@@ -143,12 +143,12 @@ const About = () => {
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6, delay: 0.3 }}
             style={{ 
-              background: 'rgba(255, 255, 255, 0.8)',
+              background: 'var(--color-navbar-bg)',
               backdropFilter: 'blur(16px)',
               borderRadius: '20px', 
               padding: '2.5rem', 
-              boxShadow: '0 10px 30px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)',
-              border: '1px solid rgba(226, 232, 240, 0.8)',
+              boxShadow: '0 10px 30px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.1)',
+              border: '1px solid var(--border-color-strong)',
               gridColumn: '1 / -1',
               position: 'relative',
               overflow: 'hidden',
@@ -220,9 +220,9 @@ const About = () => {
                     key={index}
                     whileHover={{ y: -8, scale: 1.02 }}
                     style={{
-                      background: 'rgba(255, 255, 255, 0.9)',
+                      background: 'var(--color-navbar-bg)',
                       backdropFilter: 'blur(16px)',
-                      border: '1px solid rgba(226, 232, 240, 0.8)',
+                      border: '1px solid var(--border-color-strong)',
                       borderRadius: '16px',
                       padding: '2rem',
                       width: '100%',

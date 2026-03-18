@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Sun, Moon } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useTheme } from '../../hooks/useTheme';
 
 const navLinks = [
   { name: 'Home',     href: '/' },
@@ -15,6 +16,7 @@ const navLinks = [
 const Header = () => {
   const location  = useLocation();
   const navigate  = useNavigate();
+  const { isDark, toggleTheme } = useTheme();
 
   const [isOpen,    setIsOpen]    = useState(false);
   const [isCompact, setIsCompact] = useState(false);
@@ -264,6 +266,24 @@ const Header = () => {
 
             {/* Right — CTA + Hamburger */}
             <motion.div layout style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexShrink: 0 }}>
+              
+              {/* Theme Toggle */}
+              <button
+                onClick={toggleTheme}
+                aria-label="Toggle Dark Mode"
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  background: 'none', border: 'none', cursor: 'pointer',
+                  padding: '0.45rem', color: 'var(--color-primary)',
+                  transition: 'transform 0.2s ease',
+                  outline: 'none'
+                }}
+                onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.15)'}
+                onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+              >
+                {isDark ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
+
               {/* CTA — desktop only, hidden when compact */}
               {!compact && (
                 <Link

@@ -11,7 +11,7 @@ const ManageContent = () => {
   return (
     <div style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '8px', boxShadow: 'var(--shadow-md)' }}>
       <h2 style={{ marginBottom: '2rem', color: 'var(--color-primary)' }}>Site Content Management</h2>
-      <p style={{ color: 'var(--color-text-muted)', marginBottom: '2rem' }}>Update textual content and images for the public website pages.</p>
+      <p style={{ color: '#666', marginBottom: '2rem' }}>Update textual content and images for the public website pages.</p>
 
       <div style={{ display: 'flex', gap: '2rem' }}>
         

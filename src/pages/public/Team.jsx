@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import axios from 'axios';
+import api from '../../api';
 
 const Team = () => {
   const [team, setTeam] = useState([]);
@@ -9,7 +9,7 @@ const Team = () => {
   useEffect(() => {
     const fetchTeam = async () => {
       try {
-        const { data } = await axios.get('/api/team');
+        const { data } = await api.get('/api/team');
         setTeam(data);
       } catch (error) {
         console.error('Error fetching team:', error);
@@ -21,13 +21,13 @@ const Team = () => {
   }, []);
 
   return (
-    <div className="team-page animate-fade-in" style={{ paddingBottom: '4rem', overflow: 'hidden' }}>
+    <div className="team-page animate-fade-in" style={{ paddingBottom: '4rem', overflow: 'hidden', background: 'var(--color-page-grad)', minHeight: '100vh' }}>
       
       {/* Premium Hero Section */}
       <section style={{ 
         position: 'relative', 
         padding: '8rem 5% 6rem',
-        background: 'linear-gradient(135deg, var(--color-background) 0%, #f1f5f9 100%)',
+        background: 'transparent',
         textAlign: 'center',
         borderBottom: '1px solid rgba(226, 232, 240, 0.8)'
       }}>
@@ -100,12 +100,12 @@ const Team = () => {
                     display: 'flex',
                     flexDirection: 'column',
                     textAlign: 'left', 
-                    background: 'rgba(255, 255, 255, 0.8)',
+                    background: 'var(--color-navbar-bg)',
                     backdropFilter: 'blur(16px)',
                     WebkitBackdropFilter: 'blur(16px)',
                     borderRadius: '24px', 
                     boxShadow: '0 10px 40px -10px rgba(0,0,0,0.08)',
-                    border: '1px solid rgba(226, 232, 240, 0.8)',
+                    border: '1px solid var(--border-color-strong)',
                     cursor: 'pointer',
                     transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                     overflow: 'hidden'
@@ -124,7 +124,7 @@ const Team = () => {
                       }} />
                     ) : (
                       <div style={{ 
-                        width: '100%', height: '100%', backgroundColor: '#f8fafc',
+                        width: '100%', height: '100%', backgroundColor: 'var(--color-bg-light)',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         color: 'var(--color-primary)', fontSize: '4rem', fontWeight: '800'
                       }}>

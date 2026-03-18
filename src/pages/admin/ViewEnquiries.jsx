@@ -63,9 +63,9 @@ const ViewEnquiries = () => {
                   </td>
                   <td style={{ padding: '1rem' }}>
                     <div style={{ fontWeight: '600' }}>{enq.companyName}</div>
-                    <div style={{ fontSize: '0.9rem', color: '#555' }}>👤 {enq.contactPerson}</div>
-                    <div style={{ fontSize: '0.9rem', color: '#555' }}>📧 {enq.email}</div>
-                    <div style={{ fontSize: '0.9rem', color: '#555' }}>📞 {enq.phone}</div>
+                    <div style={{ fontSize: '0.9rem', color: '#666' }}>👤 {enq.contactPerson}</div>
+                    <div style={{ fontSize: '0.9rem', color: '#666' }}>📧 {enq.email}</div>
+                    <div style={{ fontSize: '0.9rem', color: '#666' }}>📞 {enq.phone}</div>
                   </td>
                   <td style={{ padding: '1rem', textTransform: 'capitalize' }}>{enq.serviceRequired}</td>
                   <td style={{ padding: '1rem', maxWidth: '300px' }}>

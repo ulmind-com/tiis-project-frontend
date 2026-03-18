@@ -72,7 +72,7 @@ const ViewApplications = () => {
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh', color: 'var(--color-text-muted)' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh', color: '#666' }}>
         Loading applications...
       </div>
     );
@@ -90,7 +90,7 @@ const ViewApplications = () => {
         ].map(stat => (
           <div key={stat.label} style={{ backgroundColor: 'white', padding: '1.5rem', borderRadius: '8px', boxShadow: 'var(--shadow-sm)', borderLeft: `4px solid ${stat.color}` }}>
             <p style={{ fontSize: '2rem', fontWeight: 'bold', color: stat.color }}>{stat.count}</p>
-            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', marginTop: '0.25rem' }}>{stat.label}</p>
+            <p style={{ color: '#666', fontSize: '0.9rem', marginTop: '0.25rem' }}>{stat.label}</p>
           </div>
         ))}
       </div>
@@ -98,7 +98,7 @@ const ViewApplications = () => {
       {/* Filters */}
       <div style={{ backgroundColor: 'white', padding: '1.25rem 1.5rem', borderRadius: '8px', boxShadow: 'var(--shadow-sm)', marginBottom: '1.5rem', display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
         <Filter size={18} color="var(--color-text-muted)" />
-        <span style={{ color: 'var(--color-text-muted)', fontWeight: '500', fontSize: '0.9rem' }}>Filter By:</span>
+        <span style={{ color: '#666', fontWeight: '500', fontSize: '0.9rem' }}>Filter By:</span>
 
         <select
           value={filterStatus}
@@ -123,14 +123,14 @@ const ViewApplications = () => {
           ))}
         </select>
 
-        <span style={{ marginLeft: 'auto', color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>
+        <span style={{ marginLeft: 'auto', color: '#666', fontSize: '0.85rem' }}>
           Showing {filtered.length} of {applications.length}
         </span>
       </div>
 
       {/* Applications List */}
       {filtered.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '4rem', backgroundColor: 'white', borderRadius: '8px', boxShadow: 'var(--shadow-sm)', color: 'var(--color-text-muted)' }}>
+        <div style={{ textAlign: 'center', padding: '4rem', backgroundColor: 'white', borderRadius: '8px', boxShadow: 'var(--shadow-sm)', color: '#666' }}>
           <Briefcase size={48} style={{ marginBottom: '1rem', opacity: 0.3 }} />
           <p style={{ fontSize: '1.1rem' }}>No applications found matching the selected filters.</p>
         </div>
@@ -177,24 +177,24 @@ const ViewApplications = () => {
                     </div>
                     <div>
                       <p style={{ fontWeight: '600', color: 'var(--color-primary)' }}>{app.name}</p>
-                      <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>{app.email}</p>
+                      <p style={{ fontSize: '0.8rem', color: '#666' }}>{app.email}</p>
                     </div>
                   </div>
 
                   {/* Job Applied For */}
                   <div>
                     <p style={{ fontWeight: '500', color: '#374151' }}>{app.job?.title || 'Unknown Position'}</p>
-                    <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>Position Applied</p>
+                    <p style={{ fontSize: '0.8rem', color: '#666' }}>Position Applied</p>
                   </div>
 
                   {/* Phone */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#555' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#666' }}>
                     <Phone size={14} />
                     <span style={{ fontSize: '0.9rem' }}>{app.phone}</span>
                   </div>
 
                   {/* Date Applied */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#555' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#666' }}>
                     <Calendar size={14} />
                     <span style={{ fontSize: '0.9rem' }}>{new Date(app.createdAt).toLocaleDateString()}</span>
                   </div>
@@ -279,7 +279,7 @@ const ViewApplications = () => {
 
                       {/* CV Download */}
                       <div style={{ backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '8px', padding: '1rem', marginBottom: '1.5rem' }}>
-                        <p style={{ fontSize: '0.85rem', color: '#555', marginBottom: '0.75rem' }}>Curriculum Vitae (CV)</p>
+                        <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: '0.75rem' }}>Curriculum Vitae (CV)</p>
                         <a
                           href={`http://localhost:5000${app.cvUrl}`}
                           target="_blank"
@@ -303,7 +303,7 @@ const ViewApplications = () => {
 
                       {/* Update Status */}
                       <div style={{ backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '8px', padding: '1rem' }}>
-                        <p style={{ fontSize: '0.85rem', color: '#555', marginBottom: '0.75rem' }}>Update Application Status</p>
+                        <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: '0.75rem' }}>Update Application Status</p>
                         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                           {['pending', 'reviewed', 'rejected', 'hired'].map(status => (
                             <button

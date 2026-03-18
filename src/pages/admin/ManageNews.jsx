@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { Plus } from 'lucide-react';
+import { Plus, Edit2, Trash2, Loader2, Image as ImageIcon } from 'lucide-react';
 import Swal from 'sweetalert2';
+import { motion } from 'framer-motion';
+import { useOutletContext } from 'react-router-dom';
 
 const ManageNews = () => {
   const [items, setItems] = useState([]);
@@ -11,6 +13,10 @@ const ManageNews = () => {
   const [formData, setFormData] = useState({ title: '', content: '', author: 'Admin', isPublished: true, image: null, existingImageUrl: '' });
   const [isSaving, setIsSaving] = useState(false);
   const fileInputRef = useRef(null);
+  
+  // Safe extraction of context
+  const context = useOutletContext();
+  const isDark = context?.isDark || false;
 
   const getAuthHeaders = () => {
     const adminStr = localStorage.getItem('adminInfo');
@@ -49,13 +55,17 @@ const ManageNews = () => {
 
       if (isEditing) {
         await axios.put(`/api/news/${currentId}`, dataToSubmit, config);
+        Swal.fire({ title: 'Updated!', text: 'News updated successfully', icon: 'success', toast: true, position: 'top-end', timer: 3000, showConfirmButton: false });
       } else {
         await axios.post('/api/news', dataToSubmit, config);
+        Swal.fire({ title: 'Created!', text: 'News published successfully', icon: 'success', toast: true, position: 'top-end', timer: 3000, showConfirmButton: false });
       }
       resetForm();
       fetchItems();
     } catch (error) {
-      alert('Error saving news item');
+      Swal.fire('Error!', 'Failed to save news.', 'error');
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -75,12 +85,14 @@ const ManageNews = () => {
 
   const handleDelete = async (id) => {
     const result = await Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      title: 'Delete this news?',
+      text: "This action is permanent and cannot be undone.",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#dc2626',
-      cancelButtonColor: '#6e7881',
+      cancelButtonColor: isDark ? '#475569' : '#94a3b8',
+      background: isDark ? '#1e293b' : '#fff',
+      color: isDark ? '#fff' : '#000',
       confirmButtonText: 'Yes, delete it!'
     });
 
@@ -88,7 +100,7 @@ const ManageNews = () => {
       try {
         await axios.delete(`/api/news/${id}`, getAuthHeaders());
         fetchItems();
-        Swal.fire('Deleted!', 'The news item has been deleted.', 'success');
+        Swal.fire({ title: 'Deleted!', text: 'The news item has been removed.', icon: 'success', background: isDark ? '#1e293b' : '#fff', color: isDark ? '#fff' : '#000' });
       } catch (err) {
         Swal.fire('Error!', err.response?.data?.message || 'Failed to delete news item.', 'error');
       }
@@ -101,79 +113,153 @@ const ManageNews = () => {
     }
   };
 
+  const theme = {
+    cardBg: isDark ? '#0f172a' : '#ffffff',
+    textMain: isDark ? '#f8fafc' : '#0f172a',
+    textMuted: isDark ? '#94a3b8' : '#64748b',
+    border: isDark ? '#1e293b' : '#e2e8f0',
+    inputBg: isDark ? '#1e293b' : '#ffffff',
+    inputBorder: isDark ? '#334155' : '#cbd5e1',
+    tableHeader: isDark ? '#1e293b' : '#f8fafc',
+    rowHover: isDark ? '#1e293b' : '#f1f5f9'
+  };
+
   return (
-    <div style={{ display: 'flex', gap: '2rem' }}>
-      <div style={{ flex: '2', backgroundColor: 'white', padding: '1.5rem', borderRadius: '8px', boxShadow: 'var(--shadow-sm)' }}>
-        <h2 style={{ marginBottom: '1.5rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>Latest News Updates</h2>
-        {loading ? <p>Loading...</p> : (
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem', paddingBottom: '2rem' }}>
+      
+      {/* Table Section */}
+      <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.4 }} style={{ flex: '1 1 60%', backgroundColor: theme.cardBg, color: theme.textMain, padding: '1.5rem', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)', border: `1px solid ${theme.border}`, overflowX: 'auto', transition: 'all 0.3s' }}>
+        <h2 style={{ marginBottom: '1.5rem', borderBottom: `1px solid ${theme.border}`, paddingBottom: '0.75rem', fontSize: '1.25rem', fontWeight: 600 }}>Latest News Updates</h2>
+        
+        {loading ? (
+          <div style={{ display: 'flex', justifyContent: 'center', padding: '3rem 0', color: theme.textMuted }}>
+            <Loader2 className="animate-spin" size={32} />
+          </div>
+        ) : (
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.95rem' }}>
             <thead>
-              <tr style={{ backgroundColor: '#f8fafc', textAlign: 'left' }}>
-                <th style={{ padding: '1rem', borderBottom: '1px solid #e2e8f0' }}>Image</th>
-                <th style={{ padding: '1rem', borderBottom: '1px solid #e2e8f0' }}>Title</th>
-                <th style={{ padding: '1rem', borderBottom: '1px solid #e2e8f0' }}>Status</th>
-                <th style={{ padding: '1rem', borderBottom: '1px solid #e2e8f0' }}>Actions</th>
+              <tr style={{ backgroundColor: theme.tableHeader, textAlign: 'left', color: theme.textMuted, transition: 'background-color 0.3s' }}>
+                <th style={{ padding: '1rem', borderBottom: `1px solid ${theme.border}`, fontWeight: 500, borderRadius: '8px 0 0 0' }}>Image</th>
+                <th style={{ padding: '1rem', borderBottom: `1px solid ${theme.border}`, fontWeight: 500 }}>Title</th>
+                <th style={{ padding: '1rem', borderBottom: `1px solid ${theme.border}`, fontWeight: 500 }}>Status</th>
+                <th style={{ padding: '1rem', borderBottom: `1px solid ${theme.border}`, fontWeight: 500, borderRadius: '0 8px 0 0' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {items.map(item => (
-                <tr key={item._id} style={{ borderBottom: '1px solid #eee' }}>
+                <motion.tr 
+                  key={item._id} 
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                  whileHover={{ backgroundColor: theme.rowHover }}
+                  style={{ borderBottom: `1px solid ${theme.border}`, transition: 'background-color 0.2s' }}
+                >
                   <td style={{ padding: '1rem' }}>
-                    {item.imageUrl ? <img src={item.imageUrl} alt={item.title} style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }} /> : 'No Image'}
+                    {item.imageUrl ? 
+                      <img src={item.imageUrl} alt={item.title} style={{ width: '56px', height: '40px', objectFit: 'cover', borderRadius: '6px', border: `1px solid ${theme.border}` }} /> : 
+                      <div style={{ width: '56px', height: '40px', backgroundColor: theme.border, borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: theme.textMuted }}><ImageIcon size={18} /></div>
+                    }
                   </td>
-                  <td style={{ padding: '1rem', fontWeight: '500' }}>{item.title}</td>
+                  <td style={{ padding: '1rem', fontWeight: '500', color: theme.textMain, maxWidth: '200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.title}</td>
                   <td style={{ padding: '1rem' }}>
                     <span style={{ 
-                        padding: '0.25rem 0.75rem', 
-                        borderRadius: '20px', 
-                        fontSize: '0.8rem',
-                        backgroundColor: item.isPublished ? '#dcfce7' : '#f1f5f9',
-                        color: item.isPublished ? '#166534' : '#475569'
-                      }}>
-                        {item.isPublished ? 'Published' : 'Draft'}
-                      </span>
+                        padding: '0.35rem 0.85rem', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 600,
+                        backgroundColor: item.isPublished ? 'rgba(34,197,94,0.1)' : 'rgba(100,116,139,0.1)',
+                        color: item.isPublished ? (isDark ? '#4ade80' : '#166534') : theme.textMuted,
+                        border: `1px solid ${item.isPublished ? 'rgba(34,197,94,0.2)' : 'rgba(100,116,139,0.2)'}`
+                    }}>
+                      {item.isPublished ? 'Published' : 'Draft'}
+                    </span>
                   </td>
                   <td style={{ padding: '1rem' }}>
-                    <button onClick={() => handleEdit(item)} style={{ marginRight: '0.5rem', color: '#2563eb', background: 'none' }}>Edit</button>
-                    <button onClick={() => handleDelete(item._id)} style={{ color: '#dc2626', background: 'none' }}>Delete</button>
+                    <div style={{ display: 'flex', gap: '0.75rem' }}>
+                      <button onClick={() => handleEdit(item)} style={{ color: '#3b82f6', background: 'none', border: 'none', cursor: 'pointer', padding: '0.25rem', transition: 'opacity 0.2s' }} onMouseEnter={e => e.currentTarget.style.opacity = 0.7} onMouseLeave={e => e.currentTarget.style.opacity = 1} title="Edit">
+                        <Edit2 size={18} />
+                      </button>
+                      <button onClick={() => handleDelete(item._id)} style={{ color: '#ef4444', background: 'none', border: 'none', cursor: 'pointer', padding: '0.25rem', transition: 'opacity 0.2s' }} onMouseEnter={e => e.currentTarget.style.opacity = 0.7} onMouseLeave={e => e.currentTarget.style.opacity = 1} title="Delete">
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
                   </td>
-                </tr>
+                </motion.tr>
               ))}
+              {items.length === 0 && (
+                <tr>
+                  <td colSpan={4} style={{ padding: '2rem', textAlign: 'center', color: theme.textMuted }}>No news items found.</td>
+                </tr>
+              )}
             </tbody>
           </table>
         )}
-      </div>
+      </motion.div>
 
-      <div style={{ flex: '1', backgroundColor: 'white', padding: '1.5rem', borderRadius: '8px', boxShadow: 'var(--shadow-sm)', alignSelf: 'flex-start' }}>
-        <h2 style={{ marginBottom: '1.5rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          {isEditing ? 'Edit News' : <><Plus size={20} /> Post News</>}
+      {/* Form Section */}
+      <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.4, delay: 0.1 }} style={{ flex: '1 1 35%', backgroundColor: theme.cardBg, color: theme.textMain, padding: '2rem', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)', border: `1px solid ${theme.border}`, alignSelf: 'flex-start', transition: 'all 0.3s' }}>
+        <h2 style={{ marginBottom: '1.75rem', fontSize: '1.25rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem', color: isEditing ? '#3b82f6' : theme.textMain }}>
+          {isEditing ? <><Edit2 size={20} /> Edit News Item</> : <><Plus size={20} /> Post New Update</>}
         </h2>
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <div>
-            <label style={{ display: 'block', marginBottom: '0.2rem' }}>Headline</label>
-            <input required value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} style={{ width: '100%', padding: '0.5rem', border: '1px solid #ccc', borderRadius: '4px' }} />
+            <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.9rem', fontWeight: 500, color: theme.textMuted }}>Headline</label>
+            <input required value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} 
+              style={{ width: '100%', padding: '0.75rem 1rem', border: `1px solid ${theme.inputBorder}`, backgroundColor: theme.inputBg, color: theme.textMain, borderRadius: '8px', outline: 'none', transition: 'all 0.2s' }} 
+              onFocus={e => e.target.style.borderColor = '#3b82f6'} onBlur={e => e.target.style.borderColor = theme.inputBorder}
+            />
           </div>
           <div>
-            <label style={{ display: 'block', marginBottom: '0.2rem' }}>Content</label>
-            <textarea required rows="4" value={formData.content} onChange={e => setFormData({...formData, content: e.target.value})} style={{ width: '100%', padding: '0.5rem', border: '1px solid #ccc', borderRadius: '4px' }}></textarea>
+            <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.9rem', fontWeight: 500, color: theme.textMuted }}>Content</label>
+            <textarea required rows="6" value={formData.content} onChange={e => setFormData({...formData, content: e.target.value})} 
+              style={{ width: '100%', padding: '0.75rem 1rem', border: `1px solid ${theme.inputBorder}`, backgroundColor: theme.inputBg, color: theme.textMain, borderRadius: '8px', outline: 'none', transition: 'all 0.2s', resize: 'vertical' }}
+              onFocus={e => e.target.style.borderColor = '#3b82f6'} onBlur={e => e.target.style.borderColor = theme.inputBorder}
+            ></textarea>
           </div>
           <div>
-              <label style={{ display: 'block', marginBottom: '0.2rem' }}>Featured Image</label>
-              <input type="file" accept="image/*" onChange={handleImageChange} ref={fileInputRef} style={{ width: '100%', padding: '0.5rem', border: '1px solid #ccc', borderRadius: '4px' }} />
+              <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.9rem', fontWeight: 500, color: theme.textMuted }}>Featured Image</label>
+              <input type="file" accept="image/*" onChange={handleImageChange} ref={fileInputRef} 
+                style={{ width: '100%', padding: '0.75rem', border: `1px dashed ${theme.inputBorder}`, backgroundColor: theme.inputBg, color: theme.textMain, borderRadius: '8px', cursor: 'pointer', transition: 'all 0.2s' }} 
+              />
               {isEditing && formData.existingImageUrl && !formData.image && (
-                  <div style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: '#666' }}>Current: <a href={formData.existingImageUrl} target="_blank" rel="noreferrer">View Image</a></div>
+                  <div style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: theme.textMuted, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <ImageIcon size={14} /> Current Image: <a href={formData.existingImageUrl} target="_blank" rel="noreferrer" style={{ color: '#3b82f6' }}>View</a>
+                  </div>
               )}
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.5rem' }}>
-              <input type="checkbox" id="isPub" checked={formData.isPublished} onChange={e => setFormData({...formData, isPublished: e.target.checked})} />
-              <label htmlFor="isPub" style={{ fontSize: '0.9rem', color: '#555' }}>Publish Immediately</label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '0.5rem', cursor: 'pointer' }}>
+              <input type="checkbox" id="isPub" checked={formData.isPublished} onChange={e => setFormData({...formData, isPublished: e.target.checked})} style={{ width: '1.1rem', height: '1.1rem', accentColor: '#3b82f6', cursor: 'pointer' }} />
+              <label htmlFor="isPub" style={{ fontSize: '0.95rem', color: theme.textMain, cursor: 'pointer', userSelect: 'none' }}>Publish Immediately</label>
           </div>
-          <button type="submit" className="btn-primary" style={{ marginTop: '0.5rem' }} disabled={isSaving}>
-            {isSaving ? 'Saving...' : (isEditing ? 'Update News' : 'Save News')}
-          </button>
-          {isEditing && <button type="button" onClick={resetForm} style={{ marginTop: '0.5rem', padding: '0.5rem', cursor: 'pointer' }} disabled={isSaving}>Cancel</button>}
+          
+          <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+            <motion.button 
+              whileTap={{ scale: 0.97 }}
+              type="submit" disabled={isSaving}
+              style={{ 
+                flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem',
+                backgroundColor: isEditing ? '#3b82f6' : (isDark ? '#e11d48' : '#b12023'), 
+                color: 'white', border: 'none', padding: '0.85rem', borderRadius: '8px', 
+                fontWeight: 600, fontSize: '1rem', cursor: isSaving ? 'not-allowed' : 'pointer',
+                opacity: isSaving ? 0.7 : 1, transition: 'background-color 0.2s'
+              }}
+            >
+              {isSaving ? <><Loader2 className="animate-spin" size={18} /> Processing...</> : (isEditing ? 'Update News' : 'Save News')}
+            </motion.button>
+            
+            {isEditing && (
+              <motion.button 
+                whileTap={{ scale: 0.97 }}
+                type="button" onClick={resetForm} disabled={isSaving}
+                style={{ 
+                  padding: '0.85rem 1.5rem', backgroundColor: 'transparent', 
+                  color: isDark ? '#f87171' : '#dc2626', border: `1px solid ${isDark ? '#f87171' : '#dc2626'}`, 
+                  borderRadius: '8px', fontWeight: 600, cursor: isSaving ? 'not-allowed' : 'pointer'
+                }}
+              >
+                Cancel
+              </motion.button>
+            )}
+          </div>
         </form>
-      </div>
+      </motion.div>
     </div>
   );
 };

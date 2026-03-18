@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../api';
 
 const Portfolio = () => {
   const [portfolio, setPortfolio] = useState([]);
@@ -11,7 +11,7 @@ const Portfolio = () => {
   useEffect(() => {
     const fetchPortfolio = async () => {
       try {
-        const response = await axios.get('/api/portfolio');
+        const response = await api.get('/api/portfolio');
         setPortfolio(response.data);
       } catch (error) {
         console.error('Error fetching portfolio:', error);

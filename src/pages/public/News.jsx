@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../api';
 
 const News = () => {
   const [news, setNews] = useState([]);
@@ -13,7 +13,7 @@ const News = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await axios.get('/api/news');
+        const response = await api.get('/api/news');
         setNews(response.data);
       } catch (error) {
         console.error('Error fetching news:', error);

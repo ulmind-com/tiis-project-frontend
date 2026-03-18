@@ -1,7 +1,76 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Mail, Phone, MapPin } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Mail, Phone, MapPin, Send, CheckCircle, ArrowRight, Building2, User, UserCircle, Briefcase, FileText, Paperclip } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+const fadeUp = (delay) => ({
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] } }
+});
+
+const staggerContainer = (staggerChildren, delayChildren) => ({
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren, delayChildren } }
+});
+
+const InfoCard = ({ icon: Icon, title, content, delay }) => (
+  <motion.div
+    variants={fadeUp(delay)}
+    whileHover={{ y: -5, scale: 1.02 }}
+    style={{
+      backgroundColor: 'var(--color-card-bg)', border: '1px solid var(--border-color-strong)',
+      padding: '1.75rem', borderRadius: '20px', display: 'flex', gap: '1.25rem', alignItems: 'flex-start',
+      boxShadow: '0 10px 30px -10px rgba(0,0,0,0.08)', cursor: 'default'
+    }}
+  >
+    <div style={{
+      width: '52px', height: '52px', borderRadius: '16px', background: 'linear-gradient(135deg, rgba(177,32,35,0.1) 0%, rgba(1,50,78,0.1) 100%)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+      border: '1px solid rgba(177,32,35,0.2)'
+    }}>
+      <Icon size={24} color="#b12023" />
+    </div>
+    <div>
+      <h4 style={{ fontSize: '1.15rem', fontWeight: '700', color: 'var(--color-text-heading)', marginBottom: '0.4rem' }}>{title}</h4>
+      <div style={{ color: 'var(--color-text-muted)', lineHeight: '1.5', fontSize: '0.95rem' }}>{content}</div>
+    </div>
+  </motion.div>
+);
+
+const FormInput = ({ label, icon: Icon, isSelect, isTextarea, options, ...props }) => {
+  const [focused, setFocused] = useState(false);
+  
+  const baseStyle = {
+    width: '100%', padding: '0.85rem 1rem', paddingLeft: Icon ? '2.75rem' : '1rem',
+    borderRadius: '12px', border: `1px solid ${focused ? '#0284c7' : 'var(--border-color-strong)'}`, 
+    outline: 'none', backgroundColor: 'var(--color-bg-light)', 
+    color: 'var(--color-text-main)', fontSize: '0.95rem',
+    transition: 'all 0.3s ease',
+    boxShadow: focused ? '0 0 0 4px rgba(2,132,199,0.1)' : 'none',
+  };
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+      <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--color-text-heading)', marginLeft: '0.2rem' }}>
+        {label} {props.required && <span style={{ color: '#ef4444' }}>*</span>}
+      </label>
+      <div style={{ position: 'relative' }}>
+        {Icon && <Icon size={18} style={{ position: 'absolute', left: '1rem', top: isTextarea ? '1.25rem' : '50%', transform: isTextarea ? 'none' : 'translateY(-50%)', color: focused ? '#0284c7' : 'var(--color-text-muted)', transition: 'color 0.3s ease' }} />}
+        
+        {isSelect ? (
+          <select {...props} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} style={baseStyle}>
+             <option value="">Select an option...</option>
+             {options.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+          </select>
+        ) : isTextarea ? (
+          <textarea {...props} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} style={{...baseStyle, resize: 'vertical'}} />
+        ) : (
+          <input {...props} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} style={baseStyle} />
+        )}
+      </div>
+    </div>
+  );
+};
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -44,222 +113,150 @@ const Contact = () => {
   };
 
   return (
-    <div className="contact-page animate-fade-in" style={{ padding: '4rem 0' }}>
-      <div className="container">
-        
-        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-          <h1 className="section-title">Business Enquiry</h1>
-          <p style={{ color: 'var(--color-text-muted)' }}>Get in touch with our experts to discuss how we can help your business.</p>
-        </div>
+    <div className="contact-page animate-fade-in" style={{ backgroundColor: 'var(--color-page-bg)', minHeight: '100vh', paddingBottom: '6rem' }}>
+      
+      {/* ── Hero Section ── */}
+      <section style={{ position: 'relative', overflow: 'hidden', background: 'var(--color-hero-grad)', padding: '6rem 2rem 5rem', textAlign: 'center', color: 'white' }}>
+        {/* Animated Blobs */}
+        <motion.div animate={{ scale: [1, 1.15, 1], opacity: [0.12, 0.2, 0.12] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }} style={{ position: 'absolute', top: '-80px', right: '-80px', width: '350px', height: '350px', borderRadius: '50%', background: 'rgba(177,32,35,0.15)', filter: 'blur(60px)', pointerEvents: 'none' }} />
+        <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.08, 0.16, 0.08] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }} style={{ position: 'absolute', bottom: '-60px', left: '-60px', width: '280px', height: '280px', borderRadius: '50%', background: 'rgba(14,165,233,0.14)', filter: 'blur(50px)', pointerEvents: 'none' }} />
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) 2fr', gap: '3rem' }}>
+        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
+          <motion.span initial={{ opacity: 0, y: -16, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ display: 'inline-block', backgroundColor: 'rgba(177,32,35,0.28)', color: '#f87171', padding: '0.4rem 1.25rem', borderRadius: '999px', fontSize: '0.85rem', fontWeight: '600', letterSpacing: '0.08em', marginBottom: '1.25rem', textTransform: 'uppercase' }}>
+            Get in Touch
+          </motion.span>
           
-          {/* Contact Info Sidebar */}
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            style={{ backgroundColor: 'var(--color-primary)', color: 'white', padding: '3rem', borderRadius: '8px' }}
-          >
-            <h3 style={{ fontSize: '1.5rem', marginBottom: '2rem' }}>Quick Contact</h3>
+          <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: 0.15, ease: [0.22, 1, 0.36, 1] }} style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: '800', marginBottom: '1.25rem', lineHeight: '1.1', letterSpacing: '-0.02em' }}>
+            Let's Build Something <br />
+            <span style={{ color: '#f87171' }}>Extraordinary.</span>
+          </motion.h1>
+
+          <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }} style={{ height: '3px', width: '60px', background: 'linear-gradient(90deg, #b12023, #f43f5e)', borderRadius: '2px', margin: '0 auto 1.5rem', originX: 0.5 }} />
+
+          <motion.p initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.45, ease: [0.22, 1, 0.36, 1] }} style={{ fontSize: '1.2rem', maxWidth: '650px', margin: '0 auto', color: 'rgba(255,255,255,0.75)', lineHeight: '1.7' }}>
+            Partner with our experts to architect the future of your organization. Drop us a line and let's start the conversation.
+          </motion.p>
+        </div>
+      </section>
+
+      {/* ── Main Content Area ── */}
+      <section className="container" style={{ position: 'relative', zIndex: 1, marginTop: '-2rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '4rem', alignItems: 'start' }}>
+          
+          {/* Sidebar Area */}
+          <motion.div initial="hidden" animate="visible" variants={staggerContainer(0.15, 0.2)} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             
-            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem' }}>
-              <Mail color="var(--color-secondary)" />
-              <div>
-                <p style={{ fontWeight: 'bold' }}>Email</p>
-                <p style={{ opacity: '0.8' }}>info@tiis.co.in</p>
-              </div>
-            </div>
-            
-            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem' }}>
-              <Phone color="var(--color-secondary)" />
-              <div>
-                <p style={{ fontWeight: 'bold' }}>Phone</p>
-                <p style={{ opacity: '0.8' }}>+91 XXX XXX XXXX</p>
-              </div>
-            </div>
-            
-            <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
-              <MapPin color="var(--color-secondary)" />
-              <div>
-                <p style={{ fontWeight: 'bold' }}>Office Location</p>
-                <p style={{ opacity: '0.8' }}>107, Malibu Towne, Sector 47<br/>Gurugram, Haryana 122018</p>
-              </div>
-            </div>
+            <InfoCard icon={Mail} title="Email Us" content={<><a href="mailto:info@tiis.co.in" style={{ color: '#0284c7', textDecoration: 'none', fontWeight: 600 }}>info@tiis.co.in</a><br />Response within 24 hours</>} delay={0} />
+            <InfoCard icon={Phone} title="Call Us" content={<><a href="tel:+91XXXXXXXXXX" style={{ color: '#0284c7', textDecoration: 'none', fontWeight: 600 }}>+91 XXX XXX XXXX</a><br />Mon-Fri, 9am - 6pm IST</>} delay={0.1} />
+            <InfoCard icon={MapPin} title="Visit Us" content={<>107, Malibu Towne, Sector 47<br />Gurugram, Haryana 122018</>} delay={0.2} />
 
             {/* Premium Map Embed */}
-            <div style={{ position: 'relative', marginTop: '0.5rem' }}>
-              {/* Glow ring */}
-              <div style={{
-                position: 'absolute', inset: '-3px',
-                borderRadius: '14px',
-                background: 'linear-gradient(135deg, var(--color-secondary), rgba(255,255,255,0.15), var(--color-secondary))',
-                backgroundSize: '200% 200%',
-                animation: 'mapGlow 3s ease infinite',
-                zIndex: 0,
-              }} />
-
-              {/* Map container */}
-              <div style={{
-                position: 'relative',
-                borderRadius: '12px',
-                overflow: 'hidden',
-                zIndex: 1,
-                boxShadow: '0 8px 32px rgba(0,0,0,0.35)',
-              }}>
-                {/* Location label bar */}
-                <div style={{
-                  background: 'rgba(0,0,0,0.55)',
-                  backdropFilter: 'blur(10px)',
-                  padding: '0.5rem 0.85rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                }}>
-                  {/* Pulsing dot */}
-                  <span style={{
-                    width: '8px', height: '8px',
-                    borderRadius: '50%',
-                    backgroundColor: 'var(--color-secondary)',
-                    display: 'inline-block',
-                    boxShadow: '0 0 0 0 var(--color-secondary)',
-                    animation: 'mapPulse 1.8s ease infinite',
-                    flexShrink: 0,
-                  }} />
-                  <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.9)', fontWeight: 600, letterSpacing: '0.03em' }}>
-                    TIIS · Malibu Towne, Gurugram
-                  </span>
+            <motion.div variants={fadeUp(0.3)} style={{ position: 'relative', marginTop: '1rem' }}>
+              <div style={{ position: 'absolute', inset: '-3px', borderRadius: '26px', background: 'linear-gradient(135deg, rgba(177,32,35,0.4), rgba(2,132,199,0.4))', zIndex: 0, filter: 'blur(8px)' }} />
+              <div style={{ position: 'relative', borderRadius: '24px', overflow: 'hidden', zIndex: 1, border: '1px solid var(--border-color-strong)', backgroundColor: 'var(--color-card-bg)', boxShadow: '0 20px 40px -20px rgba(0,0,0,0.15)' }}>
+                <div style={{ background: 'var(--color-bg-light)', padding: '0.75rem 1.25rem', borderBottom: '1px solid var(--border-color-strong)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#10b981', display: 'inline-block', boxShadow: '0 0 0 4px rgba(16,185,129,0.2)' }} />
+                  <span style={{ fontSize: '0.8rem', color: 'var(--color-text-heading)', fontWeight: 700, letterSpacing: '0.03em' }}>TIIS Headquarters</span>
                 </div>
-
-                <iframe
-                  title="TIIS Office Location"
-                  src="https://maps.google.com/maps?q=107,+Malibu+Towne,+Sector+47,+Gurugram,+Haryana+122018&output=embed&z=16"
-                  width="100%"
-                  height="200"
-                  style={{ border: 'none', display: 'block', filter: 'saturate(1.1) brightness(0.92)' }}
-                  allowFullScreen=""
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
-
-                {/* Get Directions button */}
-                <a
-                  href="https://maps.app.goo.gl/WvBKLRN4BcsXSwyR6"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.4rem',
-                    background: 'linear-gradient(135deg, var(--color-secondary) 0%, #f59e0b 100%)',
-                    color: '#0a0a0a',
-                    fontWeight: 700,
-                    fontSize: '0.78rem',
-                    letterSpacing: '0.06em',
-                    padding: '0.6rem 1rem',
-                    textDecoration: 'none',
-                    transition: 'filter 0.2s, transform 0.2s',
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.filter = 'brightness(1.1)'; e.currentTarget.style.transform = 'scale(1.02)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.filter = 'brightness(1)';  e.currentTarget.style.transform = 'scale(1)'; }}
-                >
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
-                  </svg>
-                  GET DIRECTIONS
-                </a>
+                <iframe title="TIIS Office Location" src="https://maps.google.com/maps?q=107,+Malibu+Towne,+Sector+47,+Gurugram,+Haryana+122018&output=embed&z=16" width="100%" height="220" style={{ border: 'none', display: 'block', filter: 'grayscale(0.2) contrast(1.1)' }} allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+                <div style={{ padding: '0.75rem' }}>
+                  <a href="https://maps.app.goo.gl/WvBKLRN4BcsXSwyR6" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', background: 'var(--color-card-bg)', color: '#0284c7', border: '1px solid rgba(2,132,199,0.3)', fontWeight: 700, fontSize: '0.85rem', padding: '0.75rem', borderRadius: '12px', textDecoration: 'none', transition: 'all 0.2s' }} onMouseEnter={e => { e.currentTarget.style.background = '#0284c7'; e.currentTarget.style.color = 'white'; }} onMouseLeave={e => { e.currentTarget.style.background = 'var(--color-card-bg)'; e.currentTarget.style.color = '#0284c7'; }}>
+                    <MapPin size={16} /> Get Directions
+                  </a>
+                </div>
               </div>
-            </div>
-
-            <style>{`
-              @keyframes mapGlow {
-                0%   { background-position: 0% 50%; }
-                50%  { background-position: 100% 50%; }
-                100% { background-position: 0% 50%; }
-              }
-              @keyframes mapPulse {
-                0%   { box-shadow: 0 0 0 0 var(--color-secondary); }
-                70%  { box-shadow: 0 0 0 6px rgba(245,158,11,0); }
-                100% { box-shadow: 0 0 0 0 rgba(245,158,11,0); }
-              }
-            `}</style>
+            </motion.div>
           </motion.div>
 
-          {/* Business Query Form */}
-          <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            style={{ backgroundColor: 'white', padding: '3rem', borderRadius: '8px', boxShadow: 'var(--shadow-md)' }}
-          >
+          {/* Form Area */}
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }} style={{ backgroundColor: 'var(--color-card-bg)', padding: 'clamp(2rem, 5vw, 3.5rem)', borderRadius: '32px', border: '1px solid var(--border-color-strong)', boxShadow: '0 30px 60px -15px rgba(0,0,0,0.08)' }}>
+            
+            <div style={{ marginBottom: '2.5rem' }}>
+              <h2 style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--color-text-heading)', marginBottom: '0.5rem', letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <Send color="#b12023" size={28} /> Send a Message
+              </h2>
+              <p style={{ color: 'var(--color-text-muted)', fontSize: '1.05rem', lineHeight: '1.6' }}>Fill out the form below securely. We ensure absolute confidentiality for all business enquiries.</p>
+            </div>
+
             {status === 'success' ? (
-              <div style={{ textAlign: 'center', padding: '3rem' }}>
-                <h3 style={{ color: 'var(--color-primary)', marginBottom: '1rem' }}>Enquiry Received!</h3>
-                <p style={{ color: 'var(--color-text-muted)' }}>We have sent an auto email acknowledgment. Our team will contact you shortly.</p>
-                <button className="btn-secondary" style={{ marginTop: '2rem' }} onClick={() => setStatus('')}>Send Another Query</button>
-              </div>
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: 'center', padding: '4rem 2rem' }}>
+                <CheckCircle size={70} color="#10b981" style={{ margin: '0 auto 1.5rem' }} />
+                <h3 style={{ color: 'var(--color-text-heading)', fontSize: '1.75rem', fontWeight: '800', marginBottom: '0.75rem' }}>Enquiry Scheduled!</h3>
+                <p style={{ color: 'var(--color-text-muted)', fontSize: '1.1rem', marginBottom: '2.5rem' }}>We've sent a priority acknowledgment to your email. Our strategy team will be in touch shortly.</p>
+                <button onClick={() => setStatus('')} style={{ background: '#0284c7', color: 'white', border: 'none', borderRadius: '50px', padding: '0.85rem 2rem', fontWeight: '700', cursor: 'pointer', boxShadow: '0 4px 14px rgba(2,132,199,0.3)', transition: 'transform 0.2s' }} onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>
+                  Submit Another Client
+                </button>
+              </motion.div>
             ) : (
-              <form onSubmit={handleSubmit}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '1.5rem' }}>
-                  <div>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Company Name *</label>
-                    <input name="companyName" value={formData.companyName} onChange={handleChange} required type="text" style={{ width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '4px' }} />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Contact Person *</label>
-                    <input name="contactPerson" value={formData.contactPerson} onChange={handleChange} required type="text" style={{ width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '4px' }} />
-                  </div>
+              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <FormInput label="Company Name" icon={Building2} name="companyName" value={formData.companyName} onChange={handleChange} required placeholder="Acme Consulting" />
+                  <FormInput label="Contact Person" icon={User} name="contactPerson" value={formData.contactPerson} onChange={handleChange} required placeholder="John Doe" />
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '1.5rem' }}>
-                  <div>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Designation</label>
-                    <input name="designation" value={formData.designation} onChange={handleChange} type="text" style={{ width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '4px' }} />
-                  </div>
-                  <div>
-                   <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Email *</label>
-                    <input name="email" value={formData.email} onChange={handleChange} required type="email" style={{ width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '4px' }} />
-                  </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <FormInput label="Designation" icon={Briefcase} name="designation" value={formData.designation} onChange={handleChange} placeholder="CEO / Director" />
+                  <FormInput label="Email Address" icon={Mail} name="email" type="email" value={formData.email} onChange={handleChange} required placeholder="john@acme.com" />
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '1.5rem' }}>
-                  <div>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Phone *</label>
-                    <input name="phone" value={formData.phone} onChange={handleChange} required type="tel" style={{ width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '4px' }} />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Service Required *</label>
-                    <select name="serviceRequired" value={formData.serviceRequired} onChange={handleChange} required style={{ width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '4px', backgroundColor: 'white' }}>
-                      <option value="">Select a service...</option>
-                      <option value="business">Business Solutions</option>
-                      <option value="talent">Talent Hiring</option>
-                      <option value="capacity">Capacity Building</option>
-                      <option value="content">Content Development</option>
-                      <option value="compliance">Compliance Services</option>
-                    </select>
-                  </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <FormInput label="Phone Number" icon={Phone} name="phone" type="tel" value={formData.phone} onChange={handleChange} required placeholder="+1 234 567 8900" />
+                  <FormInput label="Service Required" icon={FileText} name="serviceRequired" value={formData.serviceRequired} onChange={handleChange} required isSelect options={[
+                    { value: "business", label: "Business Solutions" },
+                    { value: "talent", label: "Talent Hiring" },
+                    { value: "capacity", label: "Capacity Building" },
+                    { value: "content", label: "Content Development" },
+                    { value: "compliance", label: "Compliance Services" }
+                  ]} />
                 </div>
 
                 <div style={{ marginBottom: '1.5rem' }}>
                   <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Brief Requirement *</label>
-                  <textarea name="briefRequirement" value={formData.briefRequirement} onChange={handleChange} required rows="4" style={{ width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '4px', resize: 'vertical' }}></textarea>
+                  <textarea name="briefRequirement" value={formData.briefRequirement} onChange={handleChange} required rows="4" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-color-strong)', borderRadius: '4px', backgroundColor: 'var(--color-bg-light)', color: 'var(--color-text-main)', resize: 'vertical' }}></textarea>
+                </div>
+                <div style={{ padding: '0.5rem 0' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', background: 'var(--color-bg-light)', border: '1px dashed var(--border-color-strong)', padding: '1.25rem', borderRadius: '16px', cursor: 'pointer', transition: 'all 0.2s', position: 'relative', overflow: 'hidden' }} onMouseEnter={e => e.currentTarget.style.borderColor = '#0284c7'} onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border-color-strong)'}>
+                    <div style={{ background: 'rgba(2,132,199,0.1)', padding: '0.75rem', borderRadius: '12px', color: '#0284c7' }}>
+                      <Paperclip size={20} />
+                    </div>
+                    <div>
+                      <span style={{ display: 'block', fontWeight: '700', color: 'var(--color-text-heading)', fontSize: '0.95rem' }}>Attach Proposal / NDA (Optional)</span>
+                      <span style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>{formData.attachment ? formData.attachment.name : 'PDF, DOCX up to 10MB'}</span>
+                    </div>
+                    <input name="attachment" onChange={handleChange} type="file" style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer' }} />
+                  </label>
                 </div>
 
-                <div style={{ marginBottom: '2rem' }}>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Attachment (Optional)</label>
-                  <input name="attachment" onChange={handleChange} type="file" style={{ border: '1px dashed #ccc', padding: '1rem', width: '100%', borderRadius: '4px', backgroundColor: '#fafafa' }} />
-                </div>
-                {status === 'error' && <p style={{ color: 'red', marginBottom: '1rem' }}>Failed to submit enquiry. Please try again.</p>}
-                <button type="submit" className="btn-primary" style={{ width: '100%' }} disabled={status === 'submitting'}>
-                  {status === 'submitting' ? 'Submitting...' : 'Submit Enquiry'}
-                </button>
+                {status === 'error' && (
+                  <div style={{ padding: '1rem', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: '12px', color: '#ef4444', fontSize: '0.9rem', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    Failed to submit enquiry. Please try again.
+                  </div>
+                )}
+
+                <motion.button 
+                  whileTap={{ scale: 0.98 }}
+                  type="submit" disabled={status === 'submitting'}
+                  style={{
+                    marginTop: '1rem', background: 'linear-gradient(135deg, #01324e 0%, #024b76 100%)',
+                    color: 'white', border: 'none', borderRadius: '50px', padding: '1.15rem 2rem',
+                    fontWeight: '700', fontSize: '1.05rem', cursor: status === 'submitting' ? 'wait' : 'pointer',
+                    boxShadow: '0 10px 25px -5px rgba(1,50,78,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', opacity: status === 'submitting' ? 0.7 : 1,
+                    transition: 'all 0.3s'
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.boxShadow = '0 15px 35px -5px rgba(1,50,78,0.4)'}
+                  onMouseLeave={e => e.currentTarget.style.boxShadow = '0 10px 25px -5px rgba(1,50,78,0.3)'}
+                >
+                  {status === 'submitting' ? 'Processing...' : (
+                    <>Submit Enquiry <ArrowRight size={18} /></>
+                  )}
+                </motion.button>
               </form>
             )}
           </motion.div>
           
         </div>
-      </div>
+      </section>
     </div>
   );
 };

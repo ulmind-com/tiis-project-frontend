@@ -3,7 +3,8 @@ import { createPortal } from 'react-dom';
 import { Building2, Users, Briefcase, FileText, Layout, CheckCircle, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useInView } from 'framer-motion';
-import axios from 'axios';
+import api from '../../api';
+import { useTheme } from '../../hooks/useTheme';
 
 const capabilitiesData = [
   {
@@ -43,6 +44,7 @@ const ShineBorder = ({
   borderWidth = 1.5,
   duration = 14,
   color = ["#FF007F", "#39FF14", "#00FFFF"],
+  bgColor = "#0a0a0a",
   className,
   children,
 }) => {
@@ -50,8 +52,9 @@ const ShineBorder = ({
     <div
       style={{
         "--border-radius": `${borderRadius}px`,
+        backgroundColor: bgColor
       }}
-      className={`relative grid h-full w-full place-items-center rounded-[var(--border-radius)] bg-[#0a0a0a] text-white ${className || ""}`}
+      className={`relative grid h-full w-full place-items-center rounded-[var(--border-radius)] ${className || ""}`}
     >
       <style dangerouslySetInnerHTML={{
         __html: `
@@ -75,38 +78,55 @@ const ShineBorder = ({
         }}
         className={`pointer-events-none before:absolute before:inset-0 before:size-full before:rounded-[var(--border-radius)] before:p-[var(--border-width)] before:will-change-[background-position] before:content-[''] before:![-webkit-mask-composite:xor] before:[background-image:var(--background-radial-gradient)] before:[background-size:300%_300%] before:![mask-composite:exclude] before:[mask:var(--mask-linear-gradient)] motion-safe:before:animate-shine-pulse z-10`}
       ></div>
-      <div className="z-20 w-full h-full rounded-[var(--border-radius)] bg-[#0a0a0a] overflow-hidden">
+      <div className="z-20 w-full h-full rounded-[var(--border-radius)] overflow-hidden" style={{ backgroundColor: bgColor }}>
         {children}
       </div>
     </div>
   );
 };
 
-const CapabilityCard = ({ service, index }) => {
+const CapabilityCard = ({ service, index, isDark }) => {
+  const theme = {
+    cardBg: isDark ? '#080808' : '#ffffff',
+    textColor: isDark ? '#ffffff' : '#01324e',
+    mutedColor: isDark ? '#a1a1aa' : '#475569',
+    iconBg: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(1, 50, 78, 0.05)',
+    iconBorder: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(1, 50, 78, 0.1)',
+    featureBg: isDark ? '#111111' : '#f8fafc',
+    lineColor: isDark ? '#27272a' : '#e2e8f0',
+    btnBorder: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(1, 50, 78, 0.2)',
+    shineColors: isDark ? ["#FF007F", "#39FF14", "#00FFFF"] : ["#01324e", "#b12023", "#0284c7"],
+    btnHoverBg: isDark ? '#ffffff' : '#01324e',
+    btnHoverText: isDark ? '#000000' : '#ffffff',
+    btnHoverBorder: isDark ? '#ffffff' : '#01324e'
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="h-full w-full"
+      whileHover={{ y: -10, scale: 1.02 }}
+      className="h-full w-full p-2 group"
       style={{ height: '520px' }}
     >
       <ShineBorder
         borderWidth={2.5}
         borderRadius={24}
-        color={["#FF007F", "#39FF14", "#00FFFF"]}
-        className="shadow-2xl overflow-hidden flex flex-col justify-between items-start text-left p-0"
+        color={theme.shineColors}
+        bgColor={theme.cardBg}
+        className="shadow-2xl overflow-hidden flex flex-col justify-between items-start text-left p-0 transition-all duration-500 group-hover:shadow-[0_20px_40px_rgba(0,0,0,0.15)]"
       >
-        <div className="p-8 pb-4 flex flex-col w-full flex-grow relative z-20 h-full">
-          <div className="mb-6 flex items-center justify-center w-12 h-12 bg-white/5 rounded-full border border-white/10 text-white">
+        <div style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', width: '100%', flexGrow: 1, position: 'relative', zIndex: 20, height: '100%', transition: 'background-color 0.4s ease' }}>
+          <div className="mb-6 flex items-center justify-center w-12 h-12 rounded-full transition-transform duration-300 group-hover:scale-110" style={{ backgroundColor: theme.iconBg, border: `1px solid ${theme.iconBorder}`, color: theme.textColor }}>
              <service.icon className="w-6 h-6" />
           </div>
           
-          <h3 className="text-2xl font-bold mb-2 text-white tracking-tight">
+          <h3 className="text-2xl font-bold mb-2 tracking-tight transition-colors duration-300" style={{ color: theme.textColor }}>
             {service.title}
           </h3>
-          <p className="text-zinc-400 text-sm mb-8 leading-relaxed">
+          <p className="text-sm mb-8 leading-relaxed transition-colors duration-300" style={{ color: theme.mutedColor }}>
             {service.description}
           </p>
 
@@ -121,17 +141,17 @@ const CapabilityCard = ({ service, index }) => {
               const colorTheme = colors[i % colors.length];
 
               return (
-                <div key={i} className="group relative flex gap-4 min-h-[50px]">
+                <div key={i} className="relative flex gap-4 min-h-[50px] transition-transform duration-300 group-hover:translate-x-1">
                   <div className="relative flex flex-col items-center">
-                    <div className={`rounded-full border bg-[#0a0a0a] p-1.5 z-10 relative ${colorTheme.border}`}>
+                    <div className={`rounded-full border p-1.5 z-10 relative ${colorTheme.border} transition-colors duration-300`} style={{ backgroundColor: theme.featureBg }}>
                       <CheckCircle className={`h-3 w-3 ${colorTheme.text}`} />
                     </div>
                     {i !== service.features.length - 1 && (
-                      <div className="absolute top-[28px] bottom-[-4px] left-1/2 -translate-x-1/2 w-[2px] bg-zinc-800 z-0" />
+                      <div className="absolute top-[28px] bottom-[-4px] left-1/2 -translate-x-1/2 w-[2px] z-0 transition-colors duration-300" style={{ backgroundColor: theme.lineColor }} />
                     )}
                   </div>
                   <div className="flex-1 mt-[2px] pb-[16px]">
-                    <p className="text-sm font-semibold text-zinc-200">{feature}</p>
+                    <p className="text-sm font-semibold transition-colors duration-300" style={{ color: theme.mutedColor }}>{feature}</p>
                   </div>
                 </div>
               );
@@ -141,9 +161,12 @@ const CapabilityCard = ({ service, index }) => {
           <div className="w-full mt-auto relative z-20 pt-4">
             <Link
               to="/services"
-              className="w-full h-12 border border-white/20 hover:border-white hover:bg-white hover:text-black text-white transition-all duration-300 rounded-full font-semibold text-sm flex items-center justify-center bg-transparent mt-auto"
+              className="w-full h-12 transition-all duration-300 rounded-full font-semibold text-sm flex items-center justify-center bg-transparent mt-auto shadow-sm group-hover:shadow-md"
+              style={{ border: `1px solid ${theme.btnBorder}`, color: theme.textColor }}
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = theme.btnHoverBg; e.currentTarget.style.borderColor = theme.btnHoverBorder; e.currentTarget.style.color = theme.btnHoverText; e.currentTarget.style.transform = 'scale(1.02)'; e.currentTarget.style.boxShadow = '0 0 15px rgba(0,0,0,0.1)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.borderColor = theme.btnBorder; e.currentTarget.style.color = theme.textColor; e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = 'none'; }}
             >
-              Get Started <ArrowRight className="ml-2 w-4 h-4" />
+              Get Started <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-2" />
             </Link>
           </div>
         </div>
@@ -153,6 +176,7 @@ const CapabilityCard = ({ service, index }) => {
 };
 
 const Home = () => {
+  const { isDark } = useTheme();
   const [news, setNews] = useState([]);
   const [portfolio, setPortfolio] = useState([]);
   const [isMottoModalOpen, setIsMottoModalOpen] = useState(false);
@@ -166,8 +190,8 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const [newsRes, portRes] = await Promise.all([
-          axios.get('/api/news'),
-          axios.get('/api/portfolio')
+          api.get('/api/news'),
+          api.get('/api/portfolio')
         ]);
         setNews(newsRes.data.slice(0, 4)); // Get 4 for bento grid
         setPortfolio(portRes.data.slice(0, 3));
@@ -187,10 +211,10 @@ const Home = () => {
   }, [news]);
 
   return (
-    <div className="home-page animate-fade-in" style={{ backgroundColor: '#ffffff' }}>
+    <div className="home-page animate-fade-in" style={{ backgroundColor: 'var(--color-bg-light)' }}>
 
       {/* Premium Split Hero Section */}
-      <section style={{ backgroundColor: '#ffffff', padding: '6rem 0 8rem 0', overflow: 'hidden' }}>
+      <section style={{ backgroundColor: 'var(--color-bg-light)', padding: '6rem 0 8rem 0', overflow: 'hidden' }}>
         <div className="container" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '4rem' }}>
 
           {/* Left Content Block */}
@@ -260,9 +284,9 @@ const Home = () => {
       </section>
 
       {/* Services Overview */}
-      <section ref={capabilitiesRef} className="services-overview" style={{ padding: '7rem 0', backgroundColor: '#000000' }}>
+      <section ref={capabilitiesRef} className="services-overview" style={{ padding: '7rem 0', backgroundColor: isDark ? '#000000' : 'var(--color-bg-light)', transition: 'background-color 0.4s ease' }}>
         <div className="container" style={{ maxWidth: '1300px', margin: '0 auto', padding: '0 2rem' }}>
-          <h2 className="section-title text-center mb-16" style={{ color: 'white' }}>Our Capabilities</h2>
+          <h2 className="section-title text-center mb-16 transition-colors duration-400" style={{ color: isDark ? 'white' : 'var(--color-text-heading)' }}>Our Capabilities</h2>
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
@@ -271,7 +295,7 @@ const Home = () => {
             width: '100%',
           }}>
             {capabilitiesData.map((service, i) => (
-              <CapabilityCard key={i} service={service} index={i} inView={capabilitiesInView} />
+              <CapabilityCard key={i} service={service} index={i} isDark={isDark} />
             ))}
           </div>
         </div>
@@ -279,7 +303,7 @@ const Home = () => {
 
       {/* Dynamic Portfolio Section */}
       {portfolio.length > 0 && (
-        <section style={{ padding: '6rem 0', backgroundColor: '#ffffff' }}>
+        <section style={{ padding: '6rem 0', backgroundColor: 'var(--color-bg-light)' }}>
           <div className="container">
             <h2 className="section-title">Recent Projects</h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginTop: '4rem' }}>
@@ -372,7 +396,7 @@ const Home = () => {
 
       {/* News Bento Grid Section */}
       {news.length > 0 && (
-        <section style={{ minHeight: '100vh', backgroundColor: '#f4f6f0', display: 'flex', flexDirection: 'column', padding: '5rem 0' }}>
+        <section style={{ minHeight: '100vh', backgroundColor: 'var(--color-bg-light)', display: 'flex', flexDirection: 'column', padding: '5rem 0' }}>
           <div className="container" style={{ maxWidth: '1400px', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
 
             {/* Ultra Premium Section Header */}
@@ -414,7 +438,7 @@ const Home = () => {
                       borderRadius: '30px',
                       overflow: 'hidden',
                       boxShadow: '0 40px 80px -20px rgba(0,0,0,0.15)',
-                      backgroundColor: 'white',
+                      backgroundColor: 'var(--color-card-bg)',
                       height: '500px'
                     }}
                   >
@@ -438,10 +462,10 @@ const Home = () => {
                       flexDirection: 'column',
                       justifyContent: 'center',
                       position: 'relative',
-                      backgroundColor: 'rgba(255, 255, 255, 0.85)',
+                      backgroundColor: 'var(--color-navbar-bg)',
                       backdropFilter: 'blur(20px)',
                       WebkitBackdropFilter: 'blur(20px)',
-                      borderLeft: '1px solid rgba(255,255,255,0.4)',
+                      borderLeft: '1px solid var(--border-color-strong)',
                       zIndex: 10
                     }}>
                       <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -552,7 +576,7 @@ const Home = () => {
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            style={{ backgroundColor: 'white', border: '1px solid rgba(0,0,0,0.1)', borderRadius: '16px', padding: '3rem 2.5rem', maxWidth: '750px', width: '100%', position: 'relative', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)' }}
+            style={{ backgroundColor: 'var(--color-card-bg)', border: '1px solid var(--border-color-strong)', borderRadius: '16px', padding: '3rem 2.5rem', maxWidth: '750px', width: '100%', position: 'relative', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)' }}
             onClick={e => e.stopPropagation()}
           >
             <button onClick={() => setIsMottoModalOpen(false)} style={{ position: 'absolute', top: '1rem', right: '1.5rem', background: 'none', border: 'none', fontSize: '2.5rem', cursor: 'pointer', color: 'var(--color-text-muted)', lineHeight: 1 }}>&times;</button>
@@ -586,9 +610,9 @@ const Home = () => {
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            className="w-full max-w-3xl bg-white rounded-3xl overflow-hidden shadow-2xl relative"
+            className="w-full max-w-3xl rounded-3xl overflow-hidden shadow-2xl relative"
             onClick={e => e.stopPropagation()}
-            style={{ maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}
+            style={{ maxHeight: '90vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--color-card-bg)' }}
           >
             <button onClick={() => setSelectedNews(null)} className="absolute top-4 right-4 z-20 w-10 h-10 bg-white/50 backdrop-blur-md rounded-full flex items-center justify-center text-xl hover:bg-white transition-colors cursor-pointer border border-black/10">&times;</button>
 
@@ -622,7 +646,7 @@ const Home = () => {
               </div>
 
               <div style={{
-                color: '#334155',
+                color: 'var(--color-text-main)',
                 fontSize: '1.15rem',
                 lineHeight: '1.9',
                 whiteSpace: 'pre-wrap',
