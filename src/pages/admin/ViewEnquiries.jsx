@@ -82,7 +82,7 @@ const ViewEnquiries = () => {
                   <td style={{ padding: '1rem', maxWidth: '300px' }}>
                     <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: '1.4', color: 'var(--color-text-main)' }}>{enq.briefRequirement}</p>
                     {enq.attachmentUrl && (
-                      <a href={`http://localhost:5000${enq.attachmentUrl}`} target="_blank" rel="noreferrer" style={{ display: 'inline-block', marginTop: '0.5rem', fontSize: '0.8rem', color: '#2563eb' }}>
+                      <a href={`https://tiis-project-backend.onrender.com${enq.attachmentUrl}`} target="_blank" rel="noreferrer" style={{ display: 'inline-block', marginTop: '0.5rem', fontSize: '0.8rem', color: '#2563eb' }}>
                         📎 View Attachment
                       </a>
                     )}

@@ -281,7 +281,7 @@ const ViewApplications = () => {
                       <div style={{ backgroundColor: 'var(--color-card-bg)', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '1rem', marginBottom: '1.5rem' }}>
                         <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', marginBottom: '0.75rem' }}>Curriculum Vitae (CV)</p>
                         <a
-                          href={`http://localhost:5000${app.cvUrl}`}
+                          href={`https://tiis-project-backend.onrender.com${app.cvUrl}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           style={{
