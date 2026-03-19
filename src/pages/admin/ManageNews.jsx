@@ -4,6 +4,7 @@ import { Plus, Edit2, Trash2, Loader2, Image as ImageIcon } from 'lucide-react';
 import Swal from 'sweetalert2';
 import { motion } from 'framer-motion';
 import { useOutletContext } from 'react-router-dom';
+import ImageModal from '../../components/admin/ImageModal';
 
 const ManageNews = () => {
   const [items, setItems] = useState([]);
@@ -12,6 +13,7 @@ const ManageNews = () => {
   const [currentId, setCurrentId] = useState(null);
   const [formData, setFormData] = useState({ title: '', content: '', author: 'Admin', isPublished: true, image: null, existingImageUrl: '' });
   const [isSaving, setIsSaving] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null);
   const fileInputRef = useRef(null);
   
   // Safe extraction of context
@@ -114,14 +116,14 @@ const ManageNews = () => {
   };
 
   const theme = {
-    cardBg: isDark ? '#0f172a' : '#ffffff',
-    textMain: isDark ? '#f8fafc' : '#0f172a',
-    textMuted: isDark ? '#94a3b8' : '#64748b',
-    border: isDark ? '#1e293b' : '#e2e8f0',
-    inputBg: isDark ? '#1e293b' : '#ffffff',
-    inputBorder: isDark ? '#334155' : '#cbd5e1',
-    tableHeader: isDark ? '#1e293b' : '#f8fafc',
-    rowHover: isDark ? '#1e293b' : '#f1f5f9'
+    cardBg: 'var(--color-card-bg)',
+    textMain: 'var(--color-text-main)',
+    textMuted: 'var(--color-text-muted)',
+    border: 'var(--border-color)',
+    inputBg: 'transparent',
+    inputBorder: 'var(--border-color)',
+    tableHeader: 'var(--color-bg-light)',
+    rowHover: 'var(--color-bg-light)'
   };
 
   return (
@@ -155,7 +157,14 @@ const ManageNews = () => {
                 >
                   <td style={{ padding: '1rem' }}>
                     {item.imageUrl ? 
-                      <img src={item.imageUrl} alt={item.title} style={{ width: '56px', height: '40px', objectFit: 'cover', borderRadius: '6px', border: `1px solid ${theme.border}` }} /> : 
+                      <img 
+                        src={item.imageUrl} 
+                        alt={item.title} 
+                        onClick={() => setPreviewImage(item.imageUrl)}
+                        style={{ width: '56px', height: '40px', objectFit: 'cover', borderRadius: '6px', border: `1px solid ${theme.border}`, cursor: 'pointer', transition: 'transform 0.2s' }} 
+                        onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
+                        onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                      /> : 
                       <div style={{ width: '56px', height: '40px', backgroundColor: theme.border, borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: theme.textMuted }}><ImageIcon size={18} /></div>
                     }
                   </td>
@@ -260,6 +269,7 @@ const ManageNews = () => {
           </div>
         </form>
       </motion.div>
+      <ImageModal isOpen={!!previewImage} imageUrl={previewImage} onClose={() => setPreviewImage(null)} />
     </div>
   );
 };

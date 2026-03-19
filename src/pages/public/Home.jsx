@@ -284,7 +284,7 @@ const Home = () => {
       </section>
 
       {/* Services Overview */}
-      <section ref={capabilitiesRef} className="services-overview" style={{ padding: '7rem 0', backgroundColor: isDark ? '#000000' : 'var(--color-bg-light)', transition: 'background-color 0.4s ease' }}>
+      <section ref={capabilitiesRef} className="services-overview" style={{ padding: '7rem 0', background: 'var(--grad-capabilities)' }}>
         <div className="container" style={{ maxWidth: '1300px', margin: '0 auto', padding: '0 2rem' }}>
           <h2 className="section-title text-center mb-16 transition-colors duration-400" style={{ color: isDark ? 'white' : 'var(--color-text-heading)' }}>Our Capabilities</h2>
           <div style={{
@@ -303,9 +303,9 @@ const Home = () => {
 
       {/* Dynamic Portfolio Section */}
       {portfolio.length > 0 && (
-        <section style={{ padding: '6rem 0', backgroundColor: 'var(--color-bg-light)' }}>
+        <section style={{ padding: '6rem 0', background: 'var(--grad-projects)' }}>
           <div className="container">
-            <h2 className="section-title">Recent Projects</h2>
+            <h2 className="section-title" style={{ color: isDark ? 'white' : 'var(--color-text-heading)' }}>Recent Projects</h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginTop: '4rem' }}>
               {portfolio.map((project, i) => (
                 <motion.div
@@ -396,7 +396,7 @@ const Home = () => {
 
       {/* News Bento Grid Section */}
       {news.length > 0 && (
-        <section style={{ minHeight: '100vh', backgroundColor: 'var(--color-bg-light)', display: 'flex', flexDirection: 'column', padding: '5rem 0' }}>
+        <section style={{ minHeight: '100vh', background: 'var(--grad-blog)', display: 'flex', flexDirection: 'column', padding: '5rem 0' }}>
           <div className="container" style={{ maxWidth: '1400px', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
 
             {/* Ultra Premium Section Header */}
@@ -407,13 +407,13 @@ const Home = () => {
               transition={{ duration: 0.6 }}
               style={{ textAlign: 'center', marginBottom: '4rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1rem', color: 'var(--color-secondary)', fontWeight: '700', fontSize: '0.85rem', letterSpacing: '3px', textTransform: 'uppercase' }}>
-                <span style={{ width: '30px', height: '2px', backgroundColor: 'var(--color-secondary)', borderRadius: '2px' }}></span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1rem', color: isDark ? '#f87171' : 'var(--color-secondary)', fontWeight: '700', fontSize: '0.85rem', letterSpacing: '3px', textTransform: 'uppercase' }}>
+                <span style={{ width: '30px', height: '2px', backgroundColor: isDark ? '#f87171' : 'var(--color-secondary)', borderRadius: '2px' }}></span>
                 Knowledge Hub
-                <span style={{ width: '30px', height: '2px', backgroundColor: 'var(--color-secondary)', borderRadius: '2px' }}></span>
+                <span style={{ width: '30px', height: '2px', backgroundColor: isDark ? '#f87171' : 'var(--color-secondary)', borderRadius: '2px' }}></span>
               </div>
-              <h2 style={{ fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: '900', color: 'var(--color-primary-dark)', lineHeight: '1.1', marginBottom: '1.2rem', letterSpacing: '-1px' }}>
-                Latest Insights <span style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-secondary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>&amp; Blog</span>
+              <h2 style={{ fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: '900', color: isDark ? 'white' : 'var(--color-primary-dark)', lineHeight: '1.1', marginBottom: '1.2rem', letterSpacing: '-1px' }}>
+                Latest Insights <span style={{ background: isDark ? 'linear-gradient(135deg, #e0f2fe 0%, #f87171 100%)' : 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-secondary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>&amp; Blog</span>
               </h2>
               <p style={{ color: 'var(--color-text-muted)', fontSize: '1.15rem', maxWidth: '600px', margin: '0 auto', lineHeight: '1.7' }}>
                 Discover our latest research, strategic perspectives, and industry updates carefully curated for ambitious leaders.

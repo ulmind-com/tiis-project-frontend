@@ -4,11 +4,13 @@ import { Plus, Edit2, Trash2, Loader2, Briefcase } from 'lucide-react';
 import Swal from 'sweetalert2';
 import { motion } from 'framer-motion';
 import { useOutletContext } from 'react-router-dom';
+import ImageModal from '../../components/admin/ImageModal';
 
 const ManageJobs = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null);
 
   // Form State
   const [isEditing, setIsEditing] = useState(false);
@@ -112,14 +114,14 @@ const ManageJobs = () => {
   };
 
   const theme = {
-    cardBg: isDark ? '#0f172a' : '#ffffff',
-    textMain: isDark ? '#f8fafc' : '#0f172a',
-    textMuted: isDark ? '#94a3b8' : '#64748b',
-    border: isDark ? '#1e293b' : '#e2e8f0',
-    inputBg: isDark ? '#1e293b' : '#ffffff',
-    inputBorder: isDark ? '#334155' : '#cbd5e1',
-    tableHeader: isDark ? '#1e293b' : '#f8fafc',
-    rowHover: isDark ? '#1e293b' : '#f1f5f9'
+    cardBg: 'var(--color-card-bg)',
+    textMain: 'var(--color-text-main)',
+    textMuted: 'var(--color-text-muted)',
+    border: 'var(--border-color)',
+    inputBg: 'transparent',
+    inputBorder: 'var(--border-color)',
+    tableHeader: 'var(--color-bg-light)',
+    rowHover: 'var(--color-bg-light)'
   };
 
   return (
@@ -137,7 +139,8 @@ const ManageJobs = () => {
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.95rem' }}>
             <thead>
               <tr style={{ backgroundColor: theme.tableHeader, textAlign: 'left', color: theme.textMuted, transition: 'background-color 0.3s' }}>
-                <th style={{ padding: '1rem', borderBottom: `1px solid ${theme.border}`, fontWeight: 500, borderRadius: '8px 0 0 0' }}>Title</th>
+                <th style={{ padding: '1rem', borderBottom: `1px solid ${theme.border}`, fontWeight: 500, borderRadius: '8px 0 0 0' }}>Image</th>
+                <th style={{ padding: '1rem', borderBottom: `1px solid ${theme.border}`, fontWeight: 500 }}>Title</th>
                 <th style={{ padding: '1rem', borderBottom: `1px solid ${theme.border}`, fontWeight: 500 }}>Location</th>
                 <th style={{ padding: '1rem', borderBottom: `1px solid ${theme.border}`, fontWeight: 500 }}>Status</th>
                 <th style={{ padding: '1rem', borderBottom: `1px solid ${theme.border}`, fontWeight: 500, borderRadius: '0 8px 0 0' }}>Actions</th>
@@ -151,6 +154,19 @@ const ManageJobs = () => {
                   whileHover={{ backgroundColor: theme.rowHover }}
                   style={{ borderBottom: `1px solid ${theme.border}`, transition: 'background-color 0.2s' }}
                 >
+                  <td style={{ padding: '1rem' }}>
+                    {(job.image || job.imageUrl) ? 
+                      <img 
+                        src={job.image || job.imageUrl} 
+                        alt="Job Cover" 
+                        onClick={() => setPreviewImage(job.image || job.imageUrl)}
+                        style={{ width: '56px', height: '40px', objectFit: 'cover', borderRadius: '6px', border: `1px solid ${theme.border}`, cursor: 'pointer', transition: 'transform 0.2s' }} 
+                        onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
+                        onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                      /> : 
+                      <div style={{ width: '56px', height: '40px', backgroundColor: theme.border, borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: theme.textMuted }}><Briefcase size={18} /></div>
+                    }
+                  </td>
                   <td style={{ padding: '1rem', fontWeight: '600', color: theme.textMain }}>{job.title}</td>
                   <td style={{ padding: '1rem', color: theme.textMuted }}>{job.location}</td>
                   <td style={{ padding: '1rem' }}>
@@ -177,7 +193,7 @@ const ManageJobs = () => {
               ))}
               {jobs.length === 0 && (
                 <tr>
-                  <td colSpan={4} style={{ padding: '2rem', textAlign: 'center', color: theme.textMuted }}>No active job listings found.</td>
+                  <td colSpan={5} style={{ padding: '2rem', textAlign: 'center', color: theme.textMuted }}>No active job listings found.</td>
                 </tr>
               )}
             </tbody>
@@ -265,6 +281,7 @@ const ManageJobs = () => {
           </div>
         </form>
       </motion.div>
+      <ImageModal isOpen={!!previewImage} imageUrl={previewImage} onClose={() => setPreviewImage(null)} />
     </div>
   );
 };

@@ -1,9 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useTheme } from '../../hooks/useTheme';
 
 const ViewEnquiries = () => {
   const [enquiries, setEnquiries] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { isDark } = useTheme();
+
+  const getStatusStyle = (status) => {
+    switch(status) {
+      case 'new': return { bg: isDark ? 'rgba(239, 68, 68, 0.15)' : '#fee2e2', color: isDark ? '#fca5a5' : '#b91c1c' };
+      case 'resolved': return { bg: isDark ? 'rgba(34, 197, 94, 0.15)' : '#dcfce7', color: isDark ? '#86efac' : '#15803d' };
+      case 'contacted': return { bg: isDark ? 'rgba(234, 179, 8, 0.15)' : '#fef9c3', color: isDark ? '#fde047' : '#a16207' };
+      default: return { bg: 'var(--color-bg-light)', color: 'var(--color-text-main)' };
+    }
+  };
 
   const getAuthHeaders = () => {
     const adminStr = localStorage.getItem('adminInfo');
@@ -40,36 +51,36 @@ const ViewEnquiries = () => {
   };
 
   return (
-    <div style={{ backgroundColor: 'white', padding: '1.5rem', borderRadius: '8px', boxShadow: 'var(--shadow-sm)' }}>
-      <h2 style={{ marginBottom: '1.5rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>Business Enquiries</h2>
+    <div style={{ backgroundColor: 'var(--color-card-bg)', padding: '1.5rem', borderRadius: '8px', boxShadow: 'var(--shadow-sm)' }}>
+      <h2 style={{ marginBottom: '1.5rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>Business Enquiries</h2>
       
       {loading ? <p>Loading Data...</p> : (
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '800px' }}>
             <thead>
-              <tr style={{ backgroundColor: '#f8fafc', textAlign: 'left' }}>
-                <th style={{ padding: '1rem', borderBottom: '1px solid #e2e8f0' }}>Date</th>
-                <th style={{ padding: '1rem', borderBottom: '1px solid #e2e8f0' }}>Company / Contact</th>
-                <th style={{ padding: '1rem', borderBottom: '1px solid #e2e8f0' }}>Service</th>
-                <th style={{ padding: '1rem', borderBottom: '1px solid #e2e8f0' }}>Requirement</th>
-                <th style={{ padding: '1rem', borderBottom: '1px solid #e2e8f0' }}>Status / Actions</th>
+              <tr style={{ backgroundColor: 'var(--color-bg-light)', textAlign: 'left' }}>
+                <th style={{ padding: '1rem', borderBottom: '1px solid var(--border-color)' }}>Date</th>
+                <th style={{ padding: '1rem', borderBottom: '1px solid var(--border-color)' }}>Company / Contact</th>
+                <th style={{ padding: '1rem', borderBottom: '1px solid var(--border-color)' }}>Service</th>
+                <th style={{ padding: '1rem', borderBottom: '1px solid var(--border-color)' }}>Requirement</th>
+                <th style={{ padding: '1rem', borderBottom: '1px solid var(--border-color)' }}>Status / Actions</th>
               </tr>
             </thead>
             <tbody>
               {enquiries.map(enq => (
-                <tr key={enq._id} style={{ borderBottom: '1px solid #eee', verticalAlign: 'top' }}>
-                  <td style={{ padding: '1rem', color: '#666', fontSize: '0.9rem' }}>
+                <tr key={enq._id} style={{ borderBottom: '1px solid var(--border-color)', verticalAlign: 'top' }}>
+                  <td style={{ padding: '1rem', color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>
                     {new Date(enq.createdAt).toLocaleDateString()}
                   </td>
                   <td style={{ padding: '1rem' }}>
                     <div style={{ fontWeight: '600' }}>{enq.companyName}</div>
-                    <div style={{ fontSize: '0.9rem', color: '#666' }}>👤 {enq.contactPerson}</div>
-                    <div style={{ fontSize: '0.9rem', color: '#666' }}>📧 {enq.email}</div>
-                    <div style={{ fontSize: '0.9rem', color: '#666' }}>📞 {enq.phone}</div>
+                    <div style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)' }}>👤 {enq.contactPerson}</div>
+                    <div style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)' }}>📧 {enq.email}</div>
+                    <div style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)' }}>📞 {enq.phone}</div>
                   </td>
                   <td style={{ padding: '1rem', textTransform: 'capitalize' }}>{enq.serviceRequired}</td>
                   <td style={{ padding: '1rem', maxWidth: '300px' }}>
-                    <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: '1.4', color: '#444' }}>{enq.briefRequirement}</p>
+                    <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: '1.4', color: 'var(--color-text-main)' }}>{enq.briefRequirement}</p>
                     {enq.attachmentUrl && (
                       <a href={`http://localhost:5000${enq.attachmentUrl}`} target="_blank" rel="noreferrer" style={{ display: 'inline-block', marginTop: '0.5rem', fontSize: '0.8rem', color: '#2563eb' }}>
                         📎 View Attachment
@@ -82,15 +93,18 @@ const ViewEnquiries = () => {
                       onChange={(e) => updateStatus(enq._id, e.target.value)}
                       style={{ 
                         padding: '0.4rem', 
-                        borderRadius: '4px',
-                        border: '1px solid #cbd5e1',
-                        backgroundColor: enq.status === 'new' ? '#fee2e2' : enq.status === 'resolved' ? '#dcfce7' : '#fef9c3',
-                        color: '#333'
+                        borderRadius: '6px',
+                        border: `1px solid ${getStatusStyle(enq.status).color}`,
+                        backgroundColor: getStatusStyle(enq.status).bg,
+                        color: getStatusStyle(enq.status).color,
+                        fontWeight: '600',
+                        outline: 'none',
+                        cursor: 'pointer'
                       }}
                     >
-                      <option value="new">🔴 NEW</option>
-                      <option value="contacted">🟡 Contacted</option>
-                      <option value="resolved">🟢 Resolved</option>
+                      <option value="new" style={{background: 'var(--color-card-bg)', color: 'var(--color-text-main)'}}>🔴 NEW</option>
+                      <option value="contacted" style={{background: 'var(--color-card-bg)', color: 'var(--color-text-main)'}}>🟡 Contacted</option>
+                      <option value="resolved" style={{background: 'var(--color-card-bg)', color: 'var(--color-text-main)'}}>🟢 Resolved</option>
                     </select>
                   </td>
                 </tr>

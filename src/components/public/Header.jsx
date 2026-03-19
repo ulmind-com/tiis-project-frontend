@@ -72,7 +72,7 @@ const Header = () => {
           position: relative;
           background: none; border: none; cursor: pointer;
           font-size: 0.91rem; font-weight: 500;
-          color: #2d3748; padding: 0;
+          color: var(--color-text-main); padding: 0;
           transition: color 0.22s ease;
           text-decoration: none; letter-spacing: 0.01em;
           white-space: nowrap;
@@ -81,13 +81,13 @@ const Header = () => {
           content: '';
           position: absolute; left: 0; bottom: -5px;
           width: 100%; height: 2px;
-          background: #b12023; border-radius: 2px;
+          background: var(--color-secondary); border-radius: 2px;
           transform: scaleX(0); transform-origin: left;
           transition: transform 0.26s ease;
         }
-        .tiis-nav-btn.active  { color: #b12023; font-weight: 700; }
+        .tiis-nav-btn.active  { color: var(--color-secondary); font-weight: 700; }
         .tiis-nav-btn.active::after { transform: scaleX(1); }
-        .tiis-nav-btn:hover   { color: #b12023; }
+        .tiis-nav-btn:hover   { color: var(--color-secondary); }
         .tiis-nav-btn:hover::after { transform: scaleX(1); }
 
         /* Blinking dot */
@@ -98,7 +98,7 @@ const Header = () => {
         }
         .tiis-dot-ring {
           position: absolute; inset: 0; border-radius: 50%;
-          background: #b12023; opacity: 0.75;
+          background: var(--color-secondary); opacity: 0.75;
           animation: tiis-ping 1.4s ease-out infinite;
         }
 
@@ -119,13 +119,13 @@ const Header = () => {
         .tiis-mob-link {
           display: block; width: 100%; text-align: left;
           background: none; border: none; cursor: pointer;
-          font-size: 0.97rem; font-weight: 500; color: #2d3748;
+          font-size: 0.97rem; font-weight: 500; color: var(--color-text-main);
           text-decoration: none; padding: 0.8rem 1rem;
           border-radius: 12px; border-left: 3px solid transparent;
           transition: background 0.15s, color 0.15s, border-color 0.15s;
         }
-        .tiis-mob-link.active { color: #b12023; font-weight: 700; background: rgba(177,32,35,0.07); border-left-color: #b12023; }
-        .tiis-mob-link:hover:not(.active) { background: rgba(1,50,78,0.05); color: #01324e; }
+        .tiis-mob-link.active { color: var(--color-secondary); font-weight: 700; background: rgba(177,32,35,0.07); border-left-color: var(--color-secondary); }
+        .tiis-mob-link:hover:not(.active) { background: rgba(1,50,78,0.05); color: var(--color-primary); }
 
         /* Responsive */
         @media (min-width: 769px) {
@@ -162,11 +162,11 @@ const Header = () => {
             display: 'flex',
             flexDirection: 'column',
             overflow: 'hidden',
-            backgroundColor: 'rgba(255,255,255,0.92)',
+            backgroundColor: 'var(--color-navbar-bg)',
             backdropFilter: 'blur(22px) saturate(180%)',
             WebkitBackdropFilter: 'blur(22px) saturate(180%)',
             borderRadius: compact ? '999px' : '22px',
-            border: '1px solid rgba(1,50,78,0.10)',
+            border: '1px solid var(--border-color)',
             boxShadow: compact
               ? '0 8px 40px rgba(1,50,78,0.16), 0 2px 0 rgba(255,255,255,0.7) inset'
               : '0 4px 28px rgba(1,50,78,0.10), 0 1px 0 rgba(255,255,255,0.8) inset',
@@ -244,20 +244,20 @@ const Header = () => {
                       display: 'flex', alignItems: 'center', gap: '10px',
                       padding: '0.42rem 1.1rem',
                       borderRadius: '999px',
-                      background: 'rgba(241,245,248,0.90)',
-                      border: '1px solid rgba(1,50,78,0.09)',
+                      background: 'var(--color-bg-light)',
+                      border: '1px solid var(--border-color)',
                       cursor: 'pointer',
-                      boxShadow: '0 1px 6px rgba(0,0,0,0.07)',
+                      boxShadow: 'var(--shadow-sm)',
                       transition: 'background 0.18s',
                     }}
                   >
-                    <span style={{ fontSize: '0.92rem', fontWeight: '700', color: '#1a202c', whiteSpace: 'nowrap', letterSpacing: '0.01em' }}>
+                    <span style={{ fontSize: '0.92rem', fontWeight: '700', color: 'var(--color-text-main)', whiteSpace: 'nowrap', letterSpacing: '0.01em' }}>
                       Available for work
                     </span>
                     {/* Blinking dot */}
                     <span style={{ position: 'relative', width: '10px', height: '10px', display: 'inline-flex', flexShrink: 0, alignItems: 'center', justifyContent: 'center' }}>
                       <span className="tiis-dot-ring" />
-                      <span style={{ position: 'relative', width: '10px', height: '10px', borderRadius: '50%', background: '#b12023', boxShadow: '0 0 8px rgba(177,32,35,0.65)', display: 'block' }} />
+                      <span style={{ position: 'relative', width: '10px', height: '10px', borderRadius: '50%', background: 'var(--color-secondary)', boxShadow: '0 0 8px rgba(177,32,35,0.65)', display: 'block' }} />
                     </span>
                   </motion.button>
                 )}
@@ -324,12 +324,13 @@ const Header = () => {
                 className="tiis-hamburger"
                 style={{
                   display: 'none', alignItems: 'center', justifyContent: 'center',
-                  background: 'rgba(1,50,78,0.06)',
-                  border: '1px solid rgba(1,50,78,0.10)',
+                  background: 'var(--color-bg-light)',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '10px', padding: '0.45rem', cursor: 'pointer',
+                  color: 'var(--color-text-main)'
                 }}
               >
-                {isOpen ? <X size={20} color="#01324e" /> : <Menu size={20} color="#01324e" />}
+                {isOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
             </motion.div>
           </div>
@@ -343,7 +344,7 @@ const Header = () => {
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{    opacity: 0, height: 0 }}
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
-                style={{ borderTop: '1px solid rgba(1,50,78,0.07)', overflow: 'hidden' }}
+                style={{ borderTop: '1px solid var(--border-color)', overflow: 'hidden' }}
               >
                 <div style={{ padding: '0.9rem 0.9rem 1.2rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
                   {navLinks.map(item => (

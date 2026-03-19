@@ -33,20 +33,18 @@ export const useTheme = () => {
   }, []);
 
   const toggleTheme = () => {
-    setIsDark(prev => {
-      const newDark = !prev;
-      localStorage.setItem('theme', newDark ? 'dark' : 'light');
-      
-      if (newDark) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-      
-      window.dispatchEvent(new CustomEvent('themeToggled', { detail: { isDark: newDark } }));
-      
-      return newDark;
-    });
+    const newDark = !isDark;
+    setIsDark(newDark);
+    
+    localStorage.setItem('theme', newDark ? 'dark' : 'light');
+    
+    if (newDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    
+    window.dispatchEvent(new CustomEvent('themeToggled', { detail: { isDark: newDark } }));
   };
 
   return { isDark, toggleTheme };
