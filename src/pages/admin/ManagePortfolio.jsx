@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { Plus } from 'lucide-react';
+import { Plus, Edit2, Trash2, Loader2, FolderOpen, Upload, X, Image as ImageIcon } from 'lucide-react';
 import Swal from 'sweetalert2';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useOutletContext } from 'react-router-dom';
 import ImageModal from '../../components/admin/ImageModal';
 
 const ManagePortfolio = () => {
@@ -12,170 +14,237 @@ const ManagePortfolio = () => {
   const [formData, setFormData] = useState({ title: '', description: '', clientName: '', image: null, existingImageUrl: '' });
   const [isSaving, setIsSaving] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
+  const [dragOver, setDragOver] = useState(false);
   const fileInputRef = useRef(null);
+
+  const context = useOutletContext();
+  const isDark = context?.isDark || false;
 
   const getAuthHeaders = () => {
     const adminStr = localStorage.getItem('adminInfo');
     if (!adminStr) return {};
-    const admin = JSON.parse(adminStr);
-    return { headers: { Authorization: `Bearer ${admin.token}` } };
+    return { headers: { Authorization: `Bearer ${JSON.parse(adminStr).token}` } };
   };
 
   const fetchItems = async () => {
     try {
       const { data } = await axios.get('/api/portfolio', getAuthHeaders());
       setItems(data);
-    } catch (error) {
-      console.error('Failed to fetch portfolio');
-    } finally {
-      setLoading(false);
-    }
+    } catch (error) { console.error('Failed to fetch portfolio'); }
+    finally { setLoading(false); }
   };
 
   useEffect(() => { fetchItems(); }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSaving(true);
     try {
-      const dataToSubmit = new FormData();
-      dataToSubmit.append('title', formData.title);
-      dataToSubmit.append('description', formData.description);
-      dataToSubmit.append('clientName', formData.clientName);
-      if (formData.image) {
-        dataToSubmit.append('image', formData.image);
-      }
-
-      setIsSaving(true);
+      const data = new FormData();
+      data.append('title', formData.title);
+      data.append('description', formData.description);
+      data.append('clientName', formData.clientName);
+      if (formData.image) data.append('image', formData.image);
       const config = getAuthHeaders();
 
       if (isEditing) {
-        await axios.put(`/api/portfolio/${currentId}`, dataToSubmit, config);
+        await axios.put(`/api/portfolio/${currentId}`, data, config);
+        Swal.fire({ title: 'Updated!', icon: 'success', toast: true, position: 'top-end', timer: 2500, showConfirmButton: false });
       } else {
-        await axios.post('/api/portfolio', dataToSubmit, config);
+        await axios.post('/api/portfolio', data, config);
+        Swal.fire({ title: 'Project added!', icon: 'success', toast: true, position: 'top-end', timer: 2500, showConfirmButton: false });
       }
-      resetForm();
-      fetchItems();
-    } catch (error) {
-      alert('Error saving portfolio item');
-    } finally {
-      setIsSaving(false);
-    }
+      resetForm(); fetchItems();
+    } catch (e) { Swal.fire('Error!', 'Failed to save project.', 'error'); }
+    finally { setIsSaving(false); }
   };
 
   const handleEdit = (item) => {
-    setIsEditing(true);
-    setCurrentId(item._id);
+    setIsEditing(true); setCurrentId(item._id);
     setFormData({ title: item.title, description: item.description, clientName: item.clientName || '', image: null, existingImageUrl: item.imageUrl || '' });
-    if(fileInputRef.current) fileInputRef.current.value = "";
+    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   const resetForm = () => {
-    setIsEditing(false);
-    setCurrentId(null);
+    setIsEditing(false); setCurrentId(null);
     setFormData({ title: '', description: '', clientName: '', image: null, existingImageUrl: '' });
-    if(fileInputRef.current) fileInputRef.current.value = "";
-  }
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
 
   const handleDelete = async (id) => {
     const result = await Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#dc2626',
-      cancelButtonColor: '#6e7881',
-      confirmButtonText: 'Yes, delete it!'
+      title: 'Delete this project?', text: 'This action is permanent.', icon: 'warning',
+      showCancelButton: true, confirmButtonColor: '#dc2626', cancelButtonColor: isDark ? '#475569' : '#94a3b8',
+      background: isDark ? '#1e293b' : '#fff', color: isDark ? '#fff' : '#000', confirmButtonText: 'Delete',
     });
-
     if (result.isConfirmed) {
       try {
         await axios.delete(`/api/portfolio/${id}`, getAuthHeaders());
-        fetchItems();
-        Swal.fire('Deleted!', 'The project has been deleted.', 'success');
-      } catch (err) {
-        Swal.fire('Error!', err.response?.data?.message || 'Failed to delete project.', 'error');
-      }
+        fetchItems(); Swal.fire({ title: 'Deleted!', icon: 'success', toast: true, position: 'top-end', timer: 2500, showConfirmButton: false });
+      } catch (err) { Swal.fire('Error!', err.response?.data?.message || 'Failed to delete.', 'error'); }
     }
   };
 
-  const handleImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setFormData({ ...formData, image: e.target.files[0] });
-    }
-  };
+  const handleImageChange = (e) => { if (e.target.files?.[0]) setFormData({ ...formData, image: e.target.files[0] }); };
+  const handleDrop = (e) => { e.preventDefault(); setDragOver(false); if (e.dataTransfer.files?.[0]) setFormData({ ...formData, image: e.dataTransfer.files[0] }); };
 
+  const inputStyle = (focused) => ({
+    width: '100%', padding: '0.75rem 1rem', border: `1.5px solid var(--border-color)`, backgroundColor: 'transparent',
+    color: 'var(--color-text-main)', borderRadius: '10px', outline: 'none', transition: 'all 0.25s', fontSize: '0.9rem',
+  });
 
   return (
-    <div style={{ display: 'flex', gap: '2rem' }}>
-      <div style={{ flex: '2', backgroundColor: 'var(--color-card-bg)', padding: '1.5rem', borderRadius: '8px', boxShadow: 'var(--shadow-sm)' }}>
-        <h2 style={{ marginBottom: '1.5rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>Recent Projects</h2>
-        {loading ? <p>Loading...</p> : (
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr', gap: '1.5rem', paddingBottom: '2rem' }}>
+      {/* ── Table Section ── */}
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} style={{
+        backgroundColor: 'var(--color-card-bg)', padding: '1.75rem', borderRadius: '18px',
+        border: '1px solid var(--border-color)', boxShadow: isDark ? '0 4px 20px rgba(0,0,0,0.25)' : '0 4px 20px rgba(0,0,0,0.04)',
+        overflowX: 'auto',
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+          <h2 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--color-text-main)', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <FolderOpen size={20} style={{ color: '#3b82f6' }} /> Portfolio Projects
+            <span style={{ fontSize: '0.8rem', padding: '0.2rem 0.6rem', borderRadius: '8px', background: '#3b82f615', color: '#3b82f6', fontWeight: 600, marginLeft: '0.3rem' }}>{items.length}</span>
+          </h2>
+        </div>
+
+        {loading ? (
+          <div style={{ display: 'flex', justifyContent: 'center', padding: '3rem 0', color: 'var(--color-text-muted)' }}><Loader2 className="animate-spin" size={28} /></div>
+        ) : (
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88rem' }}>
             <thead>
               <tr style={{ backgroundColor: 'var(--color-bg-light)', textAlign: 'left' }}>
-                <th style={{ padding: '1rem', borderBottom: '1px solid var(--border-color)' }}>Image</th>
-                <th style={{ padding: '1rem', borderBottom: '1px solid var(--border-color)' }}>Project Title</th>
-                <th style={{ padding: '1rem', borderBottom: '1px solid var(--border-color)' }}>Client</th>
-                <th style={{ padding: '1rem', borderBottom: '1px solid var(--border-color)' }}>Actions</th>
+                {['Image', 'Project', 'Client', 'Actions'].map((h, i) => (
+                  <th key={h} style={{ padding: '0.75rem 1rem', borderBottom: '1px solid var(--border-color)', fontWeight: 600, fontSize: '0.78rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', borderRadius: i === 0 ? '10px 0 0 0' : i === 3 ? '0 10px 0 0' : '' }}>{h}</th>
+                ))}
               </tr>
             </thead>
             <tbody>
-              {items.map(item => (
-                <tr key={item._id} style={{ borderBottom: '1px solid var(--border-color)' }}>
-                  <td style={{ padding: '1rem' }}>
-                    {item.imageUrl ? 
-                      <img 
-                        src={item.imageUrl} 
-                        alt={item.title} 
-                        onClick={() => setPreviewImage(item.imageUrl)}
-                        style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px', cursor: 'pointer', transition: 'opacity 0.2s' }} 
-                        onMouseEnter={e => e.currentTarget.style.opacity = 0.8}
-                        onMouseLeave={e => e.currentTarget.style.opacity = 1}
-                      /> : 'No Image'}
-                  </td>
-                  <td style={{ padding: '1rem', fontWeight: '500' }}>{item.title}</td>
-                  <td style={{ padding: '1rem' }}>{item.clientName || 'N/A'}</td>
-                  <td style={{ padding: '1rem' }}>
-                    <button onClick={() => handleEdit(item)} style={{ marginRight: '0.5rem', color: '#2563eb', background: 'none' }}>Edit</button>
-                    <button onClick={() => handleDelete(item._id)} style={{ color: '#dc2626', background: 'none' }}>Delete</button>
-                  </td>
-                </tr>
-              ))}
+              <AnimatePresence>
+                {items.map(item => (
+                  <motion.tr key={item._id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                    style={{ borderBottom: '1px solid var(--border-color)', cursor: 'default', transition: 'background 0.2s' }}
+                    onMouseEnter={e => e.currentTarget.style.background = 'var(--color-bg-light)'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                    <td style={{ padding: '0.75rem 1rem' }}>
+                      {item.imageUrl ?
+                        <img src={item.imageUrl} alt={item.title} onClick={() => setPreviewImage(item.imageUrl)}
+                          style={{ width: '52px', height: '40px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--border-color)', cursor: 'pointer', transition: 'transform 0.2s' }}
+                          onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'} />
+                        : <div style={{ width: '52px', height: '40px', borderRadius: '8px', background: 'var(--color-bg-light)', border: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-text-muted)' }}><ImageIcon size={16} /></div>}
+                    </td>
+                    <td style={{ padding: '0.75rem 1rem', fontWeight: 600, color: 'var(--color-text-main)' }}>{item.title}</td>
+                    <td style={{ padding: '0.75rem 1rem', color: 'var(--color-text-muted)' }}>{item.clientName || '—'}</td>
+                    <td style={{ padding: '0.75rem 1rem' }}>
+                      <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        <button onClick={() => handleEdit(item)} title="Edit"
+                          style={{ width: '32px', height: '32px', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--color-bg-light)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#3b82f6', transition: 'all 0.2s' }}
+                          onMouseEnter={e => { e.currentTarget.style.background = '#3b82f6'; e.currentTarget.style.color = '#fff'; }} onMouseLeave={e => { e.currentTarget.style.background = 'var(--color-bg-light)'; e.currentTarget.style.color = '#3b82f6'; }}>
+                          <Edit2 size={14} />
+                        </button>
+                        <button onClick={() => handleDelete(item._id)} title="Delete"
+                          style={{ width: '32px', height: '32px', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--color-bg-light)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444', transition: 'all 0.2s' }}
+                          onMouseEnter={e => { e.currentTarget.style.background = '#ef4444'; e.currentTarget.style.color = '#fff'; }} onMouseLeave={e => { e.currentTarget.style.background = 'var(--color-bg-light)'; e.currentTarget.style.color = '#ef4444'; }}>
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    </td>
+                  </motion.tr>
+                ))}
+              </AnimatePresence>
+              {items.length === 0 && <tr><td colSpan={4} style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>No projects yet. Add your first one →</td></tr>}
             </tbody>
           </table>
         )}
-      </div>
+      </motion.div>
 
-      <div style={{ flex: '1', backgroundColor: 'var(--color-card-bg)', padding: '1.5rem', borderRadius: '8px', boxShadow: 'var(--shadow-sm)', alignSelf: 'flex-start' }}>
-        <h2 style={{ marginBottom: '1.5rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          {isEditing ? 'Edit Project' : <><Plus size={20} /> Add Project</>}
+      {/* ── Form Section ── */}
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} style={{
+        backgroundColor: 'var(--color-card-bg)', padding: '1.75rem', borderRadius: '18px',
+        border: `1px solid ${isEditing ? '#3b82f640' : 'var(--border-color)'}`,
+        boxShadow: isDark ? '0 4px 20px rgba(0,0,0,0.25)' : '0 4px 20px rgba(0,0,0,0.04)',
+        alignSelf: 'flex-start', transition: 'border-color 0.3s',
+      }}>
+        <h2 style={{ fontSize: '1.1rem', fontWeight: 700, margin: '0 0 1.5rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem', color: isEditing ? '#3b82f6' : 'var(--color-text-main)' }}>
+          {isEditing ? <><Edit2 size={18} /> Edit Project</> : <><Plus size={18} /> New Project</>}
         </h2>
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
+          {/* Title */}
           <div>
-            <label style={{ display: 'block', marginBottom: '0.2rem' }}>Title</label>
-            <input required value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} style={{ width: '100%', padding: '0.5rem', border: '1px solid var(--border-color)', borderRadius: '4px' }} />
+            <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.3px' }}>Title <span style={{ color: '#ef4444' }}>*</span></label>
+            <input required placeholder="Project name" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })}
+              style={inputStyle()} onFocus={e => { e.target.style.borderColor = '#3b82f6'; e.target.style.boxShadow = '0 0 0 3px rgba(59,130,246,0.08)'; }} onBlur={e => { e.target.style.borderColor = 'var(--border-color)'; e.target.style.boxShadow = 'none'; }} />
           </div>
+
+          {/* Client */}
           <div>
-            <label style={{ display: 'block', marginBottom: '0.2rem' }}>Client Name</label>
-            <input value={formData.clientName} onChange={e => setFormData({...formData, clientName: e.target.value})} style={{ width: '100%', padding: '0.5rem', border: '1px solid var(--border-color)', borderRadius: '4px' }} />
+            <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.3px' }}>Client Name</label>
+            <input placeholder="Client or company" value={formData.clientName} onChange={e => setFormData({ ...formData, clientName: e.target.value })}
+              style={inputStyle()} onFocus={e => { e.target.style.borderColor = '#3b82f6'; e.target.style.boxShadow = '0 0 0 3px rgba(59,130,246,0.08)'; }} onBlur={e => { e.target.style.borderColor = 'var(--border-color)'; e.target.style.boxShadow = 'none'; }} />
           </div>
+
+          {/* Description */}
           <div>
-            <label style={{ display: 'block', marginBottom: '0.2rem' }}>Description</label>
-            <textarea required rows="4" value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} style={{ width: '100%', padding: '0.5rem', border: '1px solid var(--border-color)', borderRadius: '4px' }}></textarea>
+            <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.3px' }}>Description <span style={{ color: '#ef4444' }}>*</span></label>
+            <textarea required rows={4} placeholder="Describe the project..." value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })}
+              style={{ ...inputStyle(), resize: 'vertical' }} onFocus={e => { e.target.style.borderColor = '#3b82f6'; e.target.style.boxShadow = '0 0 0 3px rgba(59,130,246,0.08)'; }} onBlur={e => { e.target.style.borderColor = 'var(--border-color)'; e.target.style.boxShadow = 'none'; }} />
           </div>
+
+          {/* Image Upload */}
           <div>
-              <label style={{ display: 'block', marginBottom: '0.2rem' }}>Project Image</label>
-              <input type="file" accept="image/*" onChange={handleImageChange} ref={fileInputRef} style={{ width: '100%', padding: '0.5rem', border: '1px solid var(--border-color)', borderRadius: '4px' }} />
-              {isEditing && formData.existingImageUrl && !formData.image && (
-                  <div style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>Current: <a href={formData.existingImageUrl} target="_blank" rel="noreferrer">View Image</a></div>
+            <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.3px' }}>Project Image</label>
+            <div
+              onDragOver={e => { e.preventDefault(); setDragOver(true); }} onDragLeave={() => setDragOver(false)} onDrop={handleDrop}
+              onClick={() => fileInputRef.current?.click()}
+              style={{
+                border: `2px dashed ${dragOver ? '#3b82f6' : 'var(--border-color)'}`, borderRadius: '12px', padding: '1.25rem',
+                textAlign: 'center', cursor: 'pointer', transition: 'all 0.25s',
+                background: dragOver ? (isDark ? 'rgba(59,130,246,0.08)' : 'rgba(59,130,246,0.03)') : 'transparent',
+              }}>
+              <input type="file" accept="image/*" onChange={handleImageChange} ref={fileInputRef} style={{ display: 'none' }} />
+              {formData.image ? (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                  <ImageIcon size={18} style={{ color: '#10b981' }} />
+                  <span style={{ fontSize: '0.85rem', color: 'var(--color-text-main)', fontWeight: 500 }}>{formData.image.name}</span>
+                  <button type="button" onClick={e => { e.stopPropagation(); setFormData({ ...formData, image: null }); if (fileInputRef.current) fileInputRef.current.value = ''; }}
+                    style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '0.15rem' }}><X size={16} /></button>
+                </div>
+              ) : (
+                <>
+                  <Upload size={22} style={{ color: 'var(--color-text-muted)', margin: '0 auto 0.4rem' }} />
+                  <p style={{ margin: 0, fontSize: '0.82rem', color: 'var(--color-text-muted)' }}>Drop image here or <span style={{ color: '#3b82f6', fontWeight: 600 }}>browse</span></p>
+                </>
               )}
+            </div>
+            {isEditing && formData.existingImageUrl && !formData.image && (
+              <div style={{ marginTop: '0.5rem', fontSize: '0.8rem', color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <ImageIcon size={13} /> Current image: <a href={formData.existingImageUrl} target="_blank" rel="noreferrer" style={{ color: '#3b82f6', fontWeight: 500 }}>View</a>
+              </div>
+            )}
           </div>
-          <button type="submit" className="btn-primary" style={{ marginTop: '0.5rem' }} disabled={isSaving}>
-            {isSaving ? 'Saving...' : (isEditing ? 'Update Project' : 'Save Project')}
-          </button>
-          {isEditing && <button type="button" onClick={resetForm} style={{ marginTop: '0.5rem', padding: '0.5rem', cursor: 'pointer' }} disabled={isSaving}>Cancel</button>}
+
+          {/* Buttons */}
+          <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.5rem' }}>
+            <motion.button whileTap={{ scale: 0.97 }} type="submit" disabled={isSaving}
+              style={{
+                flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem',
+                background: isEditing ? 'linear-gradient(135deg, #3b82f6, #2563eb)' : 'linear-gradient(135deg, #01324e, #024b76)',
+                color: '#fff', border: 'none', padding: '0.8rem', borderRadius: '10px', fontWeight: 600, fontSize: '0.92rem',
+                cursor: isSaving ? 'not-allowed' : 'pointer', opacity: isSaving ? 0.7 : 1,
+                boxShadow: '0 4px 12px rgba(0,0,0,0.15)', transition: 'all 0.2s',
+              }}>
+              {isSaving ? <><Loader2 className="animate-spin" size={16} /> Saving...</> : (isEditing ? 'Update Project' : 'Save Project')}
+            </motion.button>
+            {isEditing && (
+              <motion.button whileTap={{ scale: 0.97 }} type="button" onClick={resetForm} disabled={isSaving}
+                style={{ padding: '0.8rem 1.25rem', backgroundColor: 'transparent', color: '#ef4444', border: '1.5px solid #ef444440', borderRadius: '10px', fontWeight: 600, cursor: 'pointer', fontSize: '0.92rem' }}>
+                Cancel
+              </motion.button>
+            )}
+          </div>
         </form>
-      </div>
+      </motion.div>
       <ImageModal isOpen={!!previewImage} imageUrl={previewImage} onClose={() => setPreviewImage(null)} />
     </div>
   );

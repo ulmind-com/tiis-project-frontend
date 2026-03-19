@@ -179,6 +179,7 @@ const Home = () => {
   const { isDark } = useTheme();
   const [news, setNews] = useState([]);
   const [portfolio, setPortfolio] = useState([]);
+  const [activeJobs, setActiveJobs] = useState([]);
   const [isMottoModalOpen, setIsMottoModalOpen] = useState(false);
   const [selectedNews, setSelectedNews] = useState(null);
   const [currentNewsIndex, setCurrentNewsIndex] = useState(0);
@@ -189,12 +190,15 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [newsRes, portRes] = await Promise.all([
+        const [newsRes, portRes, jobsRes] = await Promise.all([
           api.get('/api/news'),
-          api.get('/api/portfolio')
+          api.get('/api/portfolio'),
+          api.get('/api/jobs').catch(() => ({ data: [] })),
         ]);
-        setNews(newsRes.data.slice(0, 4)); // Get 4 for bento grid
+        setNews(newsRes.data.slice(0, 4));
         setPortfolio(portRes.data.slice(0, 3));
+        const active = (jobsRes.data || []).filter(j => j.isActive);
+        setActiveJobs(active);
       } catch (error) {
         console.error('Error fetching dynamic content:', error);
       }
@@ -213,9 +217,47 @@ const Home = () => {
   return (
     <div className="home-page animate-fade-in" style={{ backgroundColor: 'var(--color-bg-light)' }}>
 
+      {/* ── Jobs Hiring Marquee ── */}
+      {activeJobs.length > 0 && (
+        <div style={{
+          background: 'linear-gradient(90deg, #0ea5e9, #0284c7, #0369a1)',
+          color: '#fff', overflow: 'hidden', position: 'relative', zIndex: 50,
+          boxShadow: '0 2px 12px rgba(2,132,199,0.3)',
+        }}>
+          <style>{`
+            @keyframes marqueeScroll {
+              0% { transform: translateX(0); }
+              100% { transform: translateX(-50%); }
+            }
+          `}</style>
+          <div style={{ display: 'flex', alignItems: 'center', height: '40px' }}>
+            <div style={{
+              display: 'flex', whiteSpace: 'nowrap',
+              animation: 'marqueeScroll 25s linear infinite',
+            }}>
+              {[...Array(6)].map((_, i) => (
+                <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0 3rem', fontSize: '0.88rem', fontWeight: 600, letterSpacing: '0.3px' }}>
+                  🚀 We're hiring! {activeJobs.length} open position{activeJobs.length > 1 ? 's' : ''} available — Explore current job opportunities and apply to join our team.
+                  <Link to="/careers" style={{
+                    display: 'inline-flex', alignItems: 'center', gap: '0.35rem',
+                    background: '#fff', color: '#0369a1', padding: '0.25rem 0.85rem',
+                    borderRadius: '50px', fontSize: '0.78rem', fontWeight: 700,
+                    textDecoration: 'none', transition: 'all 0.2s',
+                    boxShadow: '0 2px 6px rgba(0,0,0,0.12)',
+                  }}
+                    onMouseEnter={e => { e.currentTarget.style.background = '#f0f9ff'; e.currentTarget.style.transform = 'scale(1.05)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.transform = 'scale(1)'; }}
+                  >Apply Now <ArrowRight size={13} /></Link>
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Premium Split Hero Section */}
-      <section style={{ backgroundColor: 'var(--color-bg-light)', padding: '6rem 0 8rem 0', overflow: 'hidden' }}>
-        <div className="container" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '4rem' }}>
+      <section style={{ backgroundColor: 'var(--color-bg-light)', padding: '6rem 0 18rem 0', overflow: 'hidden', position: 'relative' }}>
+        <div className="container" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '4rem', position: 'relative', zIndex: 2 }}>
 
           {/* Left Content Block */}
           <motion.div
@@ -281,12 +323,115 @@ const Home = () => {
           </motion.div>
 
         </div>
+
+        {/* Wave SVG Divider */}
+        <img
+          src="/wave-haikei-1.svg"
+          alt=""
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            width: '100%',
+            height: 'auto',
+            display: 'block',
+            lineHeight: 0,
+            pointerEvents: 'none',
+            zIndex: 1,
+          }}
+        />
       </section>
 
       {/* Services Overview */}
-      <section ref={capabilitiesRef} className="services-overview" style={{ padding: '7rem 0', background: 'var(--grad-capabilities)' }}>
-        <div className="container" style={{ maxWidth: '1300px', margin: '0 auto', padding: '0 2rem' }}>
-          <h2 className="section-title text-center mb-16 transition-colors duration-400" style={{ color: isDark ? 'white' : 'var(--color-text-heading)' }}>Our Capabilities</h2>
+      <section ref={capabilitiesRef} className="services-overview" style={{
+        padding: '7rem 0',
+        position: 'relative',
+        overflow: 'hidden',
+        background: isDark
+          ? 'linear-gradient(180deg, #0a0a0a 0%, #0f172a 40%, #0c1222 70%, #0a0a0a 100%)'
+          : 'linear-gradient(135deg, #f0f4ff 0%, #e8ecfa 15%, #f5e6f0 30%, #fce8e6 45%, #fff7ed 55%, #ecfdf5 70%, #e0f2fe 85%, #eef2ff 100%)',
+        transition: 'background 0.5s ease',
+      }}>
+        {/* Animated floating orbs */}
+        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
+          <div style={{
+            position: 'absolute',
+            top: '10%', left: '5%',
+            width: '400px', height: '400px',
+            borderRadius: '50%',
+            background: isDark
+              ? 'radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%)'
+              : 'radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%)',
+            animation: 'capOrb1 12s ease-in-out infinite',
+          }} />
+          <div style={{
+            position: 'absolute',
+            bottom: '5%', right: '8%',
+            width: '350px', height: '350px',
+            borderRadius: '50%',
+            background: isDark
+              ? 'radial-gradient(circle, rgba(177,32,35,0.1) 0%, transparent 70%)'
+              : 'radial-gradient(circle, rgba(177,32,35,0.06) 0%, transparent 70%)',
+            animation: 'capOrb2 15s ease-in-out infinite',
+          }} />
+          <div style={{
+            position: 'absolute',
+            top: '50%', left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '500px', height: '500px',
+            borderRadius: '50%',
+            background: isDark
+              ? 'radial-gradient(circle, rgba(139,92,246,0.07) 0%, transparent 70%)'
+              : 'radial-gradient(circle, rgba(139,92,246,0.04) 0%, transparent 70%)',
+            animation: 'capOrb3 18s ease-in-out infinite',
+          }} />
+          {/* Subtle grid pattern */}
+          <div style={{
+            position: 'absolute', inset: 0,
+            backgroundImage: isDark
+              ? 'radial-gradient(circle, rgba(255,255,255,0.02) 1px, transparent 1px)'
+              : 'radial-gradient(circle, rgba(0,0,0,0.02) 1px, transparent 1px)',
+            backgroundSize: '30px 30px',
+          }} />
+        </div>
+
+        <style>{`
+          @keyframes capOrb1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(60px, 40px) scale(1.15); }
+            66% { transform: translate(-30px, 60px) scale(0.9); }
+          }
+          @keyframes capOrb2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(-50px, -40px) scale(1.1); }
+            66% { transform: translate(40px, -30px) scale(0.95); }
+          }
+          @keyframes capOrb3 {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
+          }
+        `}</style>
+
+        <div className="container" style={{ maxWidth: '1300px', margin: '0 auto', padding: '0 2rem', position: 'relative', zIndex: 2 }}>
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            style={{ textAlign: 'center', marginBottom: '4rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1rem', color: isDark ? '#f87171' : 'var(--color-secondary)', fontWeight: '700', fontSize: '0.85rem', letterSpacing: '3px', textTransform: 'uppercase' }}>
+              <span style={{ width: '30px', height: '2px', backgroundColor: isDark ? '#f87171' : 'var(--color-secondary)', borderRadius: '2px' }}></span>
+              What We Do
+              <span style={{ width: '30px', height: '2px', backgroundColor: isDark ? '#f87171' : 'var(--color-secondary)', borderRadius: '2px' }}></span>
+            </div>
+            <h2 style={{ fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: '900', color: isDark ? 'white' : 'var(--color-primary-dark)', lineHeight: '1.1', marginBottom: '1.2rem', letterSpacing: '-1px' }}>
+              Our <span style={{ background: isDark ? 'linear-gradient(135deg, #e0f2fe 0%, #f87171 100%)' : 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-secondary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Capabilities</span>
+            </h2>
+            <p style={{ color: 'var(--color-text-muted)', fontSize: '1.15rem', maxWidth: '600px', margin: '0 auto', lineHeight: '1.7' }}>
+              End-to-end consulting, staffing, and training solutions designed to accelerate your growth.
+            </p>
+          </motion.div>
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
@@ -305,7 +450,25 @@ const Home = () => {
       {portfolio.length > 0 && (
         <section style={{ padding: '6rem 0', background: 'var(--grad-projects)' }}>
           <div className="container">
-            <h2 className="section-title" style={{ color: isDark ? 'white' : 'var(--color-text-heading)' }}>Recent Projects</h2>
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              style={{ textAlign: 'center', marginBottom: '4rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1rem', color: isDark ? '#f87171' : 'var(--color-secondary)', fontWeight: '700', fontSize: '0.85rem', letterSpacing: '3px', textTransform: 'uppercase' }}>
+                <span style={{ width: '30px', height: '2px', backgroundColor: isDark ? '#f87171' : 'var(--color-secondary)', borderRadius: '2px' }}></span>
+                Our Work
+                <span style={{ width: '30px', height: '2px', backgroundColor: isDark ? '#f87171' : 'var(--color-secondary)', borderRadius: '2px' }}></span>
+              </div>
+              <h2 style={{ fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: '900', color: isDark ? 'white' : 'var(--color-primary-dark)', lineHeight: '1.1', marginBottom: '1.2rem', letterSpacing: '-1px' }}>
+                Recent <span style={{ background: isDark ? 'linear-gradient(135deg, #e0f2fe 0%, #f87171 100%)' : 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-secondary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Projects</span>
+              </h2>
+              <p style={{ color: 'var(--color-text-muted)', fontSize: '1.15rem', maxWidth: '600px', margin: '0 auto', lineHeight: '1.7' }}>
+                Explore our latest engagements and the impact we've delivered for our clients.
+              </p>
+            </motion.div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginTop: '4rem' }}>
               {portfolio.map((project, i) => (
                 <motion.div
@@ -541,8 +704,8 @@ const Home = () => {
       )}
 
       {/* Why Us / CTA Section */}
-      <section style={{ padding: '6rem 0', backgroundColor: 'var(--color-primary)', color: 'white' }}>
-        <div className="container">
+      <section style={{ padding: '6rem 0 14rem 0', backgroundColor: 'var(--color-primary)', color: 'white', position: 'relative', overflow: 'hidden' }}>
+        <div className="container" style={{ position: 'relative', zIndex: 2 }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4rem', alignItems: 'center' }}>
             <div style={{ flex: '1 1 500px' }}>
               <h2 style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '1.5rem', lineHeight: '1.2' }}>Ready To Transform Your Enterprise?</h2>
@@ -568,6 +731,23 @@ const Home = () => {
             </div>
           </div>
         </div>
+
+        {/* Wave SVG Divider */}
+        <img
+          src="/wave-haikei2.svg"
+          alt=""
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            width: '100%',
+            height: 'auto',
+            display: 'block',
+            lineHeight: 0,
+            pointerEvents: 'none',
+            zIndex: 1,
+          }}
+        />
       </section>
 
       {/* Motto Modal - Portaled to avoid transform containing blocks */}

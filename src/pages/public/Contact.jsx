@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Mail, Phone, MapPin, Send, CheckCircle, ArrowRight, Building2, User, UserCircle, Briefcase, FileText, Paperclip } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { linkContactInfo } from '../../utils/visitorTracker';
 
 const fadeUp = (delay) => ({
   hidden: { opacity: 0, y: 30 },
@@ -102,6 +103,13 @@ const Contact = () => {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       setStatus('success');
+      // Link the contact info to the visitor profile for admin reach-out
+      linkContactInfo({
+        name: formData.contactPerson,
+        email: formData.email,
+        phone: formData.phone,
+        company: formData.companyName,
+      });
       setFormData({
         companyName: '', contactPerson: '', designation: '', 
         email: '', phone: '', serviceRequired: '', briefRequirement: '', attachment: null

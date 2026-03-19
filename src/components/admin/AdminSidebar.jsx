@@ -8,12 +8,14 @@ import {
   MessageSquare, 
   ClipboardList, 
   UserPlus, 
-  LogOut 
+  LogOut,
+  BarChart3
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const navItems = [
   { path: '/admin/dashboard',    label: 'Dashboard',    icon: LayoutDashboard },
+  { path: '/admin/analytics',    label: 'Analytics',    icon: BarChart3 },
   { path: '/admin/portfolio',     label: 'Portfolio',     icon: Briefcase },
   { path: '/admin/news',          label: 'News',          icon: FileText },
   { path: '/admin/team',          label: 'Core Team',     icon: Users },

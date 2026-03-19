@@ -62,7 +62,7 @@ const Footer = () => {
         opacity: '0.8'
       }}>
         <div className="container">
-          &copy; {new Date().getFullYear()} TIIS. All rights reserved. | <Link to="/admin/login">Admin Login</Link>
+          &copy; {new Date().getFullYear()} TIIS. All rights reserved. | Designed & Developed by <a href="https://www.ulmind.com" target="_blank" rel="noopener noreferrer" style={{ color: '#60a5fa', fontWeight: '600', textDecoration: 'none' }}>ULMiND</a> | <Link to="/admin/login">Admin Login</Link>
         </div>
       </div>
     </footer>

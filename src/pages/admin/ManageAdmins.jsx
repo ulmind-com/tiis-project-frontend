@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { UserPlus, Trash2 } from 'lucide-react';
+import { UserPlus, KeyRound, Eye, EyeOff, X } from 'lucide-react';
 
 const ManageAdmins = () => {
   const [admins, setAdmins] = useState([]);
@@ -9,6 +9,15 @@ const ManageAdmins = () => {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState({ text: '', type: '' });
   const [loading, setLoading] = useState(false);
+
+  // Change password state
+  const [changePwModal, setChangePwModal] = useState(null); // admin object or null
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showNewPw, setShowNewPw] = useState(false);
+  const [showConfirmPw, setShowConfirmPw] = useState(false);
+  const [pwLoading, setPwLoading] = useState(false);
+  const [pwMessage, setPwMessage] = useState({ text: '', type: '' });
 
   const getAuthHeaders = () => {
     const adminStr = localStorage.getItem('adminInfo');
@@ -52,28 +61,105 @@ const ManageAdmins = () => {
     }
   };
 
+  const openChangePwModal = (admin) => {
+    setChangePwModal(admin);
+    setNewPassword('');
+    setConfirmPassword('');
+    setShowNewPw(false);
+    setShowConfirmPw(false);
+    setPwMessage({ text: '', type: '' });
+  };
+
+  const handleChangePassword = async (e) => {
+    e.preventDefault();
+    setPwMessage({ text: '', type: '' });
+
+    if (newPassword.length < 6) {
+      setPwMessage({ text: 'Password must be at least 6 characters', type: 'error' });
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setPwMessage({ text: 'Passwords do not match', type: 'error' });
+      return;
+    }
+
+    setPwLoading(true);
+    try {
+      await axios.put(
+        `/api/auth/change-password/${changePwModal._id}`,
+        { newPassword },
+        getAuthHeaders()
+      );
+      setPwMessage({ text: 'Password updated successfully!', type: 'success' });
+      setTimeout(() => setChangePwModal(null), 1500);
+    } catch (error) {
+      setPwMessage({
+        text: error.response?.data?.message || 'Failed to update password',
+        type: 'error',
+      });
+    } finally {
+      setPwLoading(false);
+    }
+  };
+
+  const inputStyle = {
+    width: '100%',
+    padding: '0.6rem 0.75rem',
+    border: '1px solid var(--border-color)',
+    borderRadius: '8px',
+    fontSize: '0.9rem',
+    backgroundColor: 'var(--color-bg-light)',
+    color: 'var(--color-text-main)',
+    outline: 'none',
+    transition: 'border-color 0.2s',
+  };
+
   return (
-    <div style={{ display: 'flex', gap: '2rem' }}>
+    <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
       {/* List Admins */}
-      <div style={{ flex: '2', backgroundColor: 'var(--color-card-bg)', padding: '1.5rem', borderRadius: '8px', boxShadow: 'var(--shadow-sm)' }}>
-        <h2 style={{ marginBottom: '1.5rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>Active Administrators</h2>
+      <div style={{ flex: '2', minWidth: '400px', backgroundColor: 'var(--color-card-bg)', padding: '1.5rem', borderRadius: '12px', boxShadow: 'var(--shadow-sm)' }}>
+        <h2 style={{ marginBottom: '1.5rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.75rem', fontSize: '1.15rem', fontWeight: '600' }}>Active Administrators</h2>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr style={{ backgroundColor: 'var(--color-bg-light)', textAlign: 'left' }}>
-              <th style={{ padding: '1rem', borderBottom: '1px solid var(--border-color)' }}>Name</th>
-              <th style={{ padding: '1rem', borderBottom: '1px solid var(--border-color)' }}>Email Address</th>
-              <th style={{ padding: '1rem', borderBottom: '1px solid var(--border-color)' }}>Role</th>
+              <th style={{ padding: '0.85rem 1rem', borderBottom: '1px solid var(--border-color)', fontSize: '0.85rem', fontWeight: '600' }}>Name</th>
+              <th style={{ padding: '0.85rem 1rem', borderBottom: '1px solid var(--border-color)', fontSize: '0.85rem', fontWeight: '600' }}>Email Address</th>
+              <th style={{ padding: '0.85rem 1rem', borderBottom: '1px solid var(--border-color)', fontSize: '0.85rem', fontWeight: '600' }}>Role</th>
+              <th style={{ padding: '0.85rem 1rem', borderBottom: '1px solid var(--border-color)', fontSize: '0.85rem', fontWeight: '600', textAlign: 'center' }}>Actions</th>
             </tr>
           </thead>
           <tbody>
             {admins.map(admin => (
               <tr key={admin._id} style={{ borderBottom: '1px solid var(--border-color)' }}>
-                <td style={{ padding: '1rem', fontWeight: '500' }}>{admin.name}</td>
-                <td style={{ padding: '1rem', color: 'var(--color-text-muted)' }}>{admin.email}</td>
-                <td style={{ padding: '1rem' }}>
+                <td style={{ padding: '0.85rem 1rem', fontWeight: '500' }}>{admin.name}</td>
+                <td style={{ padding: '0.85rem 1rem', color: 'var(--color-text-muted)' }}>{admin.email}</td>
+                <td style={{ padding: '0.85rem 1rem' }}>
                    <span style={{ padding: '0.2rem 0.6rem', backgroundColor: '#e0e7ff', color: '#3730a3', borderRadius: '20px', fontSize: '0.8rem' }}>
                      Admin
                    </span>
+                </td>
+                <td style={{ padding: '0.85rem 1rem', textAlign: 'center' }}>
+                  <button
+                    onClick={() => openChangePwModal(admin)}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.4rem',
+                      padding: '0.4rem 0.85rem',
+                      background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '8px',
+                      fontSize: '0.8rem',
+                      fontWeight: '500',
+                      cursor: 'pointer',
+                      transition: 'transform 0.2s, box-shadow 0.2s',
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(59,130,246,0.3)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+                  >
+                    <KeyRound size={14} /> Change Password
+                  </button>
                 </td>
               </tr>
             ))}
@@ -82,18 +168,19 @@ const ManageAdmins = () => {
       </div>
 
       {/* Add new Admin Form */}
-      <div style={{ flex: '1', backgroundColor: 'var(--color-card-bg)', padding: '1.5rem', borderRadius: '8px', boxShadow: 'var(--shadow-sm)', alignSelf: 'flex-start' }}>
-        <h2 style={{ marginBottom: '1.5rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+      <div style={{ flex: '1', minWidth: '280px', backgroundColor: 'var(--color-card-bg)', padding: '1.5rem', borderRadius: '12px', boxShadow: 'var(--shadow-sm)', alignSelf: 'flex-start' }}>
+        <h2 style={{ marginBottom: '1.5rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.15rem', fontWeight: '600' }}>
           <UserPlus size={20} /> Add New Admin
         </h2>
         
         {message.text && (
           <div style={{ 
             padding: '0.75rem', 
-            borderRadius: '4px', 
+            borderRadius: '8px', 
             marginBottom: '1rem',
             backgroundColor: message.type === 'success' ? '#dcfce7' : '#fee2e2',
-            color: message.type === 'success' ? '#166534' : '#991b1b'
+            color: message.type === 'success' ? '#166534' : '#991b1b',
+            fontSize: '0.85rem',
           }}>
             {message.text}
           </div>
@@ -101,22 +188,163 @@ const ManageAdmins = () => {
 
         <form onSubmit={handleCreateAdmin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div>
-            <label style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', marginBottom: '0.2rem', display: 'block' }}>Full Name</label>
-            <input required value={name} onChange={e => setName(e.target.value)} style={{ width: '100%', padding: '0.5rem', border: '1px solid var(--border-color)', borderRadius: '4px' }} />
+            <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '0.3rem', display: 'block', fontWeight: '500' }}>Full Name</label>
+            <input required value={name} onChange={e => setName(e.target.value)} style={inputStyle} />
           </div>
           <div>
-            <label style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', marginBottom: '0.2rem', display: 'block' }}>Email Address</label>
-            <input required type="email" value={email} onChange={e => setEmail(e.target.value)} style={{ width: '100%', padding: '0.5rem', border: '1px solid var(--border-color)', borderRadius: '4px' }} />
+            <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '0.3rem', display: 'block', fontWeight: '500' }}>Email Address</label>
+            <input required type="email" value={email} onChange={e => setEmail(e.target.value)} style={inputStyle} />
           </div>
           <div>
-            <label style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', marginBottom: '0.2rem', display: 'block' }}>Temporary Password</label>
-            <input required type="password" value={password} onChange={e => setPassword(e.target.value)} style={{ width: '100%', padding: '0.5rem', border: '1px solid var(--border-color)', borderRadius: '4px' }} />
+            <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '0.3rem', display: 'block', fontWeight: '500' }}>Temporary Password</label>
+            <input required type="password" value={password} onChange={e => setPassword(e.target.value)} style={inputStyle} />
           </div>
-          <button type="submit" className="btn-primary" style={{ marginTop: '0.5rem' }} disabled={loading}>
+          <button type="submit" className="btn-primary" style={{ marginTop: '0.5rem', borderRadius: '8px' }} disabled={loading}>
             {loading ? 'Adding...' : 'Create Admin'}
           </button>
         </form>
       </div>
+
+      {/* Change Password Modal */}
+      {changePwModal && (
+        <div
+          onClick={() => setChangePwModal(null)}
+          style={{
+            position: 'fixed', inset: 0,
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            backdropFilter: 'blur(4px)',
+            zIndex: 9999,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: '1rem',
+          }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{
+              backgroundColor: 'var(--color-card-bg)',
+              borderRadius: '16px',
+              padding: '2rem',
+              width: '100%',
+              maxWidth: '420px',
+              boxShadow: '0 25px 50px rgba(0,0,0,0.2)',
+              position: 'relative',
+              animation: 'modalIn 0.3s ease',
+            }}
+          >
+            <style>{`
+              @keyframes modalIn {
+                from { opacity: 0; transform: scale(0.95) translateY(10px); }
+                to { opacity: 1; transform: scale(1) translateY(0); }
+              }
+            `}</style>
+
+            <button
+              onClick={() => setChangePwModal(null)}
+              style={{
+                position: 'absolute', top: '1rem', right: '1rem',
+                background: 'none', border: 'none',
+                color: 'var(--color-text-muted)', cursor: 'pointer',
+                padding: '4px',
+              }}
+            >
+              <X size={20} />
+            </button>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+              <div style={{
+                width: '44px', height: '44px', borderRadius: '12px',
+                background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: 'white',
+              }}>
+                <KeyRound size={22} />
+              </div>
+              <div>
+                <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: '600', color: 'var(--color-text-main)' }}>Change Password</h3>
+                <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>for {changePwModal.name} ({changePwModal.email})</p>
+              </div>
+            </div>
+
+            {pwMessage.text && (
+              <div style={{
+                padding: '0.7rem',
+                borderRadius: '8px',
+                marginBottom: '1rem',
+                backgroundColor: pwMessage.type === 'success' ? '#dcfce7' : '#fee2e2',
+                color: pwMessage.type === 'success' ? '#166534' : '#991b1b',
+                fontSize: '0.85rem',
+                textAlign: 'center',
+              }}>
+                {pwMessage.text}
+              </div>
+            )}
+
+            <form onSubmit={handleChangePassword} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+              <div>
+                <label style={{ fontSize: '0.8rem', fontWeight: '500', color: 'var(--color-text-muted)', marginBottom: '0.3rem', display: 'block' }}>New Password</label>
+                <div style={{ position: 'relative' }}>
+                  <input
+                    type={showNewPw ? 'text' : 'password'}
+                    required
+                    placeholder="Min 6 characters"
+                    value={newPassword}
+                    onChange={e => setNewPassword(e.target.value)}
+                    style={{ ...inputStyle, paddingRight: '2.5rem' }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowNewPw(!showNewPw)}
+                    style={{ position: 'absolute', right: '0.6rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', padding: '2px' }}
+                  >
+                    {showNewPw ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label style={{ fontSize: '0.8rem', fontWeight: '500', color: 'var(--color-text-muted)', marginBottom: '0.3rem', display: 'block' }}>Confirm Password</label>
+                <div style={{ position: 'relative' }}>
+                  <input
+                    type={showConfirmPw ? 'text' : 'password'}
+                    required
+                    placeholder="Re-enter password"
+                    value={confirmPassword}
+                    onChange={e => setConfirmPassword(e.target.value)}
+                    style={{ ...inputStyle, paddingRight: '2.5rem' }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPw(!showConfirmPw)}
+                    style={{ position: 'absolute', right: '0.6rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', padding: '2px' }}
+                  >
+                    {showConfirmPw ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={pwLoading}
+                style={{
+                  padding: '0.75rem',
+                  background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '10px',
+                  fontSize: '0.95rem',
+                  fontWeight: '600',
+                  cursor: pwLoading ? 'not-allowed' : 'pointer',
+                  opacity: pwLoading ? 0.7 : 1,
+                  transition: 'all 0.2s',
+                  marginTop: '0.3rem',
+                }}
+              >
+                {pwLoading ? 'Updating...' : 'Update Password'}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

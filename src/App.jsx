@@ -1,5 +1,8 @@
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Header from './components/public/Header';
+import CookieConsent from './components/public/CookieConsent';
+import { trackPageVisit } from './utils/visitorTracker';
 import Footer from './components/public/Footer';
 import Home from './pages/public/Home';
 import About from './pages/public/About';
@@ -22,10 +25,18 @@ import ManageNews from './pages/admin/ManageNews';
 import ManageTeam from './pages/admin/ManageTeam';
 import ViewApplications from './pages/admin/ViewApplications';
 import Dashboard from './pages/admin/Dashboard';
+import VisitorAnalytics from './pages/admin/VisitorAnalytics';
 
 const AppContent = () => {
   const location = useLocation();
   const isAdmin = location.pathname.startsWith('/admin');
+
+  // Track page visits on every route change (public pages only)
+  useEffect(() => {
+    if (!isAdmin) {
+      trackPageVisit(location.pathname, document.title);
+    }
+  }, [location.pathname, isAdmin]);
 
   return (
     <div className="app">
@@ -59,12 +70,14 @@ const AppContent = () => {
                 <Route path="applications" element={<ViewApplications />} />
                 <Route path="enquiries" element={<ViewEnquiries />} />
                 <Route path="admins" element={<ManageAdmins />} />
+                <Route path="analytics" element={<VisitorAnalytics />} />
               </Route>
           </Routes>
         </main>
       )}
 
       {!isAdmin && <Footer />}
+      {!isAdmin && <CookieConsent />}
     </div>
   );
 };
