@@ -1,11 +1,14 @@
 /**
  * Centralized Axios instance for all API calls.
- * All relative /api/* requests go through the Vite proxy → backend:5000
+ * Uses VITE_API_URL env variable for deployed backend,
+ * falls back to '/' for local dev (Vite proxy handles routing).
  */
 import axios from 'axios';
 
+export const API_BASE = import.meta.env.VITE_API_URL || '';
+
 const api = axios.create({
-  baseURL: '/',
+  baseURL: API_BASE,
   timeout: 15000, // 15 second timeout per request
   headers: {
     'Content-Type': 'application/json',

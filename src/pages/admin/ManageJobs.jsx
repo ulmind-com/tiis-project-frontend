@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../api';
 import { Plus, Edit2, Trash2, Loader2, Briefcase, Upload, X, MapPin, Building, Clock, Image as ImageIcon } from 'lucide-react';
 import Swal from 'sweetalert2';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -31,7 +31,7 @@ const ManageJobs = () => {
 
   const fetchJobs = async () => {
     setLoading(true);
-    try { const { data } = await axios.get('/api/jobs?admin=true', getAuthHeaders()); setJobs(data); }
+    try { const { data } = await api.get('/api/jobs?admin=true', getAuthHeaders()); setJobs(data); }
     catch (e) { console.error('Failed to fetch jobs', e); }
     finally { setLoading(false); }
   };
@@ -58,7 +58,7 @@ const ManageJobs = () => {
     });
     if (result.isConfirmed) {
       try {
-        await axios.delete(`/api/jobs/${id}`, getAuthHeaders());
+        await api.delete(`/api/jobs/${id}`, getAuthHeaders());
         fetchJobs(); Swal.fire({ title: 'Deleted!', icon: 'success', toast: true, position: 'top-end', timer: 2500, showConfirmButton: false });
       } catch (err) { Swal.fire('Error!', err.response?.data?.message || 'Failed.', 'error'); }
     }
@@ -72,10 +72,10 @@ const ManageJobs = () => {
       const config = { headers: { ...getAuthHeaders().headers, 'Content-Type': 'multipart/form-data' } };
 
       if (isEditing) {
-        await axios.put(`/api/jobs/${currentJobId}`, data, config);
+        await api.put(`/api/jobs/${currentJobId}`, data, config);
         Swal.fire({ title: 'Updated!', icon: 'success', toast: true, position: 'top-end', timer: 2500, showConfirmButton: false });
       } else {
-        await axios.post('/api/jobs', data, config);
+        await api.post('/api/jobs', data, config);
         Swal.fire({ title: 'Job posted!', icon: 'success', toast: true, position: 'top-end', timer: 2500, showConfirmButton: false });
       }
       resetForm(); fetchJobs();

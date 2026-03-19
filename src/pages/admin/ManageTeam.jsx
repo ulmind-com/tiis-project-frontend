@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import api from '../../api';
 import { Plus, Edit2, Trash2, Loader2, Users, Upload, X, Linkedin, Image as ImageIcon } from 'lucide-react';
 import Swal from 'sweetalert2';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -27,7 +27,7 @@ const ManageTeam = () => {
   };
 
   const fetchItems = async () => {
-    try { const { data } = await axios.get('/api/team', getAuthHeaders()); setItems(data); }
+    try { const { data } = await api.get('/api/team', getAuthHeaders()); setItems(data); }
     catch (e) { console.error('Failed to fetch team'); }
     finally { setLoading(false); }
   };
@@ -44,10 +44,10 @@ const ManageTeam = () => {
       const config = getAuthHeaders();
 
       if (isEditing) {
-        await axios.put(`/api/team/${currentId}`, data, config);
+        await api.put(`/api/team/${currentId}`, data, config);
         Swal.fire({ title: 'Updated!', icon: 'success', toast: true, position: 'top-end', timer: 2500, showConfirmButton: false });
       } else {
-        await axios.post('/api/team', data, config);
+        await api.post('/api/team', data, config);
         Swal.fire({ title: 'Member added!', icon: 'success', toast: true, position: 'top-end', timer: 2500, showConfirmButton: false });
       }
       resetForm(); fetchItems();
@@ -75,7 +75,7 @@ const ManageTeam = () => {
     });
     if (result.isConfirmed) {
       try {
-        await axios.delete(`/api/team/${id}`, getAuthHeaders());
+        await api.delete(`/api/team/${id}`, getAuthHeaders());
         fetchItems(); Swal.fire({ title: 'Removed!', icon: 'success', toast: true, position: 'top-end', timer: 2500, showConfirmButton: false });
       } catch (err) { Swal.fire('Error!', err.response?.data?.message || 'Failed.', 'error'); }
     }

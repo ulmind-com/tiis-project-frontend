@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../api';
 import { UserPlus, KeyRound, Eye, EyeOff, X } from 'lucide-react';
 
 const ManageAdmins = () => {
@@ -28,7 +28,7 @@ const ManageAdmins = () => {
 
   const fetchAdmins = async () => {
     try {
-      const { data } = await axios.get('/api/auth/admins', getAuthHeaders());
+      const { data } = await api.get('/api/auth/admins', getAuthHeaders());
       setAdmins(data);
     } catch (error) {
       console.error('Failed to fetch admins');
@@ -45,7 +45,7 @@ const ManageAdmins = () => {
     setMessage({ text: '', type: '' });
 
     try {
-      await axios.post('/api/auth/add-admin', { name, email, password }, getAuthHeaders());
+      await api.post('/api/auth/add-admin', { name, email, password }, getAuthHeaders());
       setMessage({ text: 'Admin created successfully', type: 'success' });
       setName('');
       setEmail('');
@@ -85,7 +85,7 @@ const ManageAdmins = () => {
 
     setPwLoading(true);
     try {
-      await axios.put(
+      await api.put(
         `/api/auth/change-password/${changePwModal._id}`,
         { newPassword },
         getAuthHeaders()

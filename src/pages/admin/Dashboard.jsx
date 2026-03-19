@@ -6,7 +6,7 @@ import {
   MessageSquare, FolderOpen, UserCheck, Clock, Eye,
   Newspaper, ImageIcon, UsersRound, Activity, ChevronRight
 } from 'lucide-react';
-import axios from 'axios';
+import api from '../../api';
 
 /* ─── Animated counter hook ─── */
 const useCountUp = (target, duration = 1200) => {
@@ -207,13 +207,13 @@ const Dashboard = () => {
       try {
         const headers = getAuthHeaders();
         const [enquiriesRes, jobsRes, newsRes, portfolioRes, applicationsRes, teamRes, adminsRes] = await Promise.all([
-          axios.get('/api/enquiries', headers).catch(() => ({ data: [] })),
-          axios.get('/api/jobs?admin=true', headers).catch(() => ({ data: [] })),
-          axios.get('/api/news', headers).catch(() => ({ data: [] })),
-          axios.get('/api/portfolio', headers).catch(() => ({ data: [] })),
-          axios.get('/api/applications', headers).catch(() => ({ data: [] })),
-          axios.get('/api/team', headers).catch(() => ({ data: [] })),
-          axios.get('/api/auth/admins', headers).catch(() => ({ data: [] })),
+          api.get('/api/enquiries', headers).catch(() => ({ data: [] })),
+          api.get('/api/jobs?admin=true', headers).catch(() => ({ data: [] })),
+          api.get('/api/news', headers).catch(() => ({ data: [] })),
+          api.get('/api/portfolio', headers).catch(() => ({ data: [] })),
+          api.get('/api/applications', headers).catch(() => ({ data: [] })),
+          api.get('/api/team', headers).catch(() => ({ data: [] })),
+          api.get('/api/auth/admins', headers).catch(() => ({ data: [] })),
         ]);
 
         const enquiries = enquiriesRes.data;

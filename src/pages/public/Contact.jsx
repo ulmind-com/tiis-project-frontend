@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../../api';
 import { Mail, Phone, MapPin, Send, CheckCircle, ArrowRight, Building2, User, UserCircle, Briefcase, FileText, Paperclip } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { linkContactInfo } from '../../utils/visitorTracker';
@@ -99,7 +99,7 @@ const Contact = () => {
           data.append(key, formData[key]);
         }
       });
-      await axios.post('/api/enquiries', data, {
+      await api.post('/api/enquiries', data, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       setStatus('success');

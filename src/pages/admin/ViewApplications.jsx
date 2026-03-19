@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../api';
 import { Download, ChevronDown, User, Mail, Phone, Briefcase, Calendar, Filter } from 'lucide-react';
 
 const STATUS_COLORS = {
@@ -28,7 +28,7 @@ const ViewApplications = () => {
     setLoading(true);
     try {
       console.log('Fetching applications...');
-      const { data } = await axios.get('/api/applications', getAuthHeaders());
+      const { data } = await api.get('/api/applications', getAuthHeaders());
       console.log('Applications data received:', data);
       setApplications(data);
     } catch (error) {
@@ -43,7 +43,7 @@ const ViewApplications = () => {
   const handleStatusChange = async (appId, newStatus) => {
     setUpdatingId(appId);
     try {
-      const { data } = await axios.put(
+      const { data } = await api.put(
         `/api/applications/${appId}/status`,
         { status: newStatus },
         getAuthHeaders()

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import api from '../../api';
 import { Plus, Edit2, Trash2, Loader2, FolderOpen, Upload, X, Image as ImageIcon } from 'lucide-react';
 import Swal from 'sweetalert2';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -28,7 +28,7 @@ const ManagePortfolio = () => {
 
   const fetchItems = async () => {
     try {
-      const { data } = await axios.get('/api/portfolio', getAuthHeaders());
+      const { data } = await api.get('/api/portfolio', getAuthHeaders());
       setItems(data);
     } catch (error) { console.error('Failed to fetch portfolio'); }
     finally { setLoading(false); }
@@ -48,10 +48,10 @@ const ManagePortfolio = () => {
       const config = getAuthHeaders();
 
       if (isEditing) {
-        await axios.put(`/api/portfolio/${currentId}`, data, config);
+        await api.put(`/api/portfolio/${currentId}`, data, config);
         Swal.fire({ title: 'Updated!', icon: 'success', toast: true, position: 'top-end', timer: 2500, showConfirmButton: false });
       } else {
-        await axios.post('/api/portfolio', data, config);
+        await api.post('/api/portfolio', data, config);
         Swal.fire({ title: 'Project added!', icon: 'success', toast: true, position: 'top-end', timer: 2500, showConfirmButton: false });
       }
       resetForm(); fetchItems();
@@ -79,7 +79,7 @@ const ManagePortfolio = () => {
     });
     if (result.isConfirmed) {
       try {
-        await axios.delete(`/api/portfolio/${id}`, getAuthHeaders());
+        await api.delete(`/api/portfolio/${id}`, getAuthHeaders());
         fetchItems(); Swal.fire({ title: 'Deleted!', icon: 'success', toast: true, position: 'top-end', timer: 2500, showConfirmButton: false });
       } catch (err) { Swal.fire('Error!', err.response?.data?.message || 'Failed to delete.', 'error'); }
     }

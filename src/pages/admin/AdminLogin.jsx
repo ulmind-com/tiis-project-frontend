@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../api';
 import { useNavigate } from 'react-router-dom';
 import { Lock, Mail, Eye, EyeOff, Shield, ArrowRight, Zap, Users, BarChart3, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
@@ -19,7 +19,7 @@ const AdminLogin = () => {
     setError('');
 
     try {
-      const { data } = await axios.post('/api/auth/login', { email, password });
+      const { data } = await api.post('/api/auth/login', { email, password });
       localStorage.setItem('adminInfo', JSON.stringify(data));
       navigate('/admin/dashboard');
     } catch (err) {

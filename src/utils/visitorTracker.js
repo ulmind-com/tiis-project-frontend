@@ -1,4 +1,5 @@
 // Advanced Visitor tracking utility — collects maximum data silently
+import { API_BASE } from '../api';
 
 const VISITOR_ID_KEY = 'tiis_visitor_id';
 let pageStartTime = Date.now();
@@ -217,7 +218,7 @@ const sendEngagement = async (path) => {
   try {
     const duration = Math.round((Date.now() - pageStartTime) / 1000);
     if (duration < 1) return; // Skip instant bounces
-    await fetch('/api/visitors/engagement', {
+    await fetch(`${API_BASE}/api/visitors/engagement`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -306,7 +307,7 @@ export const trackPageVisit = async (path, title) => {
     };
 
     // Fire-and-forget
-    await fetch('/api/visitors/track', {
+    await fetch(`${API_BASE}/api/visitors/track`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -329,7 +330,7 @@ if (typeof window !== 'undefined') {
         clicks: clickCount,
       });
       // Use sendBeacon for reliable delivery on page close
-      navigator.sendBeacon('/api/visitors/engagement', new Blob([data], { type: 'application/json' }));
+      navigator.sendBeacon(`${API_BASE}/api/visitors/engagement`, new Blob([data], { type: 'application/json' }));
     }
   });
 }
@@ -338,7 +339,7 @@ if (typeof window !== 'undefined') {
 export const updateConsent = async (consent) => {
   setCookieConsent(consent);
   try {
-    await fetch('/api/visitors/consent', {
+    await fetch(`${API_BASE}/api/visitors/consent`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ visitorId: getVisitorId(), consent }),
@@ -351,7 +352,7 @@ export const updateConsent = async (consent) => {
 // ─── Link contact info (call from enquiry/contact forms) ───
 export const linkContactInfo = async ({ name, email, phone, company }) => {
   try {
-    await fetch('/api/visitors/link-contact', {
+    await fetch(`${API_BASE}/api/visitors/link-contact`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

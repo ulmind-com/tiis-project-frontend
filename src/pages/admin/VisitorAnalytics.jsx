@@ -7,7 +7,7 @@ import {
   ChevronLeft, ChevronRight, ArrowUpRight, Timer, Scroll,
   Zap, Mail, Cpu, Battery, Wifi, UserCheck,
 } from 'lucide-react';
-import axios from 'axios';
+import api from '../../api';
 
 /* ─── Animated counter ─── */
 const useCountUp = (target, dur = 1000) => {
@@ -129,8 +129,8 @@ const VisitorAnalytics = () => {
     try {
       const h = getAuthHeaders();
       const [aRes, vRes] = await Promise.all([
-        axios.get('/api/visitors/analytics', h),
-        axios.get(`/api/visitors?page=${p}&limit=20`, h),
+        api.get('/api/visitors/analytics', h),
+        api.get(`/api/visitors?page=${p}&limit=20`, h),
       ]);
       setAnalytics(aRes.data);
       setVisitors(vRes.data.visitors);
@@ -141,7 +141,7 @@ const VisitorAnalytics = () => {
   };
 
   const fetchDetail = async (id) => {
-    try { const { data } = await axios.get(`/api/visitors/${id}`, getAuthHeaders()); setSelectedVisitor(data); }
+    try { const { data } = await api.get(`/api/visitors/${id}`, getAuthHeaders()); setSelectedVisitor(data); }
     catch (e) { console.error(e); }
   };
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../api';
 import { useTheme } from '../../hooks/useTheme';
 
 const ViewEnquiries = () => {
@@ -27,7 +27,7 @@ const ViewEnquiries = () => {
     setLoading(true);
     try {
       console.log('Fetching enquiries...');
-      const { data } = await axios.get('/api/enquiries', getAuthHeaders());
+      const { data } = await api.get('/api/enquiries', getAuthHeaders());
       console.log('Enquiries data received:', data);
       setEnquiries(data);
     } catch (error) {
@@ -43,7 +43,7 @@ const ViewEnquiries = () => {
 
   const updateStatus = async (id, newStatus) => {
     try {
-      await axios.put(`/api/enquiries/${id}/status`, { status: newStatus }, getAuthHeaders());
+      await api.put(`/api/enquiries/${id}/status`, { status: newStatus }, getAuthHeaders());
       fetchEnquiries(); // refresh
     } catch (error) {
       alert('Failed to update status');
