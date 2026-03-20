@@ -50,10 +50,7 @@ const ShineBorder = ({
 }) => {
   return (
     <div
-      style={{
-        "--border-radius": `${borderRadius}px`,
-        backgroundColor: bgColor
-      }}
+      style={{ "--border-radius": `${borderRadius}px`, backgroundColor: bgColor }}
       className={`relative grid h-full w-full place-items-center rounded-[var(--border-radius)] ${className || ""}`}
     >
       <style dangerouslySetInnerHTML={{
@@ -161,6 +158,7 @@ const CapabilityCard = ({ service, index, isDark }) => {
           <div className="w-full mt-auto relative z-20 pt-4">
             <Link
               to="/services"
+              onClick={() => window.scrollTo(0, 0)}
               className="w-full h-12 transition-all duration-300 rounded-full font-semibold text-sm flex items-center justify-center bg-transparent mt-auto shadow-sm group-hover:shadow-md"
               style={{ border: `1px solid ${theme.btnBorder}`, color: theme.textColor }}
               onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = theme.btnHoverBg; e.currentTarget.style.borderColor = theme.btnHoverBorder; e.currentTarget.style.color = theme.btnHoverText; e.currentTarget.style.transform = 'scale(1.02)'; e.currentTarget.style.boxShadow = '0 0 15px rgba(0,0,0,0.1)'; }}
@@ -215,26 +213,73 @@ const Home = () => {
   }, [news]);
 
   return (
-    <div className="home-page animate-fade-in" style={{ backgroundColor: 'var(--color-bg-light)', overflowX: 'hidden' }}>
+    <div className="home-page animate-fade-in" style={{ backgroundColor: 'var(--color-bg-light)', overflowX: 'hidden', width: '100%' }}>
 
       {/* ─── ULTRA PREMIUM MOBILE RESPONSIVE CSS ─── */}
       <style>{`
+        /* Global Mobile Overflow Fix */
+        html, body { overflow-x: hidden !important; width: 100%; }
+        
         @media (max-width: 768px) {
-          /* General Adjustments */
-          .container { padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
+          /* Containers strictly limited to viewport */
+          .container { 
+            padding-left: 1.25rem !important; 
+            padding-right: 1.25rem !important; 
+            width: 100% !important; 
+            max-width: 100vw !important; 
+            box-sizing: border-box !important;
+          }
           
-          /* Marquee */
+          /* Marquee Text Size */
           .marquee-text-span { padding: 0 1.5rem !important; font-size: 0.8rem !important; }
 
-          /* Hero Section */
-          .hero-section { padding: 6rem 0 8rem 0 !important; }
-          .hero-container { flex-direction: column !important; text-align: center; gap: 3rem !important; }
-          .hero-text-block { align-items: center !important; }
-          .hero-text-block h1 { font-size: 2.5rem !important; line-height: 1.2 !important; }
-          .hero-text-block p { font-size: 1rem !important; margin-bottom: 2rem !important; }
-          .hero-buttons { justify-content: center !important; width: 100%; }
-          .hero-buttons a, .hero-buttons button { width: 100%; margin-bottom: 0.5rem; text-align: center; justify-content: center; }
-          .hero-visual-wrapper { max-width: 100% !important; margin-top: 1rem; }
+          /* ── Hero Section Fixes ── */
+          .hero-section { padding: 5rem 0 6rem 0 !important; width: 100vw !important; overflow-x: hidden !important; }
+          .hero-container { 
+            flex-direction: column !important; 
+            text-align: center; 
+            gap: 2.5rem !important; 
+            width: 100% !important; 
+            margin: 0 !important; 
+          }
+          
+          /* Crucial: Override flex-basis which caused the right-side cut */
+          .hero-text-block, .hero-visual-block { 
+            flex: 1 1 100% !important; 
+            width: 100% !important; 
+            max-width: 100% !important; 
+            box-sizing: border-box !important;
+          }
+          
+          .hero-text-block { align-items: center !important; padding: 0 !important; }
+          .hero-text-block h1 { font-size: 2.3rem !important; line-height: 1.2 !important; word-wrap: break-word; }
+          .hero-text-block p { font-size: 1rem !important; margin-bottom: 2rem !important; padding: 0 0.5rem !important; }
+          
+          .hero-buttons { justify-content: center !important; width: 100%; flex-direction: column !important; gap: 0.8rem !important; }
+          .hero-buttons a, .hero-buttons button { width: 100% !important; margin-bottom: 0 !important; text-align: center; justify-content: center; box-sizing: border-box !important; }
+          
+          /* Visual Wrapper & Image */
+          .hero-visual-wrapper { 
+            width: 100% !important; 
+            max-width: 100% !important; 
+            margin-top: 1rem; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            position: relative !important;
+          }
+          .hero-image-mask { width: 100% !important; border-radius: 20px !important; }
+          
+          /* Fixed Badge Layout */
+          .hero-badge {
+            position: relative !important;
+            margin-top: -1.5rem !important;
+            bottom: auto !important; right: auto !important; left: auto !important;
+            transform: none !important;
+            width: 90% !important;
+            max-width: 320px !important;
+            z-index: 10 !important;
+          }
 
           /* Services / Capabilities */
           .services-overview { padding: 4rem 0 !important; }
@@ -267,18 +312,18 @@ const Home = () => {
 
           /* Why Us Section */
           .why-us-section { padding: 5rem 0 8rem 0 !important; text-align: center; }
-          .why-us-container { flex-direction: column !important; gap: 3rem !important; }
-          .why-us-text { align-items: center !important; display: flex; flex-direction: column; }
+          .why-us-container { flex-direction: column !important; gap: 3rem !important; width: 100% !important; }
+          .why-us-text { align-items: center !important; display: flex; flex-direction: column; width: 100% !important; }
           .why-us-text h2 { font-size: 2rem !important; }
           .why-us-text p { font-size: 1rem !important; }
-          .why-us-text ul { grid-template-columns: 1fr !important; text-align: left; width: 100%; padding-left: 1rem; }
+          .why-us-text ul { grid-template-columns: 1fr !important; text-align: left; width: 100%; padding-left: 0; box-sizing: border-box !important;}
           .why-us-text ul li { font-size: 0.95rem !important; }
-          .why-us-text a { width: 100%; justify-content: center; text-align: center; }
-          .why-us-image { max-width: 100% !important; margin-top: 1rem; }
+          .why-us-text a { width: 100%; justify-content: center; text-align: center; box-sizing: border-box !important; }
+          .why-us-image { max-width: 100% !important; width: 100% !important; margin-top: 1rem; }
 
           /* Modals */
-          .motto-modal-content { padding: 2rem 1.5rem !important; }
-          .motto-modal-content h2 { font-size: 1.5rem !important; }
+          .motto-modal-content { padding: 2rem 1.5rem !important; width: 92% !important; margin: 0 auto; border-radius: 16px !important; }
+          .motto-modal-content h2 { font-size: 1.4rem !important; }
           .motto-modal-content li { font-size: 0.95rem !important; }
           .news-modal-body { padding: 1.5rem 1.2rem !important; }
           .news-modal-header-img { height: 200px !important; }
@@ -315,6 +360,7 @@ const Home = () => {
                     textDecoration: 'none', transition: 'all 0.2s',
                     boxShadow: '0 2px 6px rgba(0,0,0,0.12)',
                   }}
+                    onClick={() => window.scrollTo(0, 0)}
                     onMouseEnter={e => { e.currentTarget.style.background = '#f0f9ff'; e.currentTarget.style.transform = 'scale(1.05)'; }}
                     onMouseLeave={e => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.transform = 'scale(1)'; }}
                   >Apply Now <ArrowRight size={13} /></Link>
@@ -352,7 +398,7 @@ const Home = () => {
             </p>
 
             <div className="hero-buttons" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <Link to="/services" className="btn-pill-primary">
+              <Link to="/services" onClick={() => window.scrollTo(0, 0)} className="btn-pill-primary">
                 Get Started
               </Link>
               <button onClick={() => setIsMottoModalOpen(true)} className="btn-pill-secondary" style={{ border: '2px solid #e2e8f0', color: 'var(--color-text-main)' }}>
@@ -363,6 +409,7 @@ const Home = () => {
 
           {/* Right Visual Block */}
           <motion.div
+            className="hero-visual-block"
             style={{ flex: '1 1 450px', display: 'flex', justifyContent: 'center' }}
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -440,7 +487,6 @@ const Home = () => {
             background: isDark ? 'radial-gradient(circle, rgba(139,92,246,0.07) 0%, transparent 70%)' : 'radial-gradient(circle, rgba(139,92,246,0.04) 0%, transparent 70%)',
             animation: 'capOrb3 18s ease-in-out infinite',
           }} />
-          {/* Subtle grid pattern */}
           <div style={{
             position: 'absolute', inset: 0,
             backgroundImage: isDark ? 'radial-gradient(circle, rgba(255,255,255,0.02) 1px, transparent 1px)' : 'radial-gradient(circle, rgba(0,0,0,0.02) 1px, transparent 1px)',
@@ -449,20 +495,9 @@ const Home = () => {
         </div>
 
         <style>{`
-          @keyframes capOrb1 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(60px, 40px) scale(1.15); }
-            66% { transform: translate(-30px, 60px) scale(0.9); }
-          }
-          @keyframes capOrb2 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(-50px, -40px) scale(1.1); }
-            66% { transform: translate(40px, -30px) scale(0.95); }
-          }
-          @keyframes capOrb3 {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.2); }
-          }
+          @keyframes capOrb1 { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(60px, 40px) scale(1.15); } 66% { transform: translate(-30px, 60px) scale(0.9); } }
+          @keyframes capOrb2 { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(-50px, -40px) scale(1.1); } 66% { transform: translate(40px, -30px) scale(0.95); } }
+          @keyframes capOrb3 { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.2); } }
         `}</style>
 
         <div className="container" style={{ maxWidth: '1300px', margin: '0 auto', position: 'relative', zIndex: 2 }}>
@@ -561,7 +596,7 @@ const Home = () => {
                         Projects
                       </div>
                     </div>
-                    <Link to="/portfolio" style={{ display: 'block', width: '100%', padding: '0.85rem', backgroundColor: 'white', color: '#111', borderRadius: '50px', textAlign: 'center', fontWeight: '600', fontSize: '1rem', textDecoration: 'none', transition: 'background-color 0.2s, transform 0.2s' }}
+                    <Link to="/portfolio" onClick={() => window.scrollTo(0, 0)} style={{ display: 'block', width: '100%', padding: '0.85rem', backgroundColor: 'white', color: '#111', borderRadius: '50px', textAlign: 'center', fontWeight: '600', fontSize: '1rem', textDecoration: 'none', transition: 'background-color 0.2s, transform 0.2s' }}
                       onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f1f5f9'}
                       onMouseLeave={e => e.currentTarget.style.backgroundColor = 'white'}
                     >
@@ -573,7 +608,7 @@ const Home = () => {
             </div>
 
             <div style={{ textAlign: 'center', marginTop: '4rem' }}>
-              <Link to="/portfolio" className="btn-pill-secondary" style={{ border: '2px solid var(--color-primary)' }}>
+              <Link to="/portfolio" onClick={() => window.scrollTo(0, 0)} className="btn-pill-secondary" style={{ border: '2px solid var(--color-primary)' }}>
                 See All Projects
               </Link>
             </div>
@@ -678,7 +713,7 @@ const Home = () => {
               transition={{ duration: 0.5, delay: 0.3 }}
               style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '4rem' }}
             >
-              <Link to="/news" className="btn-pill-secondary" style={{ border: '2px solid var(--color-primary)', fontSize: '0.85rem' }}>
+              <Link to="/news" onClick={() => window.scrollTo(0, 0)} className="btn-pill-secondary" style={{ border: '2px solid var(--color-primary)', fontSize: '0.85rem' }}>
                 View All Posts <ArrowRight size={15} />
               </Link>
             </motion.div>
@@ -704,7 +739,7 @@ const Home = () => {
                   </li>
                 ))}
               </ul>
-              <Link to="/contact" className="btn-pill-primary" style={{ backgroundColor: 'var(--color-secondary)', borderColor: 'var(--color-secondary)' }}>
+              <Link to="/contact" onClick={() => window.scrollTo(0, 0)} className="btn-pill-primary" style={{ backgroundColor: 'var(--color-secondary)', borderColor: 'var(--color-secondary)' }}>
                 Schedule Consultation
               </Link>
             </div>
@@ -731,7 +766,7 @@ const Home = () => {
             className="motto-modal-content"
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            style={{ backgroundColor: 'var(--color-card-bg)', border: '1px solid var(--border-color-strong)', borderRadius: '16px', padding: '3rem 2.5rem', maxWidth: '750px', width: '100%', position: 'relative', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)' }}
+            style={{ backgroundColor: 'var(--color-card-bg)', border: '1px solid var(--border-color-strong)', borderRadius: '16px', padding: '3rem 2.5rem', maxWidth: '750px', width: '100%', position: 'relative', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)', maxHeight: '90vh', overflowY: 'auto' }}
             onClick={e => e.stopPropagation()}
           >
             <button onClick={() => setIsMottoModalOpen(false)} style={{ position: 'absolute', top: '1rem', right: '1.5rem', background: 'none', border: 'none', fontSize: '2.5rem', cursor: 'pointer', color: 'var(--color-text-muted)', lineHeight: 1 }}>&times;</button>
