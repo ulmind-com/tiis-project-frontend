@@ -14,7 +14,17 @@ const Footer = () => {
         
         {/* About Column */}
         <div>
-          <h3 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: 'var(--color-secondary)' }}>TIIS</h3>
+          <img 
+            src="/icons.png" 
+            alt="TIIS Logo" 
+            style={{ 
+              height: '76px', 
+              width: 'auto', 
+              objectFit: 'contain', 
+              marginBottom: '1.5rem',
+              display: 'block' 
+            }} 
+          />
           <p style={{ color: 'var(--color-bg-light)', opacity: '0.8', lineHeight: '1.8' }}>
             Elevating Businesses, Empowering People. Your trusted partner in end-to-end consulting and capacity building.
           </p>

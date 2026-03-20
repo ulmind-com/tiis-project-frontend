@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { Building2, Users, Briefcase, FileText, Layout, CheckCircle, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useInView } from 'framer-motion';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 import api from '../../api';
 import { useTheme } from '../../hooks/useTheme';
 
@@ -108,7 +108,7 @@ const CapabilityCard = ({ service, index, isDark }) => {
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       whileHover={{ y: -10, scale: 1.02 }}
-      className="h-full w-full p-2 group"
+      className="h-full w-full p-2 group capability-card-wrapper"
       style={{ height: '520px' }}
     >
       <ShineBorder
@@ -118,11 +118,11 @@ const CapabilityCard = ({ service, index, isDark }) => {
         bgColor={theme.cardBg}
         className="shadow-2xl overflow-hidden flex flex-col justify-between items-start text-left p-0 transition-all duration-500 group-hover:shadow-[0_20px_40px_rgba(0,0,0,0.15)]"
       >
-        <div style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', width: '100%', flexGrow: 1, position: 'relative', zIndex: 20, height: '100%', transition: 'background-color 0.4s ease' }}>
+        <div className="capability-card-inner" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', width: '100%', flexGrow: 1, position: 'relative', zIndex: 20, height: '100%', transition: 'background-color 0.4s ease' }}>
           <div className="mb-6 flex items-center justify-center w-12 h-12 rounded-full transition-transform duration-300 group-hover:scale-110" style={{ backgroundColor: theme.iconBg, border: `1px solid ${theme.iconBorder}`, color: theme.textColor }}>
-             <service.icon className="w-6 h-6" />
+            <service.icon className="w-6 h-6" />
           </div>
-          
+
           <h3 className="text-2xl font-bold mb-2 tracking-tight transition-colors duration-300" style={{ color: theme.textColor }}>
             {service.title}
           </h3>
@@ -215,7 +215,77 @@ const Home = () => {
   }, [news]);
 
   return (
-    <div className="home-page animate-fade-in" style={{ backgroundColor: 'var(--color-bg-light)' }}>
+    <div className="home-page animate-fade-in" style={{ backgroundColor: 'var(--color-bg-light)', overflowX: 'hidden' }}>
+
+      {/* ─── ULTRA PREMIUM MOBILE RESPONSIVE CSS ─── */}
+      <style>{`
+        @media (max-width: 768px) {
+          /* General Adjustments */
+          .container { padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
+          
+          /* Marquee */
+          .marquee-text-span { padding: 0 1.5rem !important; font-size: 0.8rem !important; }
+
+          /* Hero Section */
+          .hero-section { padding: 6rem 0 8rem 0 !important; }
+          .hero-container { flex-direction: column !important; text-align: center; gap: 3rem !important; }
+          .hero-text-block { align-items: center !important; }
+          .hero-text-block h1 { font-size: 2.5rem !important; line-height: 1.2 !important; }
+          .hero-text-block p { font-size: 1rem !important; margin-bottom: 2rem !important; }
+          .hero-buttons { justify-content: center !important; width: 100%; }
+          .hero-buttons a, .hero-buttons button { width: 100%; margin-bottom: 0.5rem; text-align: center; justify-content: center; }
+          .hero-visual-wrapper { max-width: 100% !important; margin-top: 1rem; }
+
+          /* Services / Capabilities */
+          .services-overview { padding: 4rem 0 !important; }
+          .capability-card-wrapper { height: auto !important; min-height: 480px !important; }
+          .capability-card-inner { padding: 1.8rem 1.5rem !important; }
+
+          /* Portfolio */
+          .portfolio-section { padding: 4rem 0 !important; }
+          .portfolio-card { height: 400px !important; padding: 1.2rem !important; }
+          .portfolio-card h3 { font-size: 1.4rem !important; }
+
+          /* News Bento Grid */
+          .news-section { padding: 4rem 0 !important; }
+          .news-slider-container {
+            flex-direction: column !important;
+            height: auto !important;
+            min-height: 600px !important;
+            border-radius: 20px !important;
+          }
+          .news-slider-image { flex: 0 0 240px !important; width: 100% !important; }
+          .news-slider-content {
+            flex: 1 1 auto !important;
+            padding: 2.5rem 1.5rem !important;
+            border-left: none !important;
+            border-top: 1px solid var(--border-color-strong);
+          }
+          .news-slider-content h3 { font-size: 1.8rem !important; margin-bottom: 1rem !important; }
+          .news-slider-content p { font-size: 1rem !important; margin-bottom: 2rem !important; }
+          .news-slider-content button { width: 100%; justify-content: center; }
+
+          /* Why Us Section */
+          .why-us-section { padding: 5rem 0 8rem 0 !important; text-align: center; }
+          .why-us-container { flex-direction: column !important; gap: 3rem !important; }
+          .why-us-text { align-items: center !important; display: flex; flex-direction: column; }
+          .why-us-text h2 { font-size: 2rem !important; }
+          .why-us-text p { font-size: 1rem !important; }
+          .why-us-text ul { grid-template-columns: 1fr !important; text-align: left; width: 100%; padding-left: 1rem; }
+          .why-us-text ul li { font-size: 0.95rem !important; }
+          .why-us-text a { width: 100%; justify-content: center; text-align: center; }
+          .why-us-image { max-width: 100% !important; margin-top: 1rem; }
+
+          /* Modals */
+          .motto-modal-content { padding: 2rem 1.5rem !important; }
+          .motto-modal-content h2 { font-size: 1.5rem !important; }
+          .motto-modal-content li { font-size: 0.95rem !important; }
+          .news-modal-body { padding: 1.5rem 1.2rem !important; }
+          .news-modal-header-img { height: 200px !important; }
+          .news-modal-header-img h2 { font-size: 1.8rem !important; }
+        }
+      `}</style>
+      {/* ────────────────────────────────────────── */}
 
       {/* ── Jobs Hiring Marquee ── */}
       {activeJobs.length > 0 && (
@@ -236,7 +306,7 @@ const Home = () => {
               animation: 'marqueeScroll 25s linear infinite',
             }}>
               {[...Array(6)].map((_, i) => (
-                <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0 3rem', fontSize: '0.88rem', fontWeight: 600, letterSpacing: '0.3px' }}>
+                <span key={i} className="marquee-text-span" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0 3rem', fontSize: '0.88rem', fontWeight: 600, letterSpacing: '0.3px' }}>
                   🚀 We're hiring! {activeJobs.length} open position{activeJobs.length > 1 ? 's' : ''} available — Explore current job opportunities and apply to join our team.
                   <Link to="/careers" style={{
                     display: 'inline-flex', alignItems: 'center', gap: '0.35rem',
@@ -256,12 +326,13 @@ const Home = () => {
       )}
 
       {/* Premium Split Hero Section */}
-      <section style={{ backgroundColor: 'var(--color-bg-light)', padding: '6rem 0 18rem 0', overflow: 'hidden', position: 'relative' }}>
-        <div className="container" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '4rem', position: 'relative', zIndex: 2 }}>
+      <section className="hero-section" style={{ backgroundColor: 'var(--color-bg-light)', padding: '6rem 0 18rem 0', overflow: 'hidden', position: 'relative' }}>
+        <div className="container hero-container" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '4rem', position: 'relative', zIndex: 2 }}>
 
           {/* Left Content Block */}
           <motion.div
-            style={{ flex: '1 1 450px' }}
+            className="hero-text-block"
+            style={{ flex: '1 1 450px', display: 'flex', flexDirection: 'column' }}
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
@@ -280,7 +351,7 @@ const Home = () => {
               TIIS offers the full spectrum of thoughtful researched-based innovative solutions to help organizations and institutions plan better, work better & deliver better in this VUCA world. We design and develop thoughtful innovative solutions to optimize the potential of human capital to strive for the desired business objective and self-satisfaction.
             </p>
 
-            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+            <div className="hero-buttons" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
               <Link to="/services" className="btn-pill-primary">
                 Get Started
               </Link>
@@ -290,7 +361,7 @@ const Home = () => {
             </div>
           </motion.div>
 
-          {/* Right Visual Block (Geometric Shapes & Image) */}
+          {/* Right Visual Block */}
           <motion.div
             style={{ flex: '1 1 450px', display: 'flex', justifyContent: 'center' }}
             initial={{ opacity: 0, x: 50 }}
@@ -355,42 +426,24 @@ const Home = () => {
         {/* Animated floating orbs */}
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
           <div style={{
-            position: 'absolute',
-            top: '10%', left: '5%',
-            width: '400px', height: '400px',
-            borderRadius: '50%',
-            background: isDark
-              ? 'radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%)'
-              : 'radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%)',
+            position: 'absolute', top: '10%', left: '5%', width: '400px', height: '400px', borderRadius: '50%',
+            background: isDark ? 'radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%)' : 'radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%)',
             animation: 'capOrb1 12s ease-in-out infinite',
           }} />
           <div style={{
-            position: 'absolute',
-            bottom: '5%', right: '8%',
-            width: '350px', height: '350px',
-            borderRadius: '50%',
-            background: isDark
-              ? 'radial-gradient(circle, rgba(177,32,35,0.1) 0%, transparent 70%)'
-              : 'radial-gradient(circle, rgba(177,32,35,0.06) 0%, transparent 70%)',
+            position: 'absolute', bottom: '5%', right: '8%', width: '350px', height: '350px', borderRadius: '50%',
+            background: isDark ? 'radial-gradient(circle, rgba(177,32,35,0.1) 0%, transparent 70%)' : 'radial-gradient(circle, rgba(177,32,35,0.06) 0%, transparent 70%)',
             animation: 'capOrb2 15s ease-in-out infinite',
           }} />
           <div style={{
-            position: 'absolute',
-            top: '50%', left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '500px', height: '500px',
-            borderRadius: '50%',
-            background: isDark
-              ? 'radial-gradient(circle, rgba(139,92,246,0.07) 0%, transparent 70%)'
-              : 'radial-gradient(circle, rgba(139,92,246,0.04) 0%, transparent 70%)',
+            position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '500px', height: '500px', borderRadius: '50%',
+            background: isDark ? 'radial-gradient(circle, rgba(139,92,246,0.07) 0%, transparent 70%)' : 'radial-gradient(circle, rgba(139,92,246,0.04) 0%, transparent 70%)',
             animation: 'capOrb3 18s ease-in-out infinite',
           }} />
           {/* Subtle grid pattern */}
           <div style={{
             position: 'absolute', inset: 0,
-            backgroundImage: isDark
-              ? 'radial-gradient(circle, rgba(255,255,255,0.02) 1px, transparent 1px)'
-              : 'radial-gradient(circle, rgba(0,0,0,0.02) 1px, transparent 1px)',
+            backgroundImage: isDark ? 'radial-gradient(circle, rgba(255,255,255,0.02) 1px, transparent 1px)' : 'radial-gradient(circle, rgba(0,0,0,0.02) 1px, transparent 1px)',
             backgroundSize: '30px 30px',
           }} />
         </div>
@@ -412,7 +465,7 @@ const Home = () => {
           }
         `}</style>
 
-        <div className="container" style={{ maxWidth: '1300px', margin: '0 auto', padding: '0 2rem', position: 'relative', zIndex: 2 }}>
+        <div className="container" style={{ maxWidth: '1300px', margin: '0 auto', position: 'relative', zIndex: 2 }}>
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -448,7 +501,7 @@ const Home = () => {
 
       {/* Dynamic Portfolio Section */}
       {portfolio.length > 0 && (
-        <section style={{ padding: '6rem 0', background: 'var(--grad-projects)' }}>
+        <section className="portfolio-section" style={{ padding: '6rem 0', background: 'var(--grad-projects)' }}>
           <div className="container">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
@@ -477,55 +530,29 @@ const Home = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className="group portfolio-card"
                   style={{
-                    position: 'relative',
-                    height: '460px',
-                    borderRadius: '28px',
-                    overflow: 'hidden',
-                    cursor: 'pointer',
-                    boxShadow: '0 20px 40px -15px rgba(0,0,0,0.2)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'flex-end',
-                    padding: '1.5rem',
-                    color: 'white'
+                    position: 'relative', height: '460px', borderRadius: '28px', overflow: 'hidden', cursor: 'pointer',
+                    boxShadow: '0 20px 40px -15px rgba(0,0,0,0.2)', display: 'flex', flexDirection: 'column',
+                    justifyContent: 'flex-end', padding: '1.5rem', color: 'white'
                   }}
-                  className="group"
                   onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-8px)'; e.currentTarget.style.boxShadow = '0 25px 50px -12px rgba(0,0,0,0.3)'; }}
                   onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 20px 40px -15px rgba(0,0,0,0.2)'; }}
                 >
-                  {/* Background Image with Hover Scale */}
                   <div
+                    className="group-hover:scale-105"
                     style={{
                       position: 'absolute', inset: 0,
                       backgroundImage: project.imageUrl ? `url(${project.imageUrl})` : 'url(https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80)',
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                      transition: 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                      zIndex: 0
-                    }}
-                    className="group-hover:scale-105"
-                  />
-
-                  {/* Premium Dark Gradient Overlay */}
-                  <div
-                    style={{
-                      position: 'absolute', inset: 0,
-                      background: 'linear-gradient(to bottom, rgba(0,0,0,0) 25%, rgba(20,25,20,0.6) 55%, rgba(20,25,20,0.95) 85%, rgba(20,25,20,1) 100%)',
-                      zIndex: 1
+                      backgroundSize: 'cover', backgroundPosition: 'center', transition: 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)', zIndex: 0
                     }}
                   />
-
-                  {/* Card Content Overlay */}
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0) 25%, rgba(20,25,20,0.6) 55%, rgba(20,25,20,0.95) 85%, rgba(20,25,20,1) 100%)', zIndex: 1 }} />
                   <div style={{ position: 'relative', zIndex: 2 }}>
-
                     <h3 style={{ fontSize: '1.6rem', fontWeight: '500', marginBottom: '0.6rem', lineHeight: '1.2', letterSpacing: '-0.5px' }}>{project.title}</h3>
-
                     <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.75)', lineHeight: '1.5', marginBottom: '1.5rem', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }}>
                       {project.description}
                     </p>
-
-                    {/* Badges / Tags Row */}
                     <div style={{ display: 'flex', gap: '0.6rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
                       <div style={{ padding: '0.35rem 0.8rem', borderRadius: '20px', backgroundColor: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.1)', fontSize: '0.75rem', fontWeight: '400', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
                         ★ {project.clientName || 'Confidential'}
@@ -534,15 +561,12 @@ const Home = () => {
                         Projects
                       </div>
                     </div>
-
-                    {/* Submit / Action Button */}
                     <Link to="/portfolio" style={{ display: 'block', width: '100%', padding: '0.85rem', backgroundColor: 'white', color: '#111', borderRadius: '50px', textAlign: 'center', fontWeight: '600', fontSize: '1rem', textDecoration: 'none', transition: 'background-color 0.2s, transform 0.2s' }}
                       onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f1f5f9'}
                       onMouseLeave={e => e.currentTarget.style.backgroundColor = 'white'}
                     >
                       View Project
                     </Link>
-
                   </div>
                 </motion.div>
               ))}
@@ -559,10 +583,9 @@ const Home = () => {
 
       {/* News Bento Grid Section */}
       {news.length > 0 && (
-        <section style={{ minHeight: '100vh', background: 'var(--grad-blog)', display: 'flex', flexDirection: 'column', padding: '5rem 0' }}>
+        <section className="news-section" style={{ minHeight: '100vh', background: 'var(--grad-blog)', display: 'flex', flexDirection: 'column', padding: '5rem 0' }}>
           <div className="container" style={{ maxWidth: '1400px', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
 
-            {/* Ultra Premium Section Header */}
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -589,47 +612,25 @@ const Home = () => {
                 {news.length > 0 && (
                   <motion.div
                     key={currentNewsIndex}
+                    className="news-slider-container"
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -50 }}
                     transition={{ duration: 0.6, ease: "easeInOut" }}
                     style={{
-                      width: '100%',
-                      maxWidth: '1200px',
-                      display: 'flex',
-                      flexDirection: 'row',
-                      borderRadius: '30px',
-                      overflow: 'hidden',
-                      boxShadow: '0 40px 80px -20px rgba(0,0,0,0.15)',
-                      backgroundColor: 'var(--color-card-bg)',
-                      height: '500px'
+                      width: '100%', maxWidth: '1200px', display: 'flex', flexDirection: 'row',
+                      borderRadius: '30px', overflow: 'hidden', boxShadow: '0 40px 80px -20px rgba(0,0,0,0.15)',
+                      backgroundColor: 'var(--color-card-bg)', height: '500px'
                     }}
                   >
-                    {/* Left Side: Image */}
-                    <div style={{ flex: '1 1 50%', position: 'relative' }}>
-                      <div
-                        style={{
-                          position: 'absolute', inset: 0,
-                          backgroundImage: `url(${news[currentNewsIndex].imageUrl || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop'})`,
-                          backgroundSize: 'cover',
-                          backgroundPosition: 'center',
-                        }}
-                      />
+                    <div className="news-slider-image" style={{ flex: '1 1 50%', position: 'relative' }}>
+                      <div style={{ position: 'absolute', inset: 0, backgroundImage: `url(${news[currentNewsIndex].imageUrl || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop'})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
                     </div>
 
-                    {/* Right Side: Content with Glassmorphism */}
-                    <div style={{
-                      flex: '1 1 50%',
-                      padding: '4rem 3rem',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      position: 'relative',
-                      backgroundColor: 'var(--color-navbar-bg)',
-                      backdropFilter: 'blur(20px)',
-                      WebkitBackdropFilter: 'blur(20px)',
-                      borderLeft: '1px solid var(--border-color-strong)',
-                      zIndex: 10
+                    <div className="news-slider-content" style={{
+                      flex: '1 1 50%', padding: '4rem 3rem', display: 'flex', flexDirection: 'column', justifyContent: 'center',
+                      position: 'relative', backgroundColor: 'var(--color-navbar-bg)', backdropFilter: 'blur(20px)',
+                      WebkitBackdropFilter: 'blur(20px)', borderLeft: '1px solid var(--border-color-strong)', zIndex: 10
                     }}>
                       <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
                         <span style={{ padding: '0.4rem 1rem', backgroundColor: 'var(--color-secondary)', color: 'white', borderRadius: '50px', fontSize: '0.8rem', fontWeight: '700', letterSpacing: '1px', textTransform: 'uppercase' }}>
@@ -660,41 +661,24 @@ const Home = () => {
                 )}
               </AnimatePresence>
 
-              {/* Slider Dots */}
               <div style={{ position: 'absolute', bottom: '-3rem', left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: '0.8rem' }}>
                 {news.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setCurrentNewsIndex(idx)}
-                    style={{
-                      width: currentNewsIndex === idx ? '30px' : '10px',
-                      height: '10px',
-                      borderRadius: '10px',
-                      backgroundColor: currentNewsIndex === idx ? 'var(--color-primary)' : 'rgba(0,0,0,0.2)',
-                      border: 'none',
-                      transition: 'all 0.4s ease',
-                      cursor: 'pointer',
-                      padding: 0
-                    }}
+                  <button key={idx} onClick={() => setCurrentNewsIndex(idx)}
+                    style={{ width: currentNewsIndex === idx ? '30px' : '10px', height: '10px', borderRadius: '10px', backgroundColor: currentNewsIndex === idx ? 'var(--color-primary)' : 'rgba(0,0,0,0.2)', border: 'none', transition: 'all 0.4s ease', cursor: 'pointer', padding: 0 }}
                     aria-label={`Go to slide ${idx + 1}`}
                   />
                 ))}
               </div>
             </div>
 
-            {/* View All Posts — Bottom Right */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '2rem' }}
+              style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '4rem' }}
             >
-              <Link
-                to="/news"
-                className="btn-pill-secondary"
-                style={{ border: '2px solid var(--color-primary)', fontSize: '0.85rem' }}
-              >
+              <Link to="/news" className="btn-pill-secondary" style={{ border: '2px solid var(--color-primary)', fontSize: '0.85rem' }}>
                 View All Posts <ArrowRight size={15} />
               </Link>
             </motion.div>
@@ -704,10 +688,10 @@ const Home = () => {
       )}
 
       {/* Why Us / CTA Section */}
-      <section style={{ padding: '6rem 0 14rem 0', backgroundColor: 'var(--color-primary)', color: 'white', position: 'relative', overflow: 'hidden' }}>
+      <section className="why-us-section" style={{ padding: '6rem 0 14rem 0', backgroundColor: 'var(--color-primary)', color: 'white', position: 'relative', overflow: 'hidden' }}>
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4rem', alignItems: 'center' }}>
-            <div style={{ flex: '1 1 500px' }}>
+          <div className="why-us-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '4rem', alignItems: 'center' }}>
+            <div className="why-us-text" style={{ flex: '1 1 500px' }}>
               <h2 style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '1.5rem', lineHeight: '1.2' }}>Ready To Transform Your Enterprise?</h2>
               <p style={{ fontSize: '1.1rem', color: 'rgba(255,255,255,0.8)', marginBottom: '2rem', lineHeight: '1.7' }}>
                 Partner with TIIS to unlock innovative solutions tailored for your industry. Our strategic expertise and global experience deliver measurable results and long-term success.
@@ -724,7 +708,7 @@ const Home = () => {
                 Schedule Consultation
               </Link>
             </div>
-            <div style={{ flex: '1 1 400px', display: 'flex', justifyContent: 'center' }}>
+            <div className="why-us-image" style={{ flex: '1 1 400px', display: 'flex', justifyContent: 'center' }}>
               <div style={{ position: 'relative', width: '100%', maxWidth: '500px', aspectRatio: '4/3', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)' }}>
                 <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80" alt="Consultation" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
@@ -736,33 +720,22 @@ const Home = () => {
         <img
           src="/wave-haikei2.svg"
           alt=""
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            width: '100%',
-            height: 'auto',
-            display: 'block',
-            lineHeight: 0,
-            pointerEvents: 'none',
-            zIndex: 1,
-          }}
+          style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: 'auto', display: 'block', lineHeight: 0, pointerEvents: 'none', zIndex: 1 }}
         />
       </section>
 
-      {/* Motto Modal - Portaled to avoid transform containing blocks */}
+      {/* Motto Modal */}
       {isMottoModalOpen && createPortal(
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }} onClick={() => setIsMottoModalOpen(false)}>
           <motion.div
+            className="motto-modal-content"
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             style={{ backgroundColor: 'var(--color-card-bg)', border: '1px solid var(--border-color-strong)', borderRadius: '16px', padding: '3rem 2.5rem', maxWidth: '750px', width: '100%', position: 'relative', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)' }}
             onClick={e => e.stopPropagation()}
           >
             <button onClick={() => setIsMottoModalOpen(false)} style={{ position: 'absolute', top: '1rem', right: '1.5rem', background: 'none', border: 'none', fontSize: '2.5rem', cursor: 'pointer', color: 'var(--color-text-muted)', lineHeight: 1 }}>&times;</button>
-
             <h2 style={{ fontSize: '1.8rem', color: 'var(--color-primary-dark)', marginBottom: '2rem', borderBottom: '3px solid var(--color-secondary)', paddingBottom: '1rem', display: 'inline-block' }}>Our Motto is Service Before Self</h2>
-
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               {[
                 "Serve client with integrity and honesty,",
@@ -796,7 +769,7 @@ const Home = () => {
           >
             <button onClick={() => setSelectedNews(null)} className="absolute top-4 right-4 z-20 w-10 h-10 bg-white/50 backdrop-blur-md rounded-full flex items-center justify-center text-xl hover:bg-white transition-colors cursor-pointer border border-black/10">&times;</button>
 
-            <div className="h-64 relative shrink-0">
+            <div className="h-64 relative shrink-0 news-modal-header-img">
               {selectedNews.imageUrl ? (
                 <img src={selectedNews.imageUrl} alt={selectedNews.title} className="w-full h-full object-cover" />
               ) : (
@@ -813,8 +786,7 @@ const Home = () => {
               </div>
             </div>
 
-            <div style={{ padding: '3rem 4rem', overflowY: 'auto' }}>
-
+            <div className="news-modal-body" style={{ padding: '3rem 4rem', overflowY: 'auto' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2.5rem', paddingBottom: '2.5rem', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
                 <div style={{ width: '50px', height: '50px', borderRadius: '50%', backgroundColor: 'var(--color-secondary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '1.2rem' }}>
                   T
@@ -825,15 +797,7 @@ const Home = () => {
                 </div>
               </div>
 
-              <div style={{
-                color: 'var(--color-text-main)',
-                fontSize: '1.15rem',
-                lineHeight: '1.9',
-                whiteSpace: 'pre-wrap',
-                fontFamily: 'system-ui, -apple-system, sans-serif',
-                fontWeight: '400',
-                letterSpacing: '0.2px'
-              }}>
+              <div style={{ color: 'var(--color-text-main)', fontSize: '1.15rem', lineHeight: '1.9', whiteSpace: 'pre-wrap', fontFamily: 'system-ui, -apple-system, sans-serif', fontWeight: '400', letterSpacing: '0.2px' }}>
                 <span className="drop-cap" style={{ float: 'left', fontSize: '4.5rem', lineHeight: '0.8', paddingTop: '0.3rem', paddingRight: '0.8rem', color: 'var(--color-primary-dark)', fontWeight: '900', fontFamily: 'Georgia, serif' }}>
                   {selectedNews.content.charAt(0)}
                 </span>

@@ -61,7 +61,7 @@ const JobCard = ({ job, index, onApply }) => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-60px' });
   const [hovered, setHovered] = useState(false);
-  
+
   const gradient = getCardGradient(index);
   const accentColor = getAccentColor(index);
 
@@ -89,7 +89,7 @@ const JobCard = ({ job, index, onApply }) => {
       onClick={() => onApply(job)}
     >
       {/* ── Card Banner ── */}
-      <div style={{
+      <div className="job-card-banner" style={{
         position: 'relative',
         overflow: 'hidden',
         background: job.image ? '#000' : gradient,
@@ -99,26 +99,26 @@ const JobCard = ({ job, index, onApply }) => {
         justifyContent: 'flex-end',
       }}>
         {job.image && (
-          <img 
-            src={job.image} 
-            alt={job.title} 
-            style={{ 
-              width: '100%', 
-              height: 'auto', 
+          <img
+            src={job.image}
+            alt={job.title}
+            style={{
+              width: '100%',
+              height: 'auto',
               display: 'block',
               position: 'relative',
               zIndex: 0
-            }} 
+            }}
           />
         )}
 
         {/* Dark overlay for text readability + hover effect (Image Only) */}
         {job.image && (
           <motion.div
-            animate={{ 
-              background: hovered 
-                ? 'linear-gradient(to bottom, rgba(1,40,68,0.3) 0%, rgba(1,40,68,0.95) 100%)' 
-                : 'linear-gradient(to top, rgba(1,40,68,0.95) 0%, rgba(1,40,68,0) 100%)' 
+            animate={{
+              background: hovered
+                ? 'linear-gradient(to bottom, rgba(1,40,68,0.3) 0%, rgba(1,40,68,0.95) 100%)'
+                : 'linear-gradient(to top, rgba(1,40,68,0.95) 0%, rgba(1,40,68,0) 100%)'
             }}
             transition={{ duration: 0.4 }}
             style={{ position: 'absolute', inset: 0, zIndex: 1 }}
@@ -148,47 +148,47 @@ const JobCard = ({ job, index, onApply }) => {
           display: 'flex',
           flexDirection: 'column'
         }}>
-        {/* Animated background blobs on hover (Gradient Only) */}
-        {!job.image && (
-          <>
-            <motion.div
-              animate={{ scale: hovered ? 1.3 : 1, opacity: hovered ? 0.18 : 0.07 }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-              style={{
-                position: 'absolute', top: '-20px', right: '-20px',
-                width: '140px', height: '140px', borderRadius: '50%',
-                background: 'white',
-              }}
-            />
-            <motion.div
-              animate={{ scale: hovered ? 1.4 : 1, opacity: hovered ? 0.12 : 0.05 }}
-              transition={{ duration: 0.7, ease: 'easeOut', delay: 0.05 }}
-              style={{
-                position: 'absolute', bottom: '-30px', right: '30px',
-                width: '90px', height: '90px', borderRadius: '50%',
-                background: 'white',
-              }}
-            />
-          </>
-        )}
+          {/* Animated background blobs on hover (Gradient Only) */}
+          {!job.image && (
+            <>
+              <motion.div
+                animate={{ scale: hovered ? 1.3 : 1, opacity: hovered ? 0.18 : 0.07 }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
+                style={{
+                  position: 'absolute', top: '-20px', right: '-20px',
+                  width: '140px', height: '140px', borderRadius: '50%',
+                  background: 'white',
+                }}
+              />
+              <motion.div
+                animate={{ scale: hovered ? 1.4 : 1, opacity: hovered ? 0.12 : 0.05 }}
+                transition={{ duration: 0.7, ease: 'easeOut', delay: 0.05 }}
+                style={{
+                  position: 'absolute', bottom: '-30px', right: '30px',
+                  width: '90px', height: '90px', borderRadius: '50%',
+                  background: 'white',
+                }}
+              />
+            </>
+          )}
 
-        <motion.h3
-          animate={{ x: hovered ? 4 : 0 }}
-          transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-          style={{ position: 'relative', zIndex: 1, color: 'white', fontSize: '1.35rem', fontWeight: '800', marginBottom: '0.3rem', textShadow: job.image ? '0 2px 10px rgba(0,0,0,0.6)' : 'none' }}
-        >
-          {job.title}
-        </motion.h3>
-        
-        <div style={{ position: 'relative', zIndex: 1, display: 'flex', gap: '0.8rem', color: job.image ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.85)', fontSize: '0.85rem', fontWeight: '600', marginTop: '0.5rem', textShadow: job.image ? '0 2px 8px rgba(0,0,0,0.6)' : 'none' }}>
-           <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><MapPin size={14}/> {job.location}</span>
-           <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><Briefcase size={14}/> {job.experience}</span>
-        </div>
+          <motion.h3
+            animate={{ x: hovered ? 4 : 0 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+            style={{ position: 'relative', zIndex: 1, color: 'white', fontSize: '1.35rem', fontWeight: '800', marginBottom: '0.3rem', textShadow: job.image ? '0 2px 10px rgba(0,0,0,0.6)' : 'none' }}
+          >
+            {job.title}
+          </motion.h3>
+
+          <div style={{ position: 'relative', zIndex: 1, display: 'flex', gap: '0.8rem', color: job.image ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.85)', fontSize: '0.85rem', fontWeight: '600', marginTop: '0.5rem', textShadow: job.image ? '0 2px 8px rgba(0,0,0,0.6)' : 'none' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><MapPin size={14} /> {job.location}</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><Briefcase size={14} /> {job.experience}</span>
+          </div>
         </div>
       </div>
 
       {/* ── Card Body ── */}
-      <div style={{ padding: '1.75rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <div className="job-card-body" style={{ padding: '1.75rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
         <p style={{ color: 'var(--color-text-muted)', lineHeight: '1.75', marginBottom: '1.5rem', fontSize: '0.95rem', flex: 1 }}>
           {job.description}
         </p>
@@ -237,7 +237,7 @@ const ApplicationModal = ({ job, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitStatus('submitting');
-    
+
     const data = new FormData();
     data.append('job', job._id);
     data.append('name', formData.name);
@@ -250,7 +250,7 @@ const ApplicationModal = ({ job, onClose }) => {
       setSubmitStatus('success');
       setTimeout(() => onClose(), 3000);
     } catch (error) {
-       setSubmitStatus('error');
+      setSubmitStatus('error');
     }
   };
 
@@ -275,6 +275,7 @@ const ApplicationModal = ({ job, onClose }) => {
         }}
       >
         <motion.div
+          className="app-modal-card"
           key="app-modal-card"
           initial={{ opacity: 0, scale: 0.9, y: 40 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -291,6 +292,7 @@ const ApplicationModal = ({ job, onClose }) => {
         >
           {/* Close Button */}
           <motion.button
+            className="app-modal-close"
             onClick={onClose}
             whileHover={{ rotate: 90, scale: 1.1 }}
             transition={{ type: 'spring', stiffness: 400, damping: 20 }}
@@ -305,6 +307,7 @@ const ApplicationModal = ({ job, onClose }) => {
           </motion.button>
 
           <motion.h2
+            className="app-modal-title"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.1 }}
@@ -322,43 +325,45 @@ const ApplicationModal = ({ job, onClose }) => {
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
             style={{ display: 'flex', gap: '1rem', color: 'var(--color-text-muted)', fontWeight: '600', fontSize: '0.85rem', marginBottom: '2rem', textTransform: 'uppercase' }}
           >
-             <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><MapPin size={14}/> {job.location}</span>
-             <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><Briefcase size={14}/> {job.experience}</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><MapPin size={14} /> {job.location}</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><Briefcase size={14} /> {job.experience}</span>
           </motion.div>
 
           {submitStatus === 'success' ? (
             <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: 'center', padding: '2rem 0' }}>
               <CheckCircle size={60} color="#10b981" style={{ margin: '0 auto 1rem' }} />
-              <h3 style={{ color: '#064e3b', fontSize: '1.5rem', fontWeight: '800', marginBottom: '0.5rem' }}>Application Submitted!</h3>
-              <p style={{ color: '#475569' }}>Thank you. Check your email for confirmation.</p>
+              <h3 style={{ color: 'var(--color-text-heading)', fontSize: '1.5rem', fontWeight: '800', marginBottom: '0.5rem' }}>Application Submitted!</h3>
+              <p style={{ color: 'var(--color-text-muted)' }}>Thank you. Check your email for confirmation.</p>
             </motion.div>
           ) : (
-            <motion.form 
+            <motion.form
               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
               onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}
             >
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+              {/* Responsive Grid applied here */}
+              <div className="app-modal-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
                   <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--color-text-heading)' }}>Full Name *</label>
-                  <input required type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} style={{ padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color-strong)', outline: 'none', backgroundColor: 'var(--color-bg-light)', color: 'var(--color-text-main)', fontSize: '0.95rem' }} />
+                  <input required type="text" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} style={{ padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color-strong)', outline: 'none', backgroundColor: 'var(--color-bg-light)', color: 'var(--color-text-main)', fontSize: '0.95rem' }} />
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
                   <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--color-text-heading)' }}>Email Address *</label>
-                  <input required type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} style={{ padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color-strong)', outline: 'none', backgroundColor: 'var(--color-bg-light)', color: 'var(--color-text-main)', fontSize: '0.95rem' }} />
+                  <input required type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} style={{ padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color-strong)', outline: 'none', backgroundColor: 'var(--color-bg-light)', color: 'var(--color-text-main)', fontSize: '0.95rem' }} />
                 </div>
               </div>
-              
+
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
                 <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--color-text-heading)' }}>Phone Number *</label>
-                <input required type="tel" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} style={{ padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color-strong)', outline: 'none', backgroundColor: 'var(--color-bg-light)', color: 'var(--color-text-main)', fontSize: '0.95rem' }} />
+                <input required type="tel" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} style={{ padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color-strong)', outline: 'none', backgroundColor: 'var(--color-bg-light)', color: 'var(--color-text-main)', fontSize: '0.95rem' }} />
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
                 <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--color-text-heading)' }}>Upload CV (PDF/DOC) *</label>
-                <input required type="file" accept=".pdf,.doc,.docx" onChange={e => setFormData({...formData, cv: e.target.files[0]})} style={{ padding: '0.65rem', borderRadius: '12px', border: '1px dashed var(--border-color-strong)', outline: 'none', backgroundColor: 'var(--color-bg-light)', color: 'var(--color-text-main)', cursor: 'pointer', fontSize: '0.9rem' }} />
+                <input required type="file" accept=".pdf,.doc,.docx" onChange={e => setFormData({ ...formData, cv: e.target.files[0] })} style={{ padding: '0.65rem', borderRadius: '12px', border: '1px dashed var(--border-color-strong)', outline: 'none', backgroundColor: 'var(--color-bg-light)', color: 'var(--color-text-main)', cursor: 'pointer', fontSize: '0.9rem' }} />
               </div>
 
-              <motion.button 
+              <motion.button
+                className="app-modal-submit"
                 whileTap={{ scale: 0.97 }}
                 type="submit" disabled={submitStatus === 'submitting'}
                 style={{
@@ -402,11 +407,47 @@ const Careers = () => {
   }, []);
 
   return (
-    <div className="animate-fade-in">
+    <div className="animate-fade-in" style={{ overflowX: 'hidden' }}>
+
+      {/* ─── ULTRA PREMIUM MOBILE RESPONSIVE CSS ─── */}
+      <style>{`
+        @media (max-width: 768px) {
+          /* General Container */
+          .container { padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
+          
+          /* Hero Section */
+          .careers-hero { padding: 6rem 1.5rem 4rem !important; }
+          .careers-hero h1 { font-size: 2.5rem !important; margin-bottom: 1rem !important; line-height: 1.2 !important; }
+          .careers-hero p { font-size: 1rem !important; line-height: 1.6 !important; padding: 0 0.5rem; }
+
+          /* Cards Section */
+          .careers-section { padding: 4rem 1.5rem !important; }
+          .section-header-title { font-size: 2rem !important; line-height: 1.2 !important; }
+
+          /* Job Card Layout (Fix columnWidth for mobile) */
+          .job-cards-container { column-count: 1 !important; display: flex !important; flex-direction: column !important; gap: 1.5rem !important; }
+          
+          /* Inner Card Spacing */
+          .job-card-banner { padding: 1.5rem 1.5rem 1.25rem !important; }
+          .job-card-banner h3 { font-size: 1.25rem !important; }
+          .job-card-body { padding: 1.5rem !important; }
+
+          /* Application Modal */
+          .app-modal-card { padding: 2rem 1.5rem !important; width: 92% !important; margin: 0 auto; max-height: 85vh !important; border-radius: 18px !important; }
+          .app-modal-close { top: 1rem !important; right: 1rem !important; font-size: 2rem !important; }
+          .app-modal-title { font-size: 1.5rem !important; padding-bottom: 0.75rem !important; margin-bottom: 1rem !important; }
+          
+          /* Form Grid Stacking */
+          .app-modal-form-grid { grid-template-columns: 1fr !important; gap: 1rem !important; }
+          .app-modal-submit { width: 100%; justify-content: center; text-align: center; }
+        }
+      `}</style>
+      {/* ────────────────────────────────────────── */}
+
       {/* ══════════════════════════════════════
-          HERO SECTION — matched to Services
+          HERO SECTION
       ══════════════════════════════════════ */}
-      <section style={{
+      <section className="careers-hero" style={{
         position: 'relative', overflow: 'hidden',
         background: 'var(--color-hero-grad)',
         padding: '6rem 2rem 5rem', textAlign: 'center', color: 'white',
@@ -473,9 +514,9 @@ const Careers = () => {
       </section>
 
       {/* ══════════════════════════════════════
-          CARDS SECTION — matched to Services
+          CARDS SECTION
       ══════════════════════════════════════ */}
-      <section style={{
+      <section className="careers-section" style={{
         padding: '5rem 2rem 6rem',
         background: 'var(--color-page-grad)',
         position: 'relative', overflow: 'hidden',
@@ -489,24 +530,24 @@ const Careers = () => {
             <motion.div variants={fadeUp(0)} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.8rem', color: 'var(--color-text-heading)', fontWeight: '700', fontSize: '0.85rem', letterSpacing: '3px', textTransform: 'uppercase', marginBottom: '1rem' }}>
               <GrowLine delay={0.2} /> Current Openings <GrowLine delay={0.35} />
             </motion.div>
-            <motion.h2 variants={fadeUp(0.1)} style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.75rem)', fontWeight: '800', color: 'var(--color-text-heading)', letterSpacing: '-0.5px', lineHeight: '1.2' }}>
+            <motion.h2 className="section-header-title" variants={fadeUp(0.1)} style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.75rem)', fontWeight: '800', color: 'var(--color-text-heading)', letterSpacing: '-0.5px', lineHeight: '1.2' }}>
               Explore Opportunities
             </motion.h2>
             <motion.div initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ duration: 0.55, delay: 0.3, ease: [0.22, 1, 0.36, 1] }} style={{ height: '3px', width: '50px', background: '#b12023', borderRadius: '2px', margin: '0.9rem auto 0', originX: 0.5 }} />
           </motion.div>
 
           {loading ? (
-             <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem 0' }}>
-               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#01324e]"></div>
-             </div>
+            <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem 0' }}>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#01324e]"></div>
+            </div>
           ) : jobs.length === 0 ? (
-             <div style={{ textAlign: 'center', padding: '4rem 0', background: 'var(--color-card-bg)', borderRadius: '20px', boxShadow: '0 6px 30px rgba(0,0,0,0.08)' }}>
-                <Briefcase size={48} color="var(--color-text-muted)" style={{ margin: '0 auto 1rem' }} />
-                <h3 style={{ fontSize: '1.5rem', fontWeight: '700', color: 'var(--color-text-heading)' }}>No open positions</h3>
-                <p style={{ color: 'var(--color-text-muted)', marginTop: '0.5rem' }}>Check back later for new opportunities.</p>
-             </div>
+            <div style={{ textAlign: 'center', padding: '4rem 0', background: 'var(--color-card-bg)', borderRadius: '20px', boxShadow: '0 6px 30px rgba(0,0,0,0.08)' }}>
+              <Briefcase size={48} color="var(--color-text-muted)" style={{ margin: '0 auto 1rem' }} />
+              <h3 style={{ fontSize: '1.5rem', fontWeight: '700', color: 'var(--color-text-heading)' }}>No open positions</h3>
+              <p style={{ color: 'var(--color-text-muted)', marginTop: '0.5rem' }}>Check back later for new opportunities.</p>
+            </div>
           ) : (
-            <div style={{ columnWidth: '320px', columnGap: '2rem' }}>
+            <div className="job-cards-container" style={{ columnWidth: '320px', columnGap: '2rem' }}>
               {jobs.map((job, index) => (
                 <JobCard key={job._id} job={job} index={index} onApply={setSelectedJob} />
               ))}
@@ -524,4 +565,3 @@ const Careers = () => {
 };
 
 export default Careers;
-

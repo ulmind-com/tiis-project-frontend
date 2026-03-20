@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { Briefcase, Users, Building2, FileText, ShieldCheck, CheckCircle, ArrowRight } from 'lucide-react';
-import { motion, AnimatePresence, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 /* ─────────────────────────────────────────
@@ -12,11 +12,6 @@ const fadeUp = (delay = 0, duration = 0.6) => ({
   visible: { opacity: 1, y: 0, transition: { duration, delay, ease: [0.22, 1, 0.36, 1] } },
 });
 
-const fadeIn = (delay = 0) => ({
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.5, delay } },
-});
-
 const staggerContainer = (stagger = 0.1, delayStart = 0) => ({
   hidden: {},
   visible: { transition: { staggerChildren: stagger, delayChildren: delayStart } },
@@ -25,36 +20,6 @@ const staggerContainer = (stagger = 0.1, delayStart = 0) => ({
 const listItemVariant = {
   hidden: { opacity: 0, x: -18 },
   visible: { opacity: 1, x: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
-};
-
-const scaleIn = (delay = 0) => ({
-  hidden: { opacity: 0, scale: 0.85 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] } },
-});
-
-/* ─────────────────────────────────────────
-   Word-by-word animated title
-───────────────────────────────────────── */
-const AnimatedWords = ({ text, style, delay = 0 }) => {
-  const words = text.split(' ');
-  return (
-    <motion.span
-      variants={staggerContainer(0.08, delay)}
-      initial="hidden"
-      animate="visible"
-      style={{ display: 'inline', ...style }}
-    >
-      {words.map((word, i) => (
-        <motion.span
-          key={i}
-          variants={fadeUp(0)}
-          style={{ display: 'inline-block', marginRight: '0.28em' }}
-        >
-          {word}
-        </motion.span>
-      ))}
-    </motion.span>
-  );
 };
 
 /* ─────────────────────────────────────────
@@ -158,7 +123,7 @@ const ServiceCard = ({ service, index, onOpen }) => {
       onClick={() => onOpen(service)}
     >
       {/* ── Card Banner ── */}
-      <div style={{
+      <div className="service-card-banner" style={{
         background: service.gradient,
         padding: '2rem 2rem 1.5rem',
         position: 'relative',
@@ -210,7 +175,7 @@ const ServiceCard = ({ service, index, onOpen }) => {
       </div>
 
       {/* ── Card Body ── */}
-      <div style={{ padding: '1.75rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <div className="service-card-body" style={{ padding: '1.75rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
         <p style={{ color: 'var(--color-text-muted)', lineHeight: '1.75', marginBottom: '1.5rem', fontSize: '0.95rem' }}>
           {service.desc}
         </p>
@@ -299,6 +264,7 @@ const ServiceModal = ({ service, onClose }) => {
         }}
       >
         <motion.div
+          className="service-modal-card"
           key="service-modal-card"
           initial={{ opacity: 0, scale: 0.9, y: 40 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -320,6 +286,7 @@ const ServiceModal = ({ service, onClose }) => {
         >
           {/* Close Button */}
           <motion.button
+            className="service-modal-close"
             onClick={onClose}
             whileHover={{ rotate: 90, scale: 1.1 }}
             transition={{ type: 'spring', stiffness: 400, damping: 20 }}
@@ -351,6 +318,7 @@ const ServiceModal = ({ service, onClose }) => {
 
           {/* Title — slides up */}
           <motion.h2
+            className="service-modal-title"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.15 }}
@@ -368,6 +336,7 @@ const ServiceModal = ({ service, onClose }) => {
 
           {/* Tagline */}
           <motion.p
+            className="service-modal-tagline"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.4, delay: 0.22 }}
@@ -382,6 +351,7 @@ const ServiceModal = ({ service, onClose }) => {
 
           {/* Description */}
           <motion.p
+            className="service-modal-desc"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.28 }}
@@ -392,6 +362,7 @@ const ServiceModal = ({ service, onClose }) => {
 
           {/* Items — staggered */}
           <motion.ul
+            className="service-modal-items"
             variants={staggerContainer(0.09, 0.35)}
             initial="hidden"
             animate="visible"
@@ -420,6 +391,7 @@ const ServiceModal = ({ service, onClose }) => {
             <Link
               to="/contact"
               onClick={onClose}
+              className="service-modal-cta"
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: '0.6rem',
                 background: service.gradient, color: 'white',
@@ -449,12 +421,53 @@ const Services = () => {
   const closeModal = () => setSelectedService(null);
 
   return (
-    <div className="animate-fade-in">
+    <div className="animate-fade-in" style={{ overflowX: 'hidden' }}>
+
+      {/* ─── ULTRA PREMIUM MOBILE RESPONSIVE CSS ─── */}
+      <style>{`
+        @media (max-width: 768px) {
+          /* General Container Adjustments */
+          .container { padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
+          
+          /* Hero Section */
+          .services-hero { padding: 6rem 1.5rem 4rem !important; }
+          .services-hero h1 { font-size: 2.5rem !important; margin-bottom: 1rem !important; line-height: 1.2 !important; }
+          .services-hero p { font-size: 1rem !important; line-height: 1.6 !important; padding: 0 0.5rem; }
+
+          /* Cards Section Header */
+          .section-header-title { font-size: 2rem !important; line-height: 1.2 !important; }
+
+          /* Cards Grid */
+          .services-grid { gap: 1.5rem !important; grid-template-columns: 1fr !important; }
+          .service-card-banner { padding: 1.5rem 1.5rem 1.25rem !important; }
+          .service-card-body { padding: 1.5rem !important; }
+          .service-card-banner h3 { font-size: 1.25rem !important; }
+
+          /* Service Modal */
+          .service-modal-card { padding: 2rem 1.5rem !important; width: 92% !important; margin: 0 auto; max-height: 85vh !important; border-radius: 18px !important; }
+          .service-modal-close { top: 1rem !important; right: 1rem !important; font-size: 2rem !important; }
+          .service-modal-title { font-size: 1.5rem !important; padding-bottom: 0.75rem !important; margin-bottom: 1rem !important; }
+          .service-modal-tagline { font-size: 0.85rem !important; margin-bottom: 1rem !important; margin-top: -0.5rem !important; }
+          .service-modal-desc { font-size: 0.95rem !important; margin-bottom: 1.5rem !important; line-height: 1.6 !important; }
+          .service-modal-items { gap: 0.85rem !important; margin-bottom: 2rem !important; }
+          .service-modal-items li { font-size: 0.95rem !important; align-items: flex-start !important; }
+          .service-modal-cta { width: 100%; justify-content: center; text-align: center; }
+
+          /* CTA Section */
+          .services-cta { padding: 4rem 1.5rem !important; }
+          .services-cta h2 { font-size: 2rem !important; }
+          .services-cta p { font-size: 1rem !important; margin-bottom: 2rem !important; }
+          .services-cta-buttons { flex-direction: column !important; gap: 1rem !important; width: 100%; }
+          .services-cta-buttons > div { width: 100%; }
+          .services-cta-buttons a { width: 100%; justify-content: center; text-align: center; }
+        }
+      `}</style>
+      {/* ────────────────────────────────────────── */}
 
       {/* ══════════════════════════════════════
           HERO SECTION — full animation suite
       ══════════════════════════════════════ */}
-      <section style={{
+      <section className="services-hero" style={{
         position: 'relative', overflow: 'hidden',
         background: 'var(--color-hero-grad)',
         padding: '6rem 2rem 5rem', textAlign: 'center', color: 'white',
@@ -605,6 +618,7 @@ const Services = () => {
             </motion.div>
 
             <motion.h2
+              className="section-header-title"
               variants={fadeUp(0.1)}
               style={{
                 fontSize: 'clamp(1.8rem, 3.5vw, 2.75rem)',
@@ -630,7 +644,7 @@ const Services = () => {
           </motion.div>
 
           {/* Cards grid */}
-          <div style={{
+          <div className="services-grid" style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
             gap: '2rem',
@@ -645,7 +659,7 @@ const Services = () => {
       {/* ══════════════════════════════════════
           CTA SECTION — animated
       ══════════════════════════════════════ */}
-      <section style={{
+      <section className="services-cta" style={{
         background: 'linear-gradient(135deg, #01324e 0%, #b12023 100%)',
         padding: '5rem 2rem', textAlign: 'center', color: 'white',
         position: 'relative', overflow: 'hidden',
@@ -696,6 +710,7 @@ const Services = () => {
 
           {/* CTA Buttons */}
           <motion.div
+            className="services-cta-buttons"
             variants={fadeUp(0.1)}
             style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}
           >
