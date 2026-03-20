@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { Building2, Users, Briefcase, FileText, Layout, CheckCircle, ArrowRight, Star, Quote, ChevronRight, Play } from 'lucide-react';
+import { Building2, Users, Briefcase, FileText, Layout, CheckCircle, ArrowRight, Star, Quote, ChevronRight, Play, Cpu, Car, Rocket, ShoppingCart, Droplet } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { AnimatedTestimonials } from '../../components/ui/animated-testimonials';
@@ -379,71 +379,143 @@ const Home = () => {
       )}
 
       {/* Premium Split Hero Section */}
-      <section className="hero-section" style={{ backgroundColor: 'var(--color-bg-light)', padding: '6rem 0 18rem 0', overflow: 'hidden', position: 'relative' }}>
-        <div className="container hero-container" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '4rem', position: 'relative', zIndex: 2 }}>
+      <section className="hero-section" style={{ backgroundColor: 'var(--color-bg-light)', padding: '7rem 0 16rem 0', overflow: 'hidden', position: 'relative' }}>
+        
+        {/* Animated Background Blobs */}
+        <motion.div animate={{ scale: [1, 1.15, 1], opacity: [0.1, 0.18, 0.1] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }} style={{ position: 'absolute', top: '-10%', right: '-5%', width: '500px', height: '500px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--color-primary) 0%, #0ea5e9 100%)', filter: 'blur(80px)', pointerEvents: 'none', zIndex: 0 }} />
+        <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.08, 0.15, 0.08] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 2 }} style={{ position: 'absolute', bottom: '-10%', left: '-5%', width: '400px', height: '400px', borderRadius: '50%', background: 'linear-gradient(135deg, #f43f5e 0%, var(--color-secondary) 100%)', filter: 'blur(70px)', pointerEvents: 'none', zIndex: 0 }} />
+
+        <div className="container hero-container" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '5rem', position: 'relative', zIndex: 2 }}>
 
           {/* Left Content Block */}
           <motion.div
             className="hero-text-block"
             style={{ flex: '1 1 450px', display: 'flex', flexDirection: 'column' }}
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '1.5rem', color: 'var(--color-secondary)', fontWeight: '700', fontSize: '0.9rem', letterSpacing: '2px', textTransform: 'uppercase' }}>
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.8rem', marginBottom: '1.5rem', color: 'var(--color-secondary)', fontWeight: '700', fontSize: '0.9rem', letterSpacing: '2px', textTransform: 'uppercase' }}
+            >
               <span style={{ width: '40px', height: '3px', backgroundColor: 'var(--color-secondary)', borderRadius: '2px' }}></span>
               Premium Consulting
-            </div>
+            </motion.div>
 
-            <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', marginBottom: '1.5rem', fontWeight: '800', lineHeight: '1.1', color: 'var(--color-primary-dark)' }}>
-              Thoughtful Institute of
-              <span className="text-gradient-primary"> Innovative Solutions, LLP</span>
-            </h1>
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+              style={{ fontSize: 'clamp(2.8rem, 5vw, 4.5rem)', marginBottom: '1.5rem', fontWeight: '900', lineHeight: '1.15', color: 'var(--color-primary-dark)', letterSpacing: '-0.5px' }}
+            >
+              Thoughtful Institute of<br/>
+              <span style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 50%, var(--color-secondary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'inline-block', paddingTop: '0.2rem' }}>
+                Innovative Solutions, LLP
+              </span>
+            </motion.h1>
 
-            <p style={{ fontSize: '1.15rem', color: 'var(--color-text-muted)', marginBottom: '3rem', lineHeight: '1.8', maxWidth: '600px' }}>
-              TIIS offers the full spectrum of thoughtful researched-based innovative solutions to help organizations and institutions plan better, work better & deliver better in this VUCA world. We design and develop thoughtful innovative solutions to optimize the potential of human capital to strive for the desired business objective and self-satisfaction.
-            </p>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              style={{ fontSize: '1.15rem', color: 'var(--color-text-muted)', marginBottom: '3rem', lineHeight: '1.8', maxWidth: '600px' }}
+            >
+              TIIS offers the full spectrum of thoughtful researched-based innovative solutions to help organizations and institutions plan better, work better & deliver better in this VUCA world.
+            </motion.p>
 
-            <div className="hero-buttons" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <Link to="/services" onClick={() => window.scrollTo(0, 0)} className="btn-pill-primary">
+            <motion.div
+              className="hero-buttons"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              style={{ display: 'flex', gap: '1.2rem', flexWrap: 'wrap' }}
+            >
+              <Link to="/services" onClick={() => window.scrollTo(0, 0)} className="btn-pill-primary" style={{ padding: '0.9rem 2.2rem', fontSize: '1.05rem', boxShadow: '0 10px 25px -5px rgba(1, 50, 78, 0.4)' }}>
                 Get Started
+                <ArrowRight size={18} style={{ marginLeft: '0.5rem' }} />
               </Link>
-              <button onClick={() => setIsMottoModalOpen(true)} className="btn-pill-secondary" style={{ border: '2px solid #e2e8f0', color: 'var(--color-text-main)' }}>
+              <button onClick={() => setIsMottoModalOpen(true)} className="btn-pill-secondary" style={{ border: '2px solid rgba(1, 50, 78, 0.1)', color: 'var(--color-text-main)', padding: '0.9rem 2.2rem', fontSize: '1.05rem', background: '#fff' }}>
                 Our Motto
               </button>
-            </div>
+            </motion.div>
           </motion.div>
 
           {/* Right Visual Block */}
           <motion.div
             className="hero-visual-block"
             style={{ flex: '1 1 450px', display: 'flex', justifyContent: 'center' }}
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            initial={{ opacity: 0, scale: 0.9, x: 30 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            transition={{ duration: 0.9, delay: 0.4, ease: "easeOut" }}
           >
-            <div className="hero-visual-wrapper">
-              <div className="hero-shape-bg"></div>
+            <div className="hero-visual-wrapper" style={{ position: 'relative', width: '100%', maxWidth: '550px' }}>
+              
+              {/* Glowing Outline / Shadow */}
+              <div style={{ position: 'absolute', inset: '-25px', background: 'radial-gradient(circle, rgba(14,165,233,0.3) 0%, transparent 65%)', filter: 'blur(35px)', zIndex: 0 }} />
+              
+              <motion.img
+                animate={{ y: [-15, 15, -15] }}
+                transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+                src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1000&q=80"
+                alt="Premium Strategy & Innovation"
+                style={{
+                  width: '100%',
+                  height: 'aUto',
+                  aspectRatio: '4/3',
+                  objectFit: 'cover',
+                  borderRadius: '32px',
+                  boxShadow: '0 30px 60px -15px rgba(0,0,0,0.3)',
+                  position: 'relative',
+                  zIndex: 1,
+                  border: '1px solid rgba(255,255,255,0.6)'
+                }}
+              />
 
-              <div className="hero-image-mask">
-                <img
-                  src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1000&q=80"
-                  alt="Business Team Collaboration"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-              </div>
+              {/* Floating Element 1 - Innovation */}
+              <motion.div
+                animate={{ y: [12, -12, 12] }}
+                transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+                style={{
+                  position: 'absolute', top: '15%', right: '-12%',
+                  background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(16px)',
+                  padding: '1.2rem 1.5rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,1)',
+                  zIndex: 2, boxShadow: '0 15px 35px rgba(0,0,0,0.15)',
+                  display: 'flex', alignItems: 'center', gap: '1rem'
+                }}
+              >
+                <div style={{ background: 'rgba(14,165,233,0.15)', padding: '0.8rem', borderRadius: '50%', color: '#0ea5e9' }}>
+                  <Star size={24} />
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <span style={{ fontWeight: 800, color: 'var(--color-primary-dark)', fontSize: '1.1rem', lineHeight: '1.2' }}>Premium</span>
+                  <span style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>Solutions</span>
+                </div>
+              </motion.div>
 
-              <div className="hero-badge">
-                <div className="hero-badge-avatars">
-                  <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Client 1" />
-                  <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=100&q=80" alt="Client 2" />
-                  <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=100&q=80" alt="Client 3" />
+              {/* Floating Element 2 - Excellence */}
+              <motion.div
+                animate={{ y: [-10, 10, -10] }}
+                transition={{ duration: 6.5, repeat: Infinity, ease: 'easeInOut', delay: 2.5 }}
+                style={{
+                  position: 'absolute', bottom: '15%', left: '-10%',
+                  background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(16px)',
+                  padding: '1.2rem 1.5rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,1)',
+                  zIndex: 2, boxShadow: '0 15px 35px rgba(0,0,0,0.15)',
+                  display: 'flex', alignItems: 'center', gap: '1rem'
+                }}
+              >
+                <div style={{ background: 'rgba(244,63,94,0.12)', padding: '0.8rem', borderRadius: '50%', color: '#f43f5e' }}>
+                  <Briefcase size={24} />
                 </div>
-                <div className="hero-badge-text">
-                  500+ Trusted
-                  <span>Global Clients</span>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <span style={{ fontWeight: 800, color: 'var(--color-primary-dark)', fontSize: '1.1rem', lineHeight: '1.2' }}>Global</span>
+                  <span style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>Expertise</span>
                 </div>
-              </div>
+              </motion.div>
+
             </div>
           </motion.div>
 
@@ -467,44 +539,80 @@ const Home = () => {
         />
       </section>
 
-      {logos.length > 0 && (
-        <div style={{ backgroundColor: isDark ? 'var(--color-bg-dark)' : '#fff', padding: '2.5rem 0', overflow: 'hidden', whiteSpace: 'nowrap', position: 'relative', zIndex: 3, borderBottom: '1px solid var(--border-color)', borderTop: '1px solid var(--border-color)' }}>
-          <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: '150px', background: isDark ? 'linear-gradient(to right, var(--color-bg-dark), transparent)' : 'linear-gradient(to right, #fff, transparent)', zIndex: 2 }}></div>
-          <div style={{ position: 'absolute', top: 0, right: 0, bottom: 0, width: '150px', background: isDark ? 'linear-gradient(to left, var(--color-bg-dark), transparent)' : 'linear-gradient(to left, #fff, transparent)', zIndex: 2 }}></div>
+
+      {/* ══════════════════════════════════════
+          ABOUT TIIS SECTION
+      ══════════════════════════════════════ */}
+      <section className="about-section" style={{ padding: '8rem 0', backgroundColor: 'var(--color-bg-light)', position: 'relative', overflow: 'hidden' }}>
+        {/* Abstract Background Shapes */}
+        <div style={{ position: 'absolute', top: '0', left: '-10%', width: '400px', height: '400px', background: 'radial-gradient(circle, var(--color-primary-light) 0%, transparent 70%)', opacity: 0.6, filter: 'blur(50px)', zIndex: 0 }} />
+        
+        <div className="container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '5rem', alignItems: 'center', position: 'relative', zIndex: 2 }}>
           
-          <div style={{ display: 'inline-block', animation: 'marqueeLogos 40s linear infinite', willChange: 'transform' }}>
-            <style>
-              {`@keyframes marqueeLogos { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }`}
-            </style>
-            
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6rem', paddingRight: '6rem' }}>
-              {[1, 2].map((set) => (
-                <React.Fragment key={set}>
-                  {logos.map((logo, idx) => (
-                    <img 
-                      key={`${set}-${logo._id || idx}`} 
-                      src={logo.imageUrl} 
-                      alt={logo.title || "Client/Partner Logo"} 
-                      title={logo.title || "Client/Partner"} 
-                      style={{ 
-                        height: '42px', 
-                        maxWidth: '200px',
-                        objectFit: 'contain',
-                        opacity: isDark ? 0.7 : 0.6, 
-                        filter: isDark ? 'grayscale(100%) brightness(1.5)' : 'grayscale(100%)', 
-                        transition: 'all 0.4s ease',
-                        cursor: 'pointer'
-                      }} 
-                      onMouseEnter={e => { e.currentTarget.style.opacity = 1; e.currentTarget.style.filter = isDark ? 'grayscale(0%) brightness(1.2)' : 'grayscale(0%)'; e.currentTarget.style.transform = 'scale(1.05)'; }} 
-                      onMouseLeave={e => { e.currentTarget.style.opacity = isDark ? 0.7 : 0.6; e.currentTarget.style.filter = isDark ? 'grayscale(100%) brightness(1.5)' : 'grayscale(100%)'; e.currentTarget.style.transform = 'scale(1)'; }} 
-                    />
-                  ))}
-                </React.Fragment>
-              ))}
+          {/* Visual Side */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+            style={{ position: 'relative' }}
+          >
+            <div style={{ position: 'relative', borderRadius: '30px', overflow: 'hidden', boxShadow: '0 30px 60px -15px rgba(0,0,0,0.2)' }}>
+              <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="TIIS Collaboration" style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover', aspectRatio: '4/4' }} />
             </div>
-          </div>
+            
+
+          </motion.div>
+
+          {/* Text Side */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '1.5rem', color: 'var(--color-secondary)', fontWeight: '700', fontSize: '0.9rem', letterSpacing: '2px', textTransform: 'uppercase' }}>
+              <span style={{ width: '40px', height: '3px', backgroundColor: 'var(--color-secondary)', borderRadius: '2px' }}></span>
+              About TIIS
+            </div>
+            <h2 style={{ fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: '900', color: isDark ? 'white' : 'var(--color-primary-dark)', lineHeight: '1.1', marginBottom: '1.5rem', letterSpacing: '-1px' }}>
+              Empowering Growth Through <span style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 50%, var(--color-secondary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Partnership</span>
+            </h2>
+            
+            <p style={{ fontSize: '1.1rem', color: 'var(--color-text-muted)', lineHeight: '1.8', marginBottom: '1.5rem', textAlign: 'justify' }}>
+              We at TIIS offer customized-based solutions that help increase productivity, performance, and profitability. We believe in customizing and developing specific solutions through a collaborative process designed to identify a client’s needs. Our approach is based on experiential learning combined with the technology and strong faculty of experts and competent solutions providers.
+            </p>
+            
+            <p style={{ fontSize: '1.1rem', color: 'var(--color-text-muted)', lineHeight: '1.8', marginBottom: '2.5rem', textAlign: 'justify' }}>
+              We aim to develop a partnership with our clients by collaborating, cooperating, and coordinating. By improving practices in people and organization development, we ensure that work benefits individuals, businesses, economies, and society at large.
+            </p>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                <CheckCircle size={24} color="var(--color-secondary)" style={{ flexShrink: 0, marginTop: '0.2rem' }} />
+                <div>
+                  <h4 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-primary-dark)', marginBottom: '0.3rem' }}>Customized Solutions</h4>
+                  <p style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', lineHeight: 1.5 }}>Tailored specifically to identify and address client needs.</p>
+                </div>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                <CheckCircle size={24} color="var(--color-secondary)" style={{ flexShrink: 0, marginTop: '0.2rem' }} />
+                <div>
+                  <h4 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-primary-dark)', marginBottom: '0.3rem' }}>Experiential Learning</h4>
+                  <p style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', lineHeight: 1.5 }}>Combined with deep technology and expert faculty.</p>
+                </div>
+              </div>
+            </div>
+            
+            <div style={{ marginTop: '3rem' }}>
+               <Link to="/about" onClick={() => window.scrollTo(0, 0)} className="btn-pill-primary" style={{ padding: '0.9rem 2.2rem', fontSize: '1.05rem', boxShadow: '0 10px 25px -5px rgba(1, 50, 78, 0.4)' }}>
+                  Discover More <ArrowRight size={18} style={{ marginLeft: '0.5rem' }} />
+               </Link>
+            </div>
+          </motion.div>
         </div>
-      )}
+      </section>
+
 
       {/* Dynamic Portfolio Section */}
       {portfolio.length > 0 && (
@@ -588,6 +696,139 @@ const Home = () => {
         </section>
       )}
 
+      {/* ══════════════════════════════════════
+          INDUSTRIES WE SERVE SECTION
+      ══════════════════════════════════════ */}
+      <section className="industries-section" style={{ padding: '6rem 0', backgroundColor: isDark ? '#080808' : '#ffffff', position: 'relative', overflow: 'hidden' }}>
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            style={{ textAlign: 'center', marginBottom: '4rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1rem', color: isDark ? '#f87171' : 'var(--color-secondary)', fontWeight: '700', fontSize: '0.85rem', letterSpacing: '3px', textTransform: 'uppercase' }}>
+              <span style={{ width: '30px', height: '2px', backgroundColor: isDark ? '#f87171' : 'var(--color-secondary)', borderRadius: '2px' }}></span>
+              Sector Expertise
+              <span style={{ width: '30px', height: '2px', backgroundColor: isDark ? '#f87171' : 'var(--color-secondary)', borderRadius: '2px' }}></span>
+            </div>
+            <h2 style={{ fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: '900', color: isDark ? 'white' : 'var(--color-primary-dark)', lineHeight: '1.1', marginBottom: '1.2rem', letterSpacing: '-1px' }}>
+              Industries We <span style={{ background: isDark ? 'linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)' : 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'inline-block', transform: 'translateZ(0)', isolation: 'isolate' }}>Serve</span>
+            </h2>
+          </motion.div>
+
+          {/* Scrolling Marquee implementation for OP smooth infinite scroll */}
+          <style dangerouslySetInnerHTML={{__html: `
+            @keyframes scrollIndustries {
+              0% { transform: translateX(0); }
+              100% { transform: translateX(calc(-350px * 6 - 2rem * 6)); }
+            }
+            .industry-track {
+              display: flex;
+              gap: 2rem;
+              width: max-content;
+              animation: scrollIndustries 30s linear infinite;
+            }
+            .industry-track:hover {
+              animation-play-state: paused;
+            }
+            .industry-card {
+              width: 350px;
+              height: 380px;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              text-align: center;
+              padding: 2.5rem;
+              border-radius: 24px;
+              border: 2px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(2,132,199,0.15)'};
+              background: ${isDark ? '#111' : '#fff'};
+              transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+              cursor: pointer;
+              position: relative;
+              overflow: hidden;
+            }
+            .industry-card::before {
+              content: '';
+              position: absolute;
+              top: 0; left: 0; right: 0; bottom: 0;
+              background: linear-gradient(180deg, ${isDark ? 'rgba(255,255,255,0.03)' : 'rgba(2,132,199,0.03)'} 0%, transparent 100%);
+              opacity: 0;
+              transition: opacity 0.4s;
+            }
+            .industry-card:hover {
+              transform: translateY(-10px);
+              border-color: var(--color-primary);
+              box-shadow: 0 20px 40px -15px ${isDark ? 'rgba(0,0,0,0.5)' : 'rgba(2,132,199,0.2)'};
+            }
+            .industry-card:hover::before {
+              opacity: 1;
+            }
+            .industry-icon-wrapper {
+              color: var(--color-primary);
+              margin-bottom: 2rem;
+              transition: transform 0.4s;
+              background: ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(14,165,233,0.1)'};
+              padding: 1.5rem;
+              border-radius: 50%;
+            }
+            .industry-card:hover .industry-icon-wrapper {
+              transform: scale(1.1) translateY(-5px);
+              background: var(--color-primary);
+              color: white;
+            }
+            .industry-title {
+              font-size: 1.4rem;
+              font-weight: 700;
+              color: ${isDark ? 'white' : 'var(--color-primary)'};
+              margin-bottom: 1rem;
+              transition: color 0.3s;
+            }
+            .industry-card:hover .industry-title {
+              color: ${isDark ? 'white' : 'var(--color-primary-dark)'};
+            }
+            .industry-desc {
+              font-size: 0.95rem;
+              color: var(--color-text-muted);
+              line-height: 1.6;
+              opacity: 0.85;
+            }
+          `}} />
+
+          <div style={{ position: 'relative', overflow: 'hidden', padding: '1rem 0 3rem 0' }}>
+            {/* Fade Edges */}
+            <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: '150px', background: isDark ? 'linear-gradient(to right, #080808, transparent)' : 'linear-gradient(to right, #ffffff, transparent)', zIndex: 2, pointerEvents: 'none' }} />
+            <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: '150px', background: isDark ? 'linear-gradient(to left, #080808, transparent)' : 'linear-gradient(to left, #ffffff, transparent)', zIndex: 2, pointerEvents: 'none' }} />
+
+            <div className="industry-track">
+              {/* Duplicate array for infinite scroll */}
+              {[...Array(2)].map((_, setIdx) => (
+                <React.Fragment key={setIdx}>
+                  {[
+                    { name: 'Agritech', icon: <Cpu size={48} strokeWidth={1.5} />, desc: 'Hiring a regenerative agriculture specialist, a research head or toxicologist? We hear from you!' },
+                    { name: 'Automobile', icon: <Car size={48} strokeWidth={1.5} />, desc: 'Design engineers, automation experts, and battery specialists could make all the difference.' },
+                    { name: 'Aerospace', icon: <Rocket size={48} strokeWidth={1.5} />, desc: 'Space is the next frontier only with great aerospace engineers and scientists.' },
+                    { name: 'Retail & E-commerce', icon: <ShoppingCart size={48} strokeWidth={1.5} />, desc: 'Find the customer\'s basket with retail specialists and great customer care managers.' },
+                    { name: 'Semiconductor', icon: <Cpu size={48} strokeWidth={1.5} />, desc: 'Hire design engineers and QC experts who ensure that a NAND Gate does not delay customer delight.' },
+                    { name: 'Oil and Gas', icon: <Droplet size={48} strokeWidth={1.5} />, desc: 'Hire reservoir engineers to identify new opportunities and chemical engineers to refine existing processes.' }
+                  ].map((ind, i) => (
+                    <div className="industry-card" key={i}>
+                      <div className="industry-icon-wrapper">
+                        {ind.icon}
+                      </div>
+                      <h3 className="industry-title">{ind.name}</h3>
+                      <p className="industry-desc">{ind.desc}</p>
+                    </div>
+                  ))}
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* News Bento Grid Section */}
       {news.length > 0 && (
         <section className="news-section" style={{ minHeight: '100vh', background: 'var(--grad-blog)', display: 'flex', flexDirection: 'column', padding: '5rem 0' }}>
@@ -606,7 +847,7 @@ const Home = () => {
                 <span style={{ width: '30px', height: '2px', backgroundColor: isDark ? '#f87171' : 'var(--color-secondary)', borderRadius: '2px' }}></span>
               </div>
               <h2 style={{ fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: '900', color: isDark ? 'white' : 'var(--color-primary-dark)', lineHeight: '1.1', marginBottom: '1.2rem', letterSpacing: '-1px' }}>
-                Latest Insights <span style={{ background: isDark ? 'linear-gradient(135deg, #e0f2fe 0%, #f87171 100%)' : 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-secondary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>&amp; Blog</span>
+                Latest Insights <span style={{ background: isDark ? 'linear-gradient(135deg, #e0f2fe 0%, #f87171 100%)' : 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-secondary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'inline-block', transform: 'translateZ(0)', isolation: 'isolate' }}>&amp; Blog</span>
               </h2>
               <p style={{ color: 'var(--color-text-muted)', fontSize: '1.15rem', maxWidth: '600px', margin: '0 auto', lineHeight: '1.7' }}>
                 Discover our latest research, strategic perspectives, and industry updates carefully curated for ambitious leaders.
@@ -614,61 +855,81 @@ const Home = () => {
             </motion.div>
 
             {/* Premium Auto Slider */}
-            <div style={{ flexGrow: 1, position: 'relative', minHeight: '500px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ flexGrow: 1, position: 'relative', minHeight: '550px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '2rem' }}>
               <AnimatePresence mode="wait">
                 {news.length > 0 && (
                   <motion.div
                     key={currentNewsIndex}
-                    className="news-slider-container"
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -50 }}
-                    transition={{ duration: 0.6, ease: "easeInOut" }}
+                    className="news-slider-container group"
+                    initial={{ opacity: 0, y: 30, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -30, scale: 0.98 }}
+                    transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                     style={{
-                      width: '100%', maxWidth: '1200px', display: 'flex', flexDirection: 'row',
-                      borderRadius: '30px', overflow: 'hidden', boxShadow: '0 40px 80px -20px rgba(0,0,0,0.15)',
-                      backgroundColor: 'var(--color-card-bg)', height: '500px'
+                      width: '100%', maxWidth: '1250px', display: 'flex', flexDirection: 'row',
+                      borderRadius: '40px', overflow: 'hidden', boxShadow: isDark ? '0 50px 100px -20px rgba(0,0,0,0.8)' : '0 40px 100px -20px rgba(3, 105, 161, 0.25)',
+                      backgroundColor: isDark ? '#0a0a0a' : '#ffffff', minHeight: '550px', border: `1px solid ${isDark ? '#222' : '#e2e8f0'}`,
+                      position: 'relative',
                     }}
                   >
-                    <div className="news-slider-image" style={{ flex: '1 1 50%', position: 'relative' }}>
-                      <div style={{ position: 'absolute', inset: 0, backgroundImage: `url(${news[currentNewsIndex].imageUrl || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop'})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
+                    <div className="news-slider-image" style={{ flex: '1 1 50%', position: 'relative', overflow: 'hidden' }}>
+                      <motion.div 
+                        initial={{ scale: 1.2 }}
+                        animate={{ scale: 1 }}
+                        transition={{ duration: 1.5, ease: 'easeOut' }}
+                        style={{ position: 'absolute', inset: -20, backgroundImage: `url(${news[currentNewsIndex].imageUrl || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop'})`, backgroundSize: 'cover', backgroundPosition: 'center', transition: 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)' }} 
+                        className="group-hover:scale-105"
+                      />
+                      <div style={{ position: 'absolute', inset: 0, background: isDark ? 'linear-gradient(to right, rgba(0,0,0,0.2), #0a0a0a)' : 'linear-gradient(to right, rgba(255,255,255,0), #ffffff)' }} />
+                      
+                      {/* Floating Date Badge */}
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.4 }}
+                        style={{ position: 'absolute', top: '2.5rem', left: '2.5rem', background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(15px)', WebkitBackdropFilter: 'blur(15px)', padding: '0.8rem 1.2rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.3)', color: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}
+                      >
+                         <span style={{ fontSize: '1.8rem', fontWeight: 900, lineHeight: 1 }}>{new Date(news[currentNewsIndex].createdAt).getDate()}</span>
+                         <span style={{ fontSize: '0.85rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>{new Date(news[currentNewsIndex].createdAt).toLocaleString('default', { month: 'short' })}</span>
+                      </motion.div>
                     </div>
 
                     <div className="news-slider-content" style={{
-                      flex: '1 1 50%', padding: '4rem 3rem', display: 'flex', flexDirection: 'column', justifyContent: 'center',
-                      position: 'relative', backgroundColor: 'var(--color-navbar-bg)', backdropFilter: 'blur(20px)',
-                      WebkitBackdropFilter: 'blur(20px)', borderLeft: '1px solid var(--border-color-strong)', zIndex: 10
+                      flex: '1 1 50%', padding: '5rem 4rem', display: 'flex', flexDirection: 'column', justifyContent: 'center',
+                      position: 'relative', zIndex: 10
                     }}>
                       <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                        <span style={{ padding: '0.4rem 1rem', backgroundColor: 'var(--color-secondary)', color: 'white', borderRadius: '50px', fontSize: '0.8rem', fontWeight: '700', letterSpacing: '1px', textTransform: 'uppercase' }}>
+                        <span style={{ padding: '0.5rem 1.2rem', background: isDark ? 'rgba(248, 113, 113, 0.1)' : 'var(--color-primary-light)', color: isDark ? '#f87171' : 'var(--color-primary-dark)', borderRadius: '50px', fontSize: '0.8rem', fontWeight: '800', letterSpacing: '1px', textTransform: 'uppercase', border: `1px solid ${isDark ? 'rgba(248, 113, 113, 0.2)' : 'var(--color-primary)'}` }}>
                           Featured Insight
                         </span>
-                        <span style={{ color: 'var(--color-primary-dark)', opacity: 0.6, fontSize: '0.9rem', fontWeight: '500' }}>
-                          {new Date(news[currentNewsIndex].createdAt).toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' })}
+                        <span style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'currentColor' }}></span>
+                          Research & Strategy
                         </span>
                       </div>
 
-                      <h3 style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--color-primary-dark)', lineHeight: '1.1', marginBottom: '1.5rem' }}>
+                      <h3 style={{ fontSize: 'clamp(2rem, 3vw, 2.8rem)', fontWeight: '900', color: isDark ? 'white' : 'var(--color-primary-dark)', lineHeight: '1.15', marginBottom: '1.5rem', letterSpacing: '-0.5px' }}>
                         {news[currentNewsIndex].title}
                       </h3>
 
-                      <p style={{ fontSize: '1.1rem', color: 'var(--color-text-muted)', lineHeight: '1.7', marginBottom: '3rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                      <p style={{ fontSize: '1.15rem', color: 'var(--color-text-muted)', lineHeight: '1.7', marginBottom: '3rem', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                         {news[currentNewsIndex].content}
                       </p>
 
                       <button
                         onClick={() => setSelectedNews(news[currentNewsIndex])}
-                        className="btn-pill-primary"
-                        style={{ alignSelf: 'flex-start', display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '1rem 2rem', fontSize: '1rem' }}
+                        style={{ alignSelf: 'flex-start', display: 'flex', alignItems: 'center', gap: '0.8rem', padding: '1rem 0', background: 'none', border: 'none', fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-secondary)', cursor: 'pointer', transition: 'gap 0.3s' }}
+                        onMouseEnter={e => e.currentTarget.style.gap = '1.2rem'}
+                        onMouseLeave={e => e.currentTarget.style.gap = '0.8rem'}
                       >
-                        Read Full Article <ArrowRight size={18} />
+                        <span style={{ borderBottom: '2px solid var(--color-secondary)', paddingBottom: '0.2rem' }}>Read Full Article</span> <ArrowRight size={20} />
                       </button>
                     </div>
                   </motion.div>
                 )}
               </AnimatePresence>
 
-              <div style={{ position: 'absolute', bottom: '-3rem', left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: '0.8rem' }}>
+              <div style={{ position: 'absolute', bottom: '-4rem', left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: '0.8rem', alignItems: 'center' }}>
                 {news.map((_, idx) => (
                   <button key={idx} onClick={() => setCurrentNewsIndex(idx)}
                     style={{ width: currentNewsIndex === idx ? '30px' : '10px', height: '10px', borderRadius: '10px', backgroundColor: currentNewsIndex === idx ? 'var(--color-primary)' : 'rgba(0,0,0,0.2)', border: 'none', transition: 'all 0.4s ease', cursor: 'pointer', padding: 0 }}
@@ -699,30 +960,20 @@ const Home = () => {
       ══════════════════════════════════════ */}
       {testimonials.length > 0 && (
         <section className="testimonials-section" style={{
-          padding: '6rem 0', backgroundColor: 'var(--color-bg-light)', position: 'relative', overflow: 'hidden'
+          padding: '4rem 0', backgroundColor: 'var(--color-bg-light)', position: 'relative', overflow: 'hidden'
         }}>
           {/* Subtle backgrounds */}
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, var(--border-color), transparent)' }} />
           <motion.div animate={{ rotate: 360 }} transition={{ duration: 50, repeat: Infinity, ease: 'linear' }} style={{ position: 'absolute', top: '-10%', right: '-5%', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(177,32,35,0.04) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
           <div className="container" style={{ position: 'relative', zIndex: 2 }}>
-            <motion.div initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} style={{ textAlign: 'center', marginBottom: '4rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1.2rem', color: isDark ? '#f87171' : 'var(--color-secondary)', fontWeight: '700', fontSize: '0.85rem', letterSpacing: '3px', textTransform: 'uppercase' }}>
-                <span style={{ width: '30px', height: '2px', backgroundColor: isDark ? '#f87171' : 'var(--color-secondary)', borderRadius: '2px' }}></span>
-                Client Voices
-                <span style={{ width: '30px', height: '2px', backgroundColor: isDark ? '#f87171' : 'var(--color-secondary)', borderRadius: '2px' }}></span>
-              </div>
-              <h2 style={{ fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: '900', color: isDark ? 'white' : 'var(--color-primary-dark)', lineHeight: '1.1', marginBottom: '1.2rem', letterSpacing: '-1px' }}>
-                Trusted By <span style={{ background: isDark ? 'linear-gradient(135deg, #e0f2fe 0%, #f87171 100%)' : 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-secondary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Leaders</span>
-              </h2>
-            </motion.div>
-
             <AnimatedTestimonials 
               testimonials={testimonials.map(t => ({
                 name: t.clientName,
                 designation: t.designation || 'Client',
                 quote: t.description,
-                src: t.imageUrl || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=500&q=80'
+                src: t.imageUrl || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=500&q=80',
+                rating: t.rating || 5
               }))} 
               autoplay={true} 
             />
@@ -730,41 +981,118 @@ const Home = () => {
         </section>
       )}
 
-      {/* Why Us / CTA Section */}
-      <section className="why-us-section" style={{ padding: '6rem 0 14rem 0', backgroundColor: 'var(--color-primary)', color: 'white', position: 'relative', overflow: 'hidden' }}>
+      {/* ── Client Logos Marquee ── full-width, below Trusted By Leaders */}
+      {logos.length > 0 && (
+        <section style={{
+          padding: '1.5rem 0',
+          backgroundColor: isDark ? 'var(--color-bg-dark)' : '#fff',
+          overflow: 'hidden',
+          position: 'relative',
+          borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
+          borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
+        }}>
+          {/* Fade edges */}
+          <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: '120px', background: isDark ? 'linear-gradient(to right, var(--color-bg-dark), transparent)' : 'linear-gradient(to right, #fff, transparent)', zIndex: 3, pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', top: 0, right: 0, bottom: 0, width: '120px', background: isDark ? 'linear-gradient(to left, var(--color-bg-dark), transparent)' : 'linear-gradient(to left, #fff, transparent)', zIndex: 3, pointerEvents: 'none' }} />
+
+          <style>{`
+            @keyframes marqueeLogos {
+              0%   { transform: translateX(0); }
+              100% { transform: translateX(-50%); }
+            }
+          `}</style>
+
+          <div style={{ display: 'inline-flex', animation: 'marqueeLogos 25s linear infinite', whiteSpace: 'nowrap', willChange: 'transform' }}>
+            {[1, 2].map((set) => (
+              <React.Fragment key={set}>
+                {logos.map((logo, idx) => (
+                  <img
+                    key={`${set}-${logo._id || idx}`}
+                    src={logo.imageUrl}
+                    alt={logo.title || 'Client/Partner Logo'}
+                    title={logo.title || 'Client/Partner'}
+                    style={{
+                      height: '72px',
+                      maxWidth: '220px',
+                      objectFit: 'contain',
+                      opacity: 0.9,
+                      filter: 'none',
+                      transition: 'all 0.4s cubic-bezier(.4,0,.2,1)',
+                      cursor: 'pointer',
+                      flexShrink: 0,
+                      marginRight: '6rem',
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.15)'; e.currentTarget.style.filter = 'drop-shadow(0 4px 12px rgba(0,0,0,0.15))'; }}
+                    onMouseLeave={e => { e.currentTarget.style.opacity = '0.9'; e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.filter = 'none'; }}
+                  />
+                ))}
+              </React.Fragment>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* ══════════════════════════════════════
+          WHY US / CTA SECTION
+      ══════════════════════════════════════ */}
+      <section className="why-us-section" style={{ padding: '6rem 0 10rem 0', backgroundColor: 'var(--color-primary-dark)', position: 'relative', overflow: 'hidden' }}>
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
-          <div className="why-us-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '4rem', alignItems: 'center' }}>
-            <div className="why-us-text" style={{ flex: '1 1 500px' }}>
-              <h2 style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '1.5rem', lineHeight: '1.2' }}>Ready To Transform Your Enterprise?</h2>
-              <p style={{ fontSize: '1.1rem', color: 'rgba(255,255,255,0.8)', marginBottom: '2rem', lineHeight: '1.7' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4rem', alignItems: 'center' }}>
+            {/* Left Content */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              style={{ flex: '1 1 500px' }}
+            >
+              <h2 style={{ fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: '800', color: 'white', lineHeight: '1.2', marginBottom: '1.5rem', letterSpacing: '-0.5px' }}>
+                Ready To Transform<br />Your Enterprise?
+              </h2>
+              <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '1.1rem', lineHeight: '1.7', marginBottom: '2.5rem', maxWidth: '550px' }}>
                 Partner with TIIS to unlock innovative solutions tailored for your industry. Our strategic expertise and global experience deliver measurable results and long-term success.
               </p>
-              <ul style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '3rem' }}>
-                {['Cost-Effective', 'Global Experience', '24/7 Support', 'Long-Term Partnerships'].map((benefit) => (
-                  <li key={benefit} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.05rem', fontWeight: '500' }}>
-                    <CheckCircle color="var(--color-secondary)" size={20} />
-                    {benefit}
-                  </li>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '3rem' }}>
+                {[
+                  { title: 'Cost-Effective' },
+                  { title: 'Global Experience' },
+                  { title: '24/7 Support' },
+                  { title: 'Long-Term Partnerships' }
+                ].map((item, idx) => (
+                  <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', color: 'white', fontWeight: '600' }}>
+                    <CheckCircle size={20} style={{ color: 'var(--color-secondary)' }} />
+                    {item.title}
+                  </div>
                 ))}
-              </ul>
-              <Link to="/contact" onClick={() => window.scrollTo(0, 0)} className="btn-pill-primary" style={{ backgroundColor: 'var(--color-secondary)', borderColor: 'var(--color-secondary)' }}>
-                Schedule Consultation
-              </Link>
-            </div>
-            <div className="why-us-image" style={{ flex: '1 1 400px', display: 'flex', justifyContent: 'center' }}>
-              <div style={{ position: 'relative', width: '100%', maxWidth: '500px', aspectRatio: '4/3', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)' }}>
-                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80" alt="Consultation" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
-            </div>
+
+              <Link to="/contact" onClick={() => window.scrollTo(0, 0)} className="btn-pill-primary" style={{ backgroundColor: 'var(--color-secondary)', color: 'white', border: 'none', padding: '1rem 2rem', fontSize: '1rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                SCHEDULE CONSULTATION
+              </Link>
+            </motion.div>
+
+            {/* Right Image */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              style={{ flex: '1 1 400px', position: 'relative' }}
+            >
+               <div style={{ borderRadius: '20px', overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)' }}>
+                  <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80" alt="Transform Your Enterprise" style={{ width: '100%', height: 'auto', display: 'block' }} />
+               </div>
+            </motion.div>
           </div>
         </div>
 
         {/* Wave SVG Divider */}
-        <img
-          src="/wave-haikei2.svg"
-          alt=""
-          style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: 'auto', display: 'block', lineHeight: 0, pointerEvents: 'none', zIndex: 1 }}
-        />
+        <div style={{ position: 'absolute', bottom: -5, left: 0, width: '100%', overflow: 'hidden', lineHeight: 0, pointerEvents: 'none', zIndex: 1 }}>
+          <svg viewBox="0 0 1440 320" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: '180px' }}>
+            <path fill="var(--color-primary)" fillOpacity="1" d="M0,160L48,176C96,192,192,224,288,229.3C384,235,480,213,576,176C672,139,768,85,864,80C960,75,1056,117,1152,149.3C1248,181,1344,203,1392,213.3L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+          </svg>
+        </div>
       </section>
 
       {/* Motto Modal */}

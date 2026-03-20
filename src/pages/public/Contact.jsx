@@ -121,29 +121,88 @@ const Contact = () => {
   };
 
   return (
-    <div className="contact-page animate-fade-in" style={{ backgroundColor: 'var(--color-page-bg)', minHeight: '100vh', paddingBottom: '6rem' }}>
+    <div className="contact-page animate-fade-in" style={{ backgroundColor: 'var(--color-page-bg)', minHeight: '100vh', paddingBottom: '6rem', overflowX: 'hidden' }}>
+      
+      {/* ─── ULTRA PREMIUM MOBILE RESPONSIVE CSS ─── */}
+      <style>{`
+        @media (max-width: 768px) {
+          .contact-hero-grid { grid-template-columns: 1fr !important; gap: 3rem !important; text-align: center !important; }
+          .contact-hero-content { text-align: center !important; align-items: center !important; }
+          .contact-hero-content div { margin: 0 auto 1.5rem !important; }
+          .contact-hero-content h1 { text-align: center !important; font-size: 2.5rem !important; }
+          .contact-hero-content p { text-align: center !important; margin: 0 auto !important; }
+          .contact-hero { padding: 6rem 1.5rem 4rem !important; }
+        }
+      `}</style>
       
       {/* ── Hero Section ── */}
-      <section style={{ position: 'relative', overflow: 'hidden', background: 'var(--color-hero-grad)', padding: '6rem 2rem 5rem', textAlign: 'center', color: 'white' }}>
+      <section className="contact-hero" style={{ position: 'relative', overflow: 'hidden', background: 'var(--color-hero-grad)', padding: '7rem 2rem 5rem', color: 'white' }}>
         {/* Animated Blobs */}
         <motion.div animate={{ scale: [1, 1.15, 1], opacity: [0.12, 0.2, 0.12] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }} style={{ position: 'absolute', top: '-80px', right: '-80px', width: '350px', height: '350px', borderRadius: '50%', background: 'rgba(177,32,35,0.15)', filter: 'blur(60px)', pointerEvents: 'none' }} />
         <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.08, 0.16, 0.08] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }} style={{ position: 'absolute', bottom: '-60px', left: '-60px', width: '280px', height: '280px', borderRadius: '50%', background: 'rgba(14,165,233,0.14)', filter: 'blur(50px)', pointerEvents: 'none' }} />
 
-        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-          <motion.span initial={{ opacity: 0, y: -16, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ display: 'inline-block', backgroundColor: 'rgba(177,32,35,0.28)', color: '#f87171', padding: '0.4rem 1.25rem', borderRadius: '999px', fontSize: '0.85rem', fontWeight: '600', letterSpacing: '0.08em', marginBottom: '1.25rem', textTransform: 'uppercase' }}>
-            Get in Touch
-          </motion.span>
+        <div className="container contact-hero-grid" style={{ position: 'relative', zIndex: 1, maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '4rem', alignItems: 'center' }}>
           
-          <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: 0.15, ease: [0.22, 1, 0.36, 1] }} style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: '800', marginBottom: '1.25rem', lineHeight: '1.1', letterSpacing: '-0.02em' }}>
-            Let's Build Something <br />
-            <span style={{ color: '#f87171' }}>Extraordinary.</span>
-          </motion.h1>
+          {/* Text Content */}
+          <div className="contact-hero-content" style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+            <motion.span initial={{ opacity: 0, y: -16, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} style={{ display: 'inline-block', backgroundColor: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)', color: '#f87171', padding: '0.4rem 1.25rem', borderRadius: '999px', fontSize: '0.85rem', fontWeight: '600', letterSpacing: '0.08em', marginBottom: '1.25rem', textTransform: 'uppercase', border: '1px solid rgba(255,255,255,0.1)' }}>
+              Get in Touch
+            </motion.span>
+            
+            <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: 0.15, ease: [0.22, 1, 0.36, 1] }} style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: '800', marginBottom: '1.25rem', lineHeight: '1.1', letterSpacing: '-0.02em', textShadow: '0 2px 10px rgba(0,0,0,0.2)' }}>
+              Let's Build Something <br />
+              <span style={{ color: '#f87171' }}>Extraordinary.</span>
+            </motion.h1>
 
-          <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }} style={{ height: '3px', width: '60px', background: 'linear-gradient(90deg, #b12023, #f43f5e)', borderRadius: '2px', margin: '0 auto 1.5rem', originX: 0.5 }} />
+            <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }} style={{ height: '3px', width: '60px', background: 'linear-gradient(90deg, #b12023, #f43f5e)', borderRadius: '2px', margin: '0 0 1.5rem 0', originX: 0 }} />
 
-          <motion.p initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.45, ease: [0.22, 1, 0.36, 1] }} style={{ fontSize: '1.2rem', maxWidth: '650px', margin: '0 auto', color: 'rgba(255,255,255,0.75)', lineHeight: '1.7' }}>
-            Partner with our experts to architect the future of your organization. Drop us a line and let's start the conversation.
-          </motion.p>
+            <motion.p initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.45, ease: [0.22, 1, 0.36, 1] }} style={{ fontSize: '1.2rem', maxWidth: '650px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.7', margin: 0 }}>
+              Partner with our experts to architect the future of your organization. Drop us a line and let's start the conversation.
+            </motion.p>
+          </div>
+
+          {/* Premium Illustration / Image Area */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85, x: 30 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.35, ease: "easeOut" }}
+            style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}
+          >
+            {/* Glowing Backdrop */}
+            <div style={{ position: 'absolute', inset: '-10px', background: 'radial-gradient(circle, rgba(14,165,233,0.3) 0%, transparent 60%)', filter: 'blur(20px)', zIndex: 0 }} />
+            
+            <motion.img
+              animate={{ y: [-15, 15, -15] }}
+              transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+              src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80"
+              alt="TIIS Global Corporate"
+              style={{
+                width: '100%',
+                maxHeight: '400px',
+                objectFit: 'cover',
+                borderRadius: '24px',
+                boxShadow: '0 30px 60px -15px rgba(0,0,0,0.5)',
+                position: 'relative',
+                zIndex: 1,
+                border: '1px solid rgba(255,255,255,0.15)'
+              }}
+            />
+
+            {/* Floating Element 1 */}
+            <motion.div
+              animate={{ y: [10, -10, 10] }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+              style={{
+                position: 'absolute', top: '-5%', right: '-5%',
+                background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(12px)',
+                padding: '1rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.2)',
+                zIndex: 2, boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
+              }}
+            >
+              <Send size={28} color="#0ea5e9" />
+            </motion.div>
+          </motion.div>
+
         </div>
       </section>
 

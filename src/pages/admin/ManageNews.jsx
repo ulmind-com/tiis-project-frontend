@@ -108,7 +108,8 @@ const ManageNews = () => {
         {loading ? (
           <div style={{ display: 'flex', justifyContent: 'center', padding: '3rem 0', color: 'var(--color-text-muted)' }}><Loader2 className="animate-spin" size={28} /></div>
         ) : (
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88rem' }}>
+          <div style={{ overflowX: 'auto', width: '100%' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88rem', minWidth: '600px' }}>
             <thead>
               <tr style={{ backgroundColor: 'var(--color-bg-light)', textAlign: 'left' }}>
                 {['Image', 'Headline', 'Status', 'Actions'].map((h, i) => (
@@ -158,7 +159,8 @@ const ManageNews = () => {
               </AnimatePresence>
               {items.length === 0 && <tr><td colSpan={4} style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>No news articles. Post your first →</td></tr>}
             </tbody>
-          </table>
+            </table>
+          </div>
         )}
       </motion.div>
 

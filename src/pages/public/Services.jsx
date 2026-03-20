@@ -204,25 +204,38 @@ const ServiceCard = ({ service, index, onOpen }) => {
           ))}
         </motion.div>
 
-        {/* Read More — arrow slides right on hover */}
+        {/* Read More — shimmer + lift + glow on hover */}
         <motion.button
           onClick={e => { e.stopPropagation(); onOpen(service); }}
-          whileTap={{ scale: 0.97 }}
+          whileHover={{ y: -4, scale: 1.03, boxShadow: `0 12px 32px rgba(0,0,0,0.28)` }}
+          whileTap={{ scale: 0.96, y: 0 }}
           style={{
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
             background: service.gradient, color: 'white',
             border: 'none', borderRadius: '50px',
-            padding: '0.85rem 1.5rem', fontWeight: '700',
+            padding: '0.9rem 1.5rem', fontWeight: '700',
             fontSize: '0.95rem', cursor: 'pointer',
             width: '100%',
-            boxShadow: '0 4px 14px rgba(0,0,0,0.15)',
+            boxShadow: '0 4px 14px rgba(0,0,0,0.18)',
+            position: 'relative', overflow: 'hidden',
+            transition: 'all 0.35s cubic-bezier(0.23,1,0.32,1)',
           }}
         >
-          <span>Read More</span>
+          {/* Shimmer sweep */}
           <motion.span
-            animate={{ x: hovered ? 5 : 0 }}
+            animate={{ left: hovered ? '160%' : '-80%' }}
+            transition={{ duration: 0.55, ease: 'easeOut' }}
+            style={{
+              position: 'absolute', top: 0, width: '55%', height: '100%',
+              background: 'linear-gradient(120deg, transparent, rgba(255,255,255,0.28), transparent)',
+              transform: 'skewX(-20deg)', pointerEvents: 'none',
+            }}
+          />
+          <span style={{ position: 'relative', zIndex: 1 }}>Read More</span>
+          <motion.span
+            animate={{ x: hovered ? 6 : 0 }}
             transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-            style={{ display: 'flex', alignItems: 'center' }}
+            style={{ display: 'flex', alignItems: 'center', position: 'relative', zIndex: 1 }}
           >
             <ArrowRight size={16} />
           </motion.span>
@@ -431,8 +444,11 @@ const Services = () => {
           
           /* Hero Section */
           .services-hero { padding: 6rem 1.5rem 4rem !important; }
-          .services-hero h1 { font-size: 2.5rem !important; margin-bottom: 1rem !important; line-height: 1.2 !important; }
-          .services-hero p { font-size: 1rem !important; line-height: 1.6 !important; padding: 0 0.5rem; }
+          .services-hero-grid { grid-template-columns: 1fr !important; gap: 3rem !important; text-align: center !important; }
+          .services-hero-content { text-align: center !important; align-items: center !important; }
+          .services-hero-content div { margin: 0 auto 1.5rem !important; }
+          .services-hero h1 { font-size: 2.5rem !important; margin-bottom: 1rem !important; line-height: 1.2 !important; text-align: center !important; }
+          .services-hero p { font-size: 1rem !important; line-height: 1.6 !important; padding: 0 0.5rem; text-align: center !important; margin: 0 auto !important; }
 
           /* Cards Section Header */
           .section-header-title { font-size: 2rem !important; line-height: 1.2 !important; }
@@ -470,7 +486,7 @@ const Services = () => {
       <section className="services-hero" style={{
         position: 'relative', overflow: 'hidden',
         background: 'var(--color-hero-grad)',
-        padding: '6rem 2rem 5rem', textAlign: 'center', color: 'white',
+        padding: '7rem 2rem 5rem', color: 'white',
       }}>
         {/* Animated floating blobs */}
         <motion.div
@@ -493,66 +509,118 @@ const Services = () => {
             pointerEvents: 'none',
           }}
         />
-        {/* Extra orb — center */}
-        <motion.div
-          animate={{ y: [0, -20, 0], opacity: [0.05, 0.1, 0.05] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
-          style={{
-            position: 'absolute', top: '20%', left: '30%',
-            width: '200px', height: '200px', borderRadius: '50%',
-            background: 'rgba(148,163,184,0.08)', filter: 'blur(40px)',
-            pointerEvents: 'none',
-          }}
-        />
 
-        <div className="container">
-          {/* Badge */}
-          <motion.span
-            initial={{ opacity: 0, y: -16, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              display: 'inline-block', backgroundColor: 'rgba(177,32,35,0.28)',
-              color: '#f87171', padding: '0.4rem 1.25rem', borderRadius: '999px',
-              fontSize: '0.85rem', fontWeight: '600', letterSpacing: '0.08em',
-              marginBottom: '1.25rem', textTransform: 'uppercase',
-            }}
-          >
-            What We Do
-          </motion.span>
+        <div className="container services-hero-grid" style={{ position: 'relative', zIndex: 1, maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center' }}>
+          
+          {/* Text Content */}
+          <div className="services-hero-content" style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+            {/* Badge */}
+            <motion.span
+              initial={{ opacity: 0, y: -16, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                display: 'inline-block', backgroundColor: 'rgba(255,255,255,0.1)',
+                backdropFilter: 'blur(10px)',
+                color: '#f87171', padding: '0.4rem 1.25rem', borderRadius: '999px',
+                fontSize: '0.85rem', fontWeight: '600', letterSpacing: '0.08em',
+                marginBottom: '1.25rem', textTransform: 'uppercase',
+                border: '1px solid rgba(255,255,255,0.1)'
+              }}
+            >
+              What We Do
+            </motion.span>
 
-          {/* H1 — word-by-word */}
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            style={{ fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', fontWeight: '800', marginBottom: '1.25rem', lineHeight: '1.2' }}
-          >
-            Our Services
-          </motion.h1>
+            {/* H1 */}
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+              style={{ fontSize: 'clamp(2.5rem, 5vw, 3.8rem)', fontWeight: '800', marginBottom: '1.25rem', lineHeight: '1.1', textShadow: '0 2px 10px rgba(0,0,0,0.2)' }}
+            >
+              Our Services
+            </motion.h1>
 
-          {/* Animated underline accent */}
+            {/* Animated underline accent */}
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                height: '3px', width: '60px',
+                background: 'linear-gradient(90deg, #b12023, #f43f5e)',
+                borderRadius: '2px', margin: '0 0 1.5rem 0',
+                originX: 0,
+              }}
+            />
+
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              style={{ fontSize: '1.2rem', maxWidth: '600px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.7', margin: 0 }}
+            >
+              A comprehensive suite of consulting, talent, and capacity-building solutions — crafted to drive measurable results for your organisation.
+            </motion.p>
+          </div>
+
+          {/* Premium Illustration */}
           <motion.div
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              height: '3px', width: '60px',
-              background: 'linear-gradient(90deg, #b12023, #f43f5e)',
-              borderRadius: '2px', margin: '0 auto 1.5rem',
-              originX: 0.5,
-            }}
-          />
-
-          {/* Subtitle */}
-          <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            style={{ fontSize: '1.2rem', maxWidth: '700px', margin: '0 auto', color: 'rgba(255,255,255,0.72)', lineHeight: '1.7' }}
+            initial={{ opacity: 0, scale: 0.85, x: 30 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.35, ease: "easeOut" }}
+            style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}
           >
-            A comprehensive suite of consulting, talent, and capacity-building solutions — crafted to drive measurable results for your organisation.
-          </motion.p>
+            {/* Glowing Backdrop */}
+            <div style={{ position: 'absolute', inset: '-10px', background: 'radial-gradient(circle, rgba(14,165,233,0.3) 0%, transparent 60%)', filter: 'blur(20px)', zIndex: 0 }} />
+            
+            <motion.img
+              animate={{ y: [-15, 15, -15] }}
+              transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+              src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=800&q=80"
+              alt="Premium Consulting"
+              style={{
+                width: '100%',
+                maxHeight: '400px',
+                objectFit: 'cover',
+                borderRadius: '24px',
+                boxShadow: '0 30px 60px -15px rgba(0,0,0,0.5)',
+                position: 'relative',
+                zIndex: 1,
+                border: '1px solid rgba(255,255,255,0.15)'
+              }}
+            />
+
+            {/* Floating Element 1 */}
+            <motion.div
+              animate={{ y: [10, -10, 10] }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+              style={{
+                position: 'absolute', top: '-10%', right: '-5%',
+                background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(12px)',
+                padding: '1rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.2)',
+                zIndex: 2, boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
+              }}
+            >
+              <Briefcase size={28} color="#0ea5e9" />
+            </motion.div>
+
+            {/* Floating Element 2 */}
+            <motion.div
+              animate={{ y: [-10, 10, -10] }}
+              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+              style={{
+                position: 'absolute', bottom: '-5%', left: '-5%',
+                background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(12px)',
+                padding: '1rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.2)',
+                zIndex: 2, boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
+              }}
+            >
+              <Users size={28} color="#f43f5e" />
+            </motion.div>
+          </motion.div>
+
         </div>
       </section>
 
@@ -714,27 +782,48 @@ const Services = () => {
             variants={fadeUp(0.1)}
             style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}
           >
-            <motion.div whileHover={{ y: -3, scale: 1.03 }} whileTap={{ scale: 0.97 }} transition={{ type: 'spring', stiffness: 400, damping: 20 }}>
+            {/* Get a Free Consultation — shimmer white button */}
+            <motion.div
+              whileHover={{ y: -5, scale: 1.04, boxShadow: '0 16px 40px rgba(0,0,0,0.3)' }}
+              whileTap={{ scale: 0.96, y: 0 }}
+              transition={{ type: 'spring', stiffness: 380, damping: 18 }}
+              style={{ position: 'relative', overflow: 'hidden', borderRadius: '50px', display: 'inline-block' }}
+            >
               <Link to="/contact" style={{
-                display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+                display: 'inline-flex', alignItems: 'center', gap: '0.6rem',
                 backgroundColor: 'white', color: '#01324e',
-                padding: '0.9rem 2rem', borderRadius: '50px',
-                fontWeight: '700', fontSize: '1rem', textDecoration: 'none',
-                boxShadow: '0 8px 24px rgba(0,0,0,0.25)',
+                padding: '1rem 2.2rem', borderRadius: '50px',
+                fontWeight: '800', fontSize: '1rem', textDecoration: 'none',
+                boxShadow: '0 8px 24px rgba(0,0,0,0.22)',
+                letterSpacing: '0.3px', position: 'relative', zIndex: 1
               }}>
                 Get a Free Consultation <ArrowRight size={18} />
               </Link>
             </motion.div>
 
-            <motion.div whileHover={{ y: -3, scale: 1.03 }} whileTap={{ scale: 0.97 }} transition={{ type: 'spring', stiffness: 400, damping: 20 }}>
+            {/* Join Our Team — ghost button with fill sweep */}
+            <motion.div
+              whileHover={{ y: -5, scale: 1.04 }}
+              whileTap={{ scale: 0.96, y: 0 }}
+              transition={{ type: 'spring', stiffness: 380, damping: 18 }}
+              style={{ position: 'relative', borderRadius: '50px', display: 'inline-block', overflow: 'hidden' }}
+            >
+              <div style={{
+                position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.14)',
+                borderRadius: '50px', transform: 'scaleX(0)', transformOrigin: 'left',
+                transition: 'transform 0.35s ease',
+              }} className="btn-fill-sweep" />
               <Link to="/careers" style={{
-                display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-                backgroundColor: 'rgba(255,255,255,0.08)',
+                display: 'inline-flex', alignItems: 'center', gap: '0.6rem',
+                backgroundColor: 'transparent',
                 backdropFilter: 'blur(8px)',
                 color: 'white',
-                border: '2px solid rgba(255,255,255,0.4)',
-                padding: '0.9rem 2rem', borderRadius: '50px',
-                fontWeight: '600', fontSize: '1rem', textDecoration: 'none',
+                border: '2px solid rgba(255,255,255,0.55)',
+                padding: '1rem 2.2rem', borderRadius: '50px',
+                fontWeight: '700', fontSize: '1rem', textDecoration: 'none',
+                letterSpacing: '0.3px', position: 'relative', zIndex: 1,
+                boxShadow: '0 4px 16px rgba(0,0,0,0.15)',
+                transition: 'border-color 0.3s ease, box-shadow 0.3s ease'
               }}>
                 Join Our Team
               </Link>

@@ -71,11 +71,39 @@
   background: var(--color-bg-light);
 }
 
+/* ═══ SMOOTH SCROLLING ═══ */
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
+
+/* ═══════════════════════════════════════════
+   FIX: WebKit gradient-text flash/glitch bug
+   Gradient clipped text shows as solid block
+   on first paint. Force GPU compositing layer.
+═══════════════════════════════════════════ */
+[style*="-webkit-text-fill-color"],
+[style*="WebkitTextFillColor"],
+.gradient-text {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  isolation: isolate;
+  will-change: contents;
+}
+
+/* Ensure gradient text utility class works */
+.gradient-text {
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 
 body {
   min-height: 100vh;
@@ -219,53 +247,289 @@ button {
   transform: scale(1.05);
 }
 
-/* Buttons */
-.btn-pill-primary {
-  background-color: var(--color-primary);
-  color: var(--color-white);
-  padding: 1rem 2.5rem;
-  border-radius: 50px;
-  font-weight: 700;
+/* ════════════════════════════════════════
+   PREMIUM BUTTON SYSTEM
+   ════════════════════════════════════════ */
+
+/* ── Shared base ── */
+.btn-pill-primary,
+.btn-pill-secondary,
+.btn-ghost,
+.btn-glow,
+.btn-outline-primary,
+.btn-gradient,
+.btn-primary,
+.btn-secondary {
+  position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  box-shadow: 0 8px 20px rgba(1, 50, 78, 0.3);
-  border: 2px solid var(--color-primary);
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+  -webkit-font-smoothing: antialiased;
+  white-space: nowrap;
+  border: none;
+  outline: none;
+}
+
+/* ── Shimmer pseudo-element shared ── */
+.btn-pill-primary::before,
+.btn-pill-secondary::before,
+.btn-ghost::before,
+.btn-glow::before,
+.btn-outline-primary::before,
+.btn-gradient::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  transition: left 0.55s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.btn-pill-primary:hover::before,
+.btn-pill-secondary:hover::before,
+.btn-ghost:hover::before,
+.btn-glow:hover::before,
+.btn-outline-primary:hover::before,
+.btn-gradient:hover::before {
+  left: 160%;
+}
+
+/* ── btn-pill-primary: Solid fill → invert on hover ── */
+.btn-pill-primary {
+  background: var(--color-primary);
+  color: #fff;
+  padding: 0.9rem 2.2rem;
+  border-radius: 50px;
   font-size: 0.9rem;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  box-shadow: 0 6px 20px rgba(1, 50, 78, 0.35);
+  border: 2px solid var(--color-primary);
 }
 
 .btn-pill-primary:hover {
-  background-color: var(--color-white);
+  background: transparent;
   color: var(--color-primary);
-  box-shadow: 0 12px 25px rgba(1, 50, 78, 0.4);
-  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(1, 50, 78, 0.45);
+  transform: translateY(-3px) scale(1.02);
 }
 
+/* ── btn-pill-secondary: Ghost → fill on hover ── */
 .btn-pill-secondary {
-  background-color: var(--color-white);
+  background: transparent;
   color: var(--color-primary);
-  padding: 1rem 2.5rem;
+  padding: 0.9rem 2.2rem;
   border-radius: 50px;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-  border: 2px solid transparent;
-  text-transform: uppercase;
-  letter-spacing: 1px;
   font-size: 0.9rem;
-  transition: all 0.3s ease;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 4px 15px rgba(1, 50, 78, 0.1);
 }
 
 .btn-pill-secondary:hover {
-  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: #fff;
+  box-shadow: 0 10px 30px rgba(1, 50, 78, 0.35);
+  transform: translateY(-3px) scale(1.02);
+}
+
+/* ── btn-primary / btn-secondary: legacy compact buttons ── */
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+  padding: 0.7rem 1.5rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 14px rgba(1, 50, 78, 0.3);
+  border: 2px solid var(--color-primary);
+}
+
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-dark);
+  box-shadow: 0 8px 25px rgba(1, 50, 78, 0.45);
+  transform: translateY(-2px) scale(1.015);
+}
+
+.btn-primary:hover::after {
+  opacity: 1;
+}
+
+.btn-secondary {
+  background: var(--color-secondary);
+  color: #fff;
+  padding: 0.7rem 1.5rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 14px rgba(177, 32, 35, 0.3);
+  border: 2px solid var(--color-secondary);
+}
+
+.btn-secondary:hover {
+  background: transparent;
+  color: var(--color-secondary);
+  box-shadow: 0 8px 25px rgba(177, 32, 35, 0.4);
+  transform: translateY(-2px) scale(1.015);
+}
+
+/* ── btn-glow: Neon glow pulse ── */
+.btn-glow {
+  background: linear-gradient(135deg, var(--color-secondary), #e53e42);
+  color: #fff;
+  padding: 0.9rem 2.2rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  box-shadow: 0 0 0 0 rgba(177, 32, 35, 0.5);
+  border: none;
+}
+
+.btn-glow:hover {
+  box-shadow:
+    0 0 20px rgba(177, 32, 35, 0.6),
+    0 0 40px rgba(177, 32, 35, 0.3),
+    0 8px 25px rgba(177, 32, 35, 0.4);
+  transform: translateY(-3px) scale(1.03);
+}
+
+/* ── btn-ghost: Transparent + fill sweep from left ── */
+.btn-ghost {
+  background: transparent;
+  color: #fff;
+  padding: 0.9rem 2.2rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.btn-ghost::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.12);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s ease;
+  z-index: 0;
+}
+
+.btn-ghost:hover {
+  border-color: #fff;
   transform: translateY(-2px);
 }
+
+.btn-ghost:hover::after {
+  transform: scaleX(1);
+}
+
+/* ── btn-outline-primary: Border fill from bottom ── */
+.btn-outline-primary {
+  background: transparent;
+  color: var(--color-primary);
+  padding: 0.9rem 2.2rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border: 2px solid var(--color-primary);
+}
+
+.btn-outline-primary::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 0%;
+  background: var(--color-primary);
+  border-radius: 10px;
+  transition: height 0.3s ease;
+  z-index: -1;
+}
+
+.btn-outline-primary:hover {
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(1, 50, 78, 0.3);
+}
+
+.btn-outline-primary:hover::after {
+  height: 100%;
+}
+
+/* ── btn-gradient: Morphing gradient on hover ── */
+.btn-gradient {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #025585 100%);
+  color: #fff;
+  padding: 0.9rem 2.2rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  box-shadow: 0 6px 20px rgba(1, 50, 78, 0.3);
+  border: none;
+  background-size: 200% 200%;
+  background-position: 0% 50%;
+}
+
+.btn-gradient:hover {
+  background-position: 100% 50%;
+  background-image: linear-gradient(135deg, var(--color-secondary) 0%, #e53e42 100%);
+  box-shadow: 0 10px 30px rgba(177, 32, 35, 0.4);
+  transform: translateY(-3px) scale(1.02);
+}
+
+/* ── Active press feedback for all ── */
+.btn-pill-primary:active,
+.btn-pill-secondary:active,
+.btn-primary:active,
+.btn-secondary:active,
+.btn-glow:active,
+.btn-ghost:active,
+.btn-outline-primary:active,
+.btn-gradient:active {
+  transform: translateY(0px) scale(0.98) !important;
+  box-shadow: none !important;
+}
+
+/* ── Global transition for buttons with inline styles ── */
+button,
+a[class*="btn"],
+[class*="btn-"] {
+  transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1) !important;
+}
+
 
 /* Hero Geometric Shapes */
 .hero-visual-wrapper {
@@ -352,3 +616,195 @@ button {
   }
 }
 
+
+/* ══════════════════════════════════════════════════════════
+   GLOBAL MOBILE RESPONSIVE STYLES
+   Comprehensive overrides for all breakpoints
+══════════════════════════════════════════════════════════ */
+
+/* ── Tablet (≤ 1024px) ── */
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+  
+  .admin-content-container {
+    padding: 1.5rem;
+  }
+
+  /* Generic hero grids collapse to 1 col */
+  [class*="hero-grid"],
+  [class*="-hero-grid"] {
+    grid-template-columns: 1fr !important;
+    gap: 2.5rem !important;
+    text-align: center !important;
+  }
+
+  /* Generic 2-col grids */
+  [style*="grid-template-columns: 1.2fr"],
+  [style*="grid-template-columns: 2fr"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── Mobile (≤ 768px) ── */
+@media (max-width: 768px) {
+  /* ─ Base typography ─ */
+  h1 { font-size: clamp(2rem, 8vw, 3rem) !important; line-height: 1.15 !important; }
+  h2 { font-size: clamp(1.6rem, 6vw, 2.4rem) !important; line-height: 1.2 !important; }
+  
+  .admin-content-container {
+    padding: 1rem 0.5rem;
+  }
+  h3 { font-size: clamp(1.3rem, 5vw, 1.8rem) !important; }
+  p  { font-size: clamp(0.9rem, 3.5vw, 1.05rem) !important; line-height: 1.7 !important; }
+
+  /* ─ Container ─ */
+  .container {
+    padding: 0 1.25rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* ─ Section padding ─ */
+  section {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* ─ Hero sections ─ */
+  [class*="-hero"] {
+    padding: 5.5rem 1.25rem 3rem !important;
+  }
+
+  [class*="hero-grid"],
+  [class*="-hero-grid"] {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+    text-align: center !important;
+  }
+
+  /* ─ Hero illustrations hide or center on mobile ─ */
+  [class*="hero"] svg,
+  [class*="hero"] img {
+    max-width: 90vw !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  /* ─ Generic grids ─ */
+  .solutions-grid,
+  .team-grid,
+  .services-grid,
+  .industries-grid,
+  .capabilities-grid,
+  .why-grid,
+  .about-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  /* ─ Navigation ─ */
+  nav,
+  .navbar {
+    padding: 0.75rem 1rem !important;
+  }
+
+  /* ─ Cards ─ */
+  .pro-card,
+  .team-card,
+  .solution-card,
+  .service-card,
+  .about-card {
+    padding: 1.5rem !important;
+    border-radius: 16px !important;
+  }
+
+  /* ─ Buttons ─ */
+  .btn-pill-primary,
+  .btn-pill-secondary,
+  .btn-ghost,
+  .btn-glow,
+  .btn-outline-primary,
+  .btn-gradient {
+    padding: 0.8rem 1.6rem !important;
+    font-size: 0.85rem !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* ─ CTA button rows ─ */
+  [class*="cta"] [style*="display: flex"],
+  [class*="cta"] [style*="display:flex"] {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+  }
+
+  /* ─ Testimonials / Blue cards ─ */
+  .testimonials-card,
+  [class*="testimonial"] {
+    padding: 2rem 1.5rem !important;
+    border-radius: 20px !important;
+  }
+
+  /* ─ Floating decorative blobs – reduce size ─ */
+  [style*="width: 500px"],
+  [style*="width: 400px"],
+  [style*="width: 300px"] {
+    width: 60vw !important;
+    height: 60vw !important;
+  }
+
+  /* ─ Marquee / logo strip ─ */
+  .marquee-track img {
+    max-height: 40px !important;
+    max-width: 100px !important;
+  }
+
+  /* ─ Footer ─ */
+  [class*="footer-grid"],
+  footer > div > div {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+    text-align: center !important;
+  }
+
+  /* ─ Text alignment helpers ─ */
+  [class*="hero-text"],
+  [class*="hero-content"] {
+    text-align: center !important;
+    align-items: center !important;
+  }
+
+  /* ─ About page alternating layout ─ */
+  [style*="direction: rtl"] {
+    direction: ltr !important;
+  }
+}
+
+/* ── Small Mobile (≤ 480px) ── */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1rem !important;
+  }
+
+  h1 { font-size: clamp(1.8rem, 9vw, 2.5rem) !important; }
+  h2 { font-size: clamp(1.4rem, 7vw, 2rem) !important; }
+
+  .btn-pill-primary,
+  .btn-pill-secondary {
+    padding: 0.75rem 1.2rem !important;
+  }
+
+  /* Cards full width */
+  .solution-card,
+  .team-card {
+    max-width: 100% !important;
+  }
+
+  /* Stack multi-col into 1 always */
+  [style*="repeat(auto"] {
+    grid-template-columns: 1fr !important;
+  }
+}

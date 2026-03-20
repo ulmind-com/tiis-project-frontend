@@ -38,7 +38,7 @@ const AdminLayout = () => {
 
         {/* Scrollable Page Content (Right) */}
         <main style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-          <div className="container" style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', width: '100%', maxWidth: '1400px', margin: '0 auto' }}>
+          <div className="admin-content-container" style={{ flex: 1, overflowY: 'auto', width: '100%', maxWidth: '1400px', margin: '0 auto' }}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={location.pathname}

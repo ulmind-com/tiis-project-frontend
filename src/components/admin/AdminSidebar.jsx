@@ -41,11 +41,16 @@ const AdminSidebar = ({ isMobileOpen, setIsMobileOpen }) => {
     <>
       {/* Mobile Overlay */}
       {isMobileOpen && (
-        <div 
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           onClick={() => setIsMobileOpen(false)}
           style={{
             position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-            backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1040, display: 'block'
+            backgroundColor: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(4px)',
+            WebkitBackdropFilter: 'blur(4px)',
+            zIndex: 1040, display: 'block'
           }}
           className="tiis-sidebar-overlay"
         />
@@ -61,6 +66,7 @@ const AdminSidebar = ({ isMobileOpen, setIsMobileOpen }) => {
           height: 'calc(100vh - 85px)',
           backgroundColor: 'var(--color-card-bg)',
           borderRight: '1px solid var(--border-color)',
+          boxShadow: isMobileOpen ? '4px 0 24px rgba(0,0,0,0.1)' : 'none',
           display: 'flex',
           flexDirection: 'column',
           position: 'sticky',
@@ -93,12 +99,13 @@ const AdminSidebar = ({ isMobileOpen, setIsMobileOpen }) => {
             .tiis-sidebar {
               position: fixed !important;
               transform: translateX(-100%);
-              height: 100vh !important;
+              height: 100% !important;
               top: 0 !important;
+              box-shadow: 4px 0 40px rgba(0,0,0,0.2) !important;
               z-index: 1050 !important;
             }
             .tiis-sidebar.open {
-              transform: translateX(0);
+              transform: translateX(0) !important;
             }
             .tiis-sidebar-overlay {
               display: block !important;

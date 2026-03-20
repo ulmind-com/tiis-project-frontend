@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../api';
-import { UserPlus, KeyRound, Eye, EyeOff, X } from 'lucide-react';
+import { UserPlus, KeyRound, Eye, EyeOff, X, Trash2 } from 'lucide-react';
+import Swal from 'sweetalert2';
 
 const ManageAdmins = () => {
   const [admins, setAdmins] = useState([]);
@@ -61,6 +62,40 @@ const ManageAdmins = () => {
     }
   };
 
+  const handleDeleteAdmin = async (adminId) => {
+    const result = await Swal.fire({
+      title: 'Delete this admin?',
+      text: "They will immediately lose access to the admin panel. This cannot be undone.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Yes, delete admin'
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      await api.delete(`/api/auth/admins/${adminId}`, getAuthHeaders());
+      Swal.fire({
+        title: 'Deleted!',
+        text: 'The admin has been successfully removed.',
+        icon: 'success',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+      });
+      fetchAdmins();
+    } catch (error) {
+      Swal.fire({
+        title: 'Error',
+        text: error.response?.data?.message || 'Failed to delete admin',
+        icon: 'error'
+      });
+    }
+  };
+
   const openChangePwModal = (admin) => {
     setChangePwModal(admin);
     setNewPassword('');
@@ -117,17 +152,18 @@ const ManageAdmins = () => {
   return (
     <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
       {/* List Admins */}
-      <div style={{ flex: '2', minWidth: '400px', backgroundColor: 'var(--color-card-bg)', padding: '1.5rem', borderRadius: '12px', boxShadow: 'var(--shadow-sm)' }}>
+      <div style={{ flex: '2', minWidth: '300px', backgroundColor: 'var(--color-card-bg)', padding: '1.5rem', borderRadius: '12px', boxShadow: 'var(--shadow-sm)', overflowX: 'auto' }}>
         <h2 style={{ marginBottom: '1.5rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.75rem', fontSize: '1.15rem', fontWeight: '600' }}>Active Administrators</h2>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ backgroundColor: 'var(--color-bg-light)', textAlign: 'left' }}>
-              <th style={{ padding: '0.85rem 1rem', borderBottom: '1px solid var(--border-color)', fontSize: '0.85rem', fontWeight: '600' }}>Name</th>
-              <th style={{ padding: '0.85rem 1rem', borderBottom: '1px solid var(--border-color)', fontSize: '0.85rem', fontWeight: '600' }}>Email Address</th>
-              <th style={{ padding: '0.85rem 1rem', borderBottom: '1px solid var(--border-color)', fontSize: '0.85rem', fontWeight: '600' }}>Role</th>
-              <th style={{ padding: '0.85rem 1rem', borderBottom: '1px solid var(--border-color)', fontSize: '0.85rem', fontWeight: '600', textAlign: 'center' }}>Actions</th>
-            </tr>
-          </thead>
+        <div style={{ minWidth: '600px' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr style={{ backgroundColor: 'var(--color-bg-light)', textAlign: 'left' }}>
+                <th style={{ padding: '0.85rem 1rem', borderBottom: '1px solid var(--border-color)', fontSize: '0.85rem', fontWeight: '600' }}>Name</th>
+                <th style={{ padding: '0.85rem 1rem', borderBottom: '1px solid var(--border-color)', fontSize: '0.85rem', fontWeight: '600' }}>Email Address</th>
+                <th style={{ padding: '0.85rem 1rem', borderBottom: '1px solid var(--border-color)', fontSize: '0.85rem', fontWeight: '600' }}>Role</th>
+                <th style={{ padding: '0.85rem 1rem', borderBottom: '1px solid var(--border-color)', fontSize: '0.85rem', fontWeight: '600', textAlign: 'center' }}>Actions</th>
+              </tr>
+            </thead>
           <tbody>
             {admins.map(admin => (
               <tr key={admin._id} style={{ borderBottom: '1px solid var(--border-color)' }}>
@@ -138,7 +174,7 @@ const ManageAdmins = () => {
                      Admin
                    </span>
                 </td>
-                <td style={{ padding: '0.85rem 1rem', textAlign: 'center' }}>
+                <td style={{ padding: '0.85rem 1rem', textAlign: 'center', display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
                   <button
                     onClick={() => openChangePwModal(admin)}
                     style={{
@@ -158,13 +194,37 @@ const ManageAdmins = () => {
                     onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(59,130,246,0.3)'; }}
                     onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
                   >
-                    <KeyRound size={14} /> Change Password
+                    <KeyRound size={14} /> Password
+                  </button>
+                  
+                  {/* Delete Admin Button */}
+                  <button
+                    onClick={() => handleDeleteAdmin(admin._id)}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.4rem',
+                      padding: '0.4rem 0.85rem',
+                      background: 'linear-gradient(135deg, #ef4444, #dc2626)',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '8px',
+                      fontSize: '0.8rem',
+                      fontWeight: '500',
+                      cursor: 'pointer',
+                      transition: 'transform 0.2s, box-shadow 0.2s',
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(239,68,68,0.3)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+                  >
+                    <Trash2 size={14} /> Delete
                   </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Add new Admin Form */}
