@@ -125,7 +125,7 @@ const Header = () => {
         @media (max-width: 768px) {
           .tiis-hamburger  { 
             display: flex !important; 
-            margin-left: 1.25rem !important; /* <-- Eita diye hamburger menu ke ektu right e sorano holo */
+            margin-left: 1.25rem !important; 
           }
           .tiis-desktop-nav { display: none !important; }
           
@@ -134,6 +134,11 @@ const Header = () => {
             display: inline-flex !important;
             padding: 0.4rem 0.8rem !important;
             font-size: 0.75rem !important;
+          }
+
+          /* Menu open thakle header er button ta hide korar logic */
+          .tiis-cta-btn.hidden-on-mobile {
+            display: none !important;
           }
 
           /* ─── Moving the 3 items towards center-left ─── */
@@ -186,7 +191,6 @@ const Header = () => {
               : '0 4px 28px rgba(1,50,78,0.10), 0 1px 0 rgba(255,255,255,0.8) inset',
           }}
         >
-          {/* Class added for mobile layout overrides */}
           <div className={`tiis-nav-row ${compact ? 'is-compact-row' : ''}`} style={{
             display: 'flex',
             alignItems: 'center',
@@ -274,8 +278,7 @@ const Header = () => {
               </AnimatePresence>
             </motion.div>
 
-            {/* Shift group left by adding margin-right */}
-            <motion.div layout className={`tiis-right-menu ${compact ? 'is-compact' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexShrink: 0, marginRight: '1.5rem' }}>
+            <motion.div layout className={`tiis-right-menu ${compact ? 'is-compact' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexShrink: 0 }}>
               <button
                 onClick={toggleTheme}
                 aria-label="Toggle Dark Mode"
@@ -295,7 +298,7 @@ const Header = () => {
               {!compact && (
                 <Link
                   to="/contact"
-                  className="tiis-cta-btn"
+                  className={`tiis-cta-btn ${isOpen ? 'hidden-on-mobile' : ''}`}
                   style={{
                     display: 'inline-flex', alignItems: 'center', gap: '0.45rem',
                     background: 'linear-gradient(135deg, #c0272a 0%, #8f1416 100%)',
