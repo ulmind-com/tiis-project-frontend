@@ -14,11 +14,11 @@ const About = () => {
           /* Container padding to prevent cutting off at the edges */
           .container { padding-left: 1.25rem !important; padding-right: 1.25rem !important; width: 100% !important; box-sizing: border-box !important; }
 
-          /* Hero Section */
-          .about-hero { padding: 7rem 0 3rem 0 !important; border-bottom: none !important; }
+          /* Hero Section - Reduced top padding to move content UP */
+          .about-hero { padding: 5.5rem 0 2rem 0 !important; border-bottom: none !important; }
           .about-hero-title { font-size: 2.5rem !important; line-height: 1.15 !important; margin-bottom: 0.5rem !important; }
           
-          .about-hero-content { margin-top: 2rem !important; }
+          .about-hero-content { margin-top: 1.5rem !important; }
           .about-hero-content h2 { font-size: 1.6rem !important; text-align: left !important; line-height: 1.3 !important; }
           /* Removed 'justify' for mobile to prevent weird spacing/overflows */
           .about-hero-content div { text-align: left !important; font-size: 1rem !important; line-height: 1.7 !important; }
@@ -35,7 +35,7 @@ const About = () => {
           .about-card-bar { display: block !important; width: 3px !important; } 
 
           /* Our Solutions Section */
-          .solutions-section { padding-top: 4rem !important; padding-bottom: 2rem !important; }
+          .solutions-section { padding-top: 3.5rem !important; padding-bottom: 2rem !important; }
           .solutions-header h2 { font-size: 2.2rem !important; line-height: 1.2 !important; margin-bottom: 1rem !important; }
           .solutions-header p { font-size: 1rem !important; text-align: left !important; }
           .solutions-subheader h3 { font-size: 1.5rem !important; margin-bottom: 1.5rem !important; text-align: left !important; }
@@ -67,7 +67,7 @@ const About = () => {
       {/* Premium Hero Section */}
       <section className="about-hero" style={{
         position: 'relative',
-        padding: '8rem 5% 6rem',
+        padding: '6rem 5% 4rem', /* Reduced top padding for desktop to move it up */
         background: 'transparent',
         textAlign: 'center',
         borderBottom: '1px solid rgba(226, 232, 240, 0.8)'
@@ -101,7 +101,7 @@ const About = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             style={{
-              marginTop: '3rem',
+              marginTop: '2rem',
               textAlign: 'left'
             }}
           >
@@ -114,7 +114,7 @@ const About = () => {
             }}>
               Thoughtful Institute of Innovative Solutions
             </h2>
-            <div style={{ color: 'var(--color-text-muted)', fontSize: '1.15rem', lineHeight: '1.8', display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+            <div style={{ color: 'var(--color-text-muted)', fontSize: '1.15rem', lineHeight: '1.8', display: 'flex', flexDirection: 'column', gap: '1.2rem', textAlign: 'justify' }}>
               <p>
                 We at TIIS offer customized-based solutions that help increase productivity, performance, and profitability. We believe in customizing and developing specific solutions through a collaborative process designed to identify a client’s needs. Our approach is based on experiential learning combined with the technology and strong faculty of experts and competent solutions providers.
               </p>
@@ -126,7 +126,7 @@ const About = () => {
         </div>
       </section>
 
-      <div className="container about-grid-container" style={{ position: 'relative', zIndex: 2, marginTop: '-3rem' }}>
+      <div className="container about-grid-container" style={{ position: 'relative', zIndex: 2, marginTop: '-2rem' }}>
         <div className="about-grid" style={{
           display: 'grid',
           gridTemplateColumns: '1fr',

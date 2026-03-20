@@ -123,9 +123,31 @@ const Header = () => {
           .tiis-hamburger { display: none !important; }
         }
         @media (max-width: 768px) {
-          .tiis-hamburger  { display: flex !important; }
+          .tiis-hamburger  { 
+            display: flex !important; 
+            margin-left: 1.25rem !important; /* <-- Eita diye hamburger menu ke ektu right e sorano holo */
+          }
           .tiis-desktop-nav { display: none !important; }
-          .tiis-cta-btn     { display: none !important; }
+          
+          /* Mobile view the button adjust kora holo jate ek line e fite hoy */
+          .tiis-cta-btn { 
+            display: inline-flex !important;
+            padding: 0.4rem 0.8rem !important;
+            font-size: 0.75rem !important;
+          }
+
+          /* ─── Moving the 3 items towards center-left ─── */
+          .tiis-nav-row:not(.is-compact-row) {
+            justify-content: flex-start !important;
+          }
+          .tiis-center-nav:not(.is-compact) {
+            display: none !important;
+          }
+          .tiis-right-menu:not(.is-compact) {
+            margin-left: auto !important;
+            margin-right: auto !important;
+          }
+          
           .tiis-right-menu.is-compact { display: none !important; }
           .tiis-center-nav.is-compact { justify-content: flex-end !important; }
         }
@@ -164,7 +186,8 @@ const Header = () => {
               : '0 4px 28px rgba(1,50,78,0.10), 0 1px 0 rgba(255,255,255,0.8) inset',
           }}
         >
-          <div style={{
+          {/* Class added for mobile layout overrides */}
+          <div className={`tiis-nav-row ${compact ? 'is-compact-row' : ''}`} style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -251,7 +274,8 @@ const Header = () => {
               </AnimatePresence>
             </motion.div>
 
-            <motion.div layout className={`tiis-right-menu ${compact ? 'is-compact' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexShrink: 0 }}>
+            {/* Shift group left by adding margin-right */}
+            <motion.div layout className={`tiis-right-menu ${compact ? 'is-compact' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexShrink: 0, marginRight: '1.5rem' }}>
               <button
                 onClick={toggleTheme}
                 aria-label="Toggle Dark Mode"
