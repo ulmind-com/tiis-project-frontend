@@ -13,11 +13,11 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://tiis-project-backend.onrender.com',
+        target: 'http://127.0.0.1:5000',
         changeOrigin: true,
       },
       '/uploads': {
-        target: 'https://tiis-project-backend.onrender.com',
+        target: 'http://127.0.0.1:5000',
         changeOrigin: true,
       }
     }

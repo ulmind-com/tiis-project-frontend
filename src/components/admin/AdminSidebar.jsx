@@ -9,7 +9,9 @@ import {
   ClipboardList, 
   UserPlus, 
   LogOut,
-  BarChart3
+  BarChart3,
+  Star,
+  Image as ImageIcon
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -19,6 +21,8 @@ const navItems = [
   { path: '/admin/portfolio',     label: 'Portfolio',     icon: Briefcase },
   { path: '/admin/news',          label: 'News',          icon: FileText },
   { path: '/admin/team',          label: 'Core Team',     icon: Users },
+  { path: '/admin/testimonials',  label: 'Testimonials',  icon: Star },
+  { path: '/admin/logos',         label: 'Client Logos',  icon: ImageIcon },
   { path: '/admin/enquiries',     label: 'Enquiries',     icon: MessageSquare },
   { path: '/admin/careers',       label: 'Jobs',          icon: Briefcase },
   { path: '/admin/applications',  label: 'Applications',  icon: ClipboardList },

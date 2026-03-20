@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import api from '../../api';
-import { Plus, Edit2, Trash2, Loader2, Users, Upload, X, Linkedin, Image as ImageIcon } from 'lucide-react';
+import { Plus, Edit2, Trash2, Loader2, MessageSquare, Upload, X, ImageIcon, Star, CheckCircle, XCircle } from 'lucide-react';
 import Swal from 'sweetalert2';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useOutletContext } from 'react-router-dom';
 import ImageModal from '../../components/admin/ImageModal';
 
-const ManageTeam = () => {
+const ManageTestimonials = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [currentId, setCurrentId] = useState(null);
-  const [formData, setFormData] = useState({ name: '', role: '', bio: '', linkedIn: '', image: null, existingImageUrl: '' });
+  const [formData, setFormData] = useState({ clientName: '', designation: '', description: '', rating: 5, isActive: true, image: null, existingImageUrl: '' });
   const [isSaving, setIsSaving] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
   const [dragOver, setDragOver] = useState(false);
@@ -27,8 +27,11 @@ const ManageTeam = () => {
   };
 
   const fetchItems = async () => {
-    try { const { data } = await api.get('/api/team', getAuthHeaders()); setItems(data); }
-    catch (e) { console.error('Failed to fetch team'); }
+    try { 
+      const { data } = await api.get('/api/testimonials', getAuthHeaders()); 
+      setItems(data); 
+    }
+    catch (e) { console.error('Failed to fetch testimonials'); }
     finally { setLoading(false); }
   };
 
@@ -38,18 +41,23 @@ const ManageTeam = () => {
     e.preventDefault(); setIsSaving(true);
     try {
       const data = new FormData();
-      data.append('name', formData.name); data.append('role', formData.role);
-      data.append('bio', formData.bio); data.append('linkedIn', formData.linkedIn);
+      data.append('clientName', formData.clientName); 
+      data.append('designation', formData.designation);
+      data.append('description', formData.description); 
+      data.append('rating', formData.rating);
+      data.append('isActive', formData.isActive);
       if (formData.image) data.append('image', formData.image);
+      
       const config = getAuthHeaders();
+      // Override default application/json header to allow file uploads
       config.headers = { ...config.headers, 'Content-Type': 'multipart/form-data' };
 
       if (isEditing) {
-        await api.put(`/api/team/${currentId}`, data, config);
+        await api.put(`/api/testimonials/${currentId}`, data, config);
         Swal.fire({ title: 'Updated!', icon: 'success', toast: true, position: 'top-end', timer: 2500, showConfirmButton: false });
       } else {
-        await api.post('/api/team', data, config);
-        Swal.fire({ title: 'Member added!', icon: 'success', toast: true, position: 'top-end', timer: 2500, showConfirmButton: false });
+        await api.post('/api/testimonials', data, config);
+        Swal.fire({ title: 'Testimonial added!', icon: 'success', toast: true, position: 'top-end', timer: 2500, showConfirmButton: false });
       }
       resetForm(); fetchItems();
     } catch (e) { Swal.fire('Error', e.response?.data?.message || 'Failed to save.', 'error'); }
@@ -58,29 +66,54 @@ const ManageTeam = () => {
 
   const handleEdit = (item) => {
     setIsEditing(true); setCurrentId(item._id);
-    setFormData({ name: item.name, role: item.role, bio: item.bio || '', linkedIn: item.linkedIn || '', image: null, existingImageUrl: item.imageUrl || '' });
+    setFormData({ 
+      clientName: item.clientName, 
+      designation: item.designation || '', 
+      description: item.description || '', 
+      rating: item.rating || 5, 
+      isActive: item.isActive !== undefined ? item.isActive : true,
+      image: null, 
+      existingImageUrl: item.imageUrl || '' 
+    });
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   const resetForm = () => {
     setIsEditing(false); setCurrentId(null);
-    setFormData({ name: '', role: '', bio: '', linkedIn: '', image: null, existingImageUrl: '' });
+    setFormData({ clientName: '', designation: '', description: '', rating: 5, isActive: true, image: null, existingImageUrl: '' });
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   const handleDelete = async (id) => {
     const result = await Swal.fire({
-      title: 'Remove this member?', text: 'This action is permanent.', icon: 'warning',
+      title: 'Remove this testimonial?', text: 'This action is permanent.', icon: 'warning',
       showCancelButton: true, confirmButtonColor: '#dc2626', cancelButtonColor: isDark ? '#475569' : '#94a3b8',
       background: isDark ? '#1e293b' : '#fff', color: isDark ? '#fff' : '#000', confirmButtonText: 'Delete',
     });
     if (result.isConfirmed) {
       try {
-        await api.delete(`/api/team/${id}`, getAuthHeaders());
+        await api.delete(`/api/testimonials/${id}`, getAuthHeaders());
         fetchItems(); Swal.fire({ title: 'Removed!', icon: 'success', toast: true, position: 'top-end', timer: 2500, showConfirmButton: false });
       } catch (err) { Swal.fire('Error!', err.response?.data?.message || 'Failed.', 'error'); }
     }
   };
+
+  const handleToggleActive = async (item) => {
+    try {
+      const config = getAuthHeaders();
+      const updatedStatus = !item.isActive;
+      // using PUT but with minimal data specifically to flip active
+      const data = new FormData();
+      data.append('isActive', updatedStatus);
+      await api.put(`/api/testimonials/${item._id}`, data, config);
+      
+      // Optimitistic UI update
+      setItems(items.map(t => t._id === item._id ? { ...t, isActive: updatedStatus } : t));
+      Swal.fire({ title: updatedStatus ? 'Activated' : 'Hidden', icon: 'success', toast: true, position: 'top-end', timer: 1500, showConfirmButton: false });
+    } catch (e) {
+      Swal.fire('Error', 'Failed to change status.', 'error');
+    }
+  }
 
   const handleImageChange = (e) => { if (e.target.files?.[0]) setFormData({ ...formData, image: e.target.files[0] }); };
   const handleDrop = (e) => { e.preventDefault(); setDragOver(false); if (e.dataTransfer.files?.[0]) setFormData({ ...formData, image: e.dataTransfer.files[0] }); };
@@ -101,8 +134,8 @@ const ManageTeam = () => {
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
           <h2 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--color-text-main)', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Users size={20} style={{ color: '#8b5cf6' }} /> Core Team
-            <span style={{ fontSize: '0.8rem', padding: '0.2rem 0.6rem', borderRadius: '8px', background: '#8b5cf615', color: '#8b5cf6', fontWeight: 600 }}>{items.length}</span>
+            <MessageSquare size={20} style={{ color: '#f59e0b' }} /> Testimonials
+            <span style={{ fontSize: '0.8rem', padding: '0.2rem 0.6rem', borderRadius: '8px', background: '#f59e0b15', color: '#f59e0b', fontWeight: 600 }}>{items.length}</span>
           </h2>
         </div>
 
@@ -112,7 +145,7 @@ const ManageTeam = () => {
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88rem' }}>
             <thead>
               <tr style={{ backgroundColor: 'var(--color-bg-light)', textAlign: 'left' }}>
-                {['Photo', 'Name', 'Role', 'Actions'].map((h, i) => (
+                {['Client', 'Rating', 'Status', 'Actions'].map((h, i) => (
                   <th key={h} style={{ padding: '0.75rem 1rem', borderBottom: '1px solid var(--border-color)', fontWeight: 600, fontSize: '0.78rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', borderRadius: i === 0 ? '10px 0 0 0' : i === 3 ? '0 10px 0 0' : '' }}>{h}</th>
                 ))}
               </tr>
@@ -124,19 +157,28 @@ const ManageTeam = () => {
                     style={{ borderBottom: '1px solid var(--border-color)', transition: 'background 0.2s' }}
                     onMouseEnter={e => e.currentTarget.style.background = 'var(--color-bg-light)'}
                     onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
-                    <td style={{ padding: '0.75rem 1rem' }}>
+                    <td style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
                       {item.imageUrl ?
-                        <img src={item.imageUrl} alt={item.name} onClick={() => setPreviewImage(item.imageUrl)}
+                        <img src={item.imageUrl} alt={item.clientName} onClick={() => setPreviewImage(item.imageUrl)}
                           style={{ width: '42px', height: '42px', objectFit: 'cover', borderRadius: '50%', border: '2px solid var(--border-color)', cursor: 'pointer', transition: 'transform 0.2s' }}
                           onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'} />
-                        : <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: 'var(--color-bg-light)', border: '2px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-text-muted)', fontSize: '0.85rem', fontWeight: 700 }}>{item.name?.charAt(0)}</div>}
+                        : <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: 'var(--color-bg-light)', border: '2px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-text-muted)', fontSize: '0.85rem', fontWeight: 700 }}>{item.clientName?.charAt(0)}</div>}
+                      <div>
+                        <div style={{ fontWeight: 600, color: 'var(--color-text-main)' }}>{item.clientName}</div>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '0.15rem' }}>{item.designation}</div>
+                      </div>
                     </td>
                     <td style={{ padding: '0.75rem 1rem' }}>
-                      <div style={{ fontWeight: 600, color: 'var(--color-text-main)' }}>{item.name}</div>
-                      {item.linkedIn && <a href={item.linkedIn} target="_blank" rel="noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.72rem', color: '#0077b5', textDecoration: 'none', marginTop: '0.15rem' }}><Linkedin size={11} /> LinkedIn</a>}
+                      <div style={{ display: 'flex', alignItems: 'center', color: '#fbbf24', gap: '0.1rem' }}>
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} size={14} fill={i < item.rating ? '#fbbf24' : 'transparent'} strokeWidth={i < item.rating ? 0 : 2} color={i < item.rating ? '#fbbf24' : 'var(--color-text-muted)'} opacity={i < item.rating ? 1 : 0.3} />
+                        ))}
+                      </div>
                     </td>
                     <td style={{ padding: '0.75rem 1rem' }}>
-                      <span style={{ padding: '0.2rem 0.55rem', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 500, background: '#8b5cf610', color: '#8b5cf6', border: '1px solid #8b5cf620' }}>{item.role}</span>
+                      <button onClick={() => handleToggleActive(item)} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.35rem', padding: '0.25rem 0.6rem', borderRadius: '20px', backgroundColor: item.isActive ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)', color: item.isActive ? '#10b981' : '#ef4444', fontWeight: 600, fontSize: '0.75rem', transition: 'all 0.2s' }}>
+                        {item.isActive ? <><CheckCircle size={14} /> Active</> : <><XCircle size={14} /> Hidden</>}
+                      </button>
                     </td>
                     <td style={{ padding: '0.75rem 1rem' }}>
                       <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -155,7 +197,7 @@ const ManageTeam = () => {
                   </motion.tr>
                 ))}
               </AnimatePresence>
-              {items.length === 0 && <tr><td colSpan={4} style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>No team members. Add your first →</td></tr>}
+              {items.length === 0 && <tr><td colSpan={4} style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>No testimonials yet. Add your first →</td></tr>}
             </tbody>
           </table>
         )}
@@ -169,33 +211,45 @@ const ManageTeam = () => {
         alignSelf: 'flex-start', transition: 'border-color 0.3s',
       }}>
         <h2 style={{ fontSize: '1.1rem', fontWeight: 700, margin: '0 0 1.5rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem', color: isEditing ? '#3b82f6' : 'var(--color-text-main)' }}>
-          {isEditing ? <><Edit2 size={18} /> Edit Member</> : <><Plus size={18} /> Add Member</>}
+          {isEditing ? <><Edit2 size={18} /> Edit Testimonial</> : <><Plus size={18} /> Add Testimonial</>}
         </h2>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
           <div>
-            <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.3px' }}>Full Name <span style={{ color: '#ef4444' }}>*</span></label>
-            <input required placeholder="John Doe" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} style={inputStyle} onFocus={focusIn} onBlur={focusOut} />
+            <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.3px' }}>Client Name <span style={{ color: '#ef4444' }}>*</span></label>
+            <input required placeholder="Elon Musk" value={formData.clientName} onChange={e => setFormData({ ...formData, clientName: e.target.value })} style={inputStyle} onFocus={focusIn} onBlur={focusOut} />
           </div>
 
           <div>
-            <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.3px' }}>Role / Title <span style={{ color: '#ef4444' }}>*</span></label>
-            <input required placeholder="CEO, CTO, Designer..." value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })} style={inputStyle} onFocus={focusIn} onBlur={focusOut} />
+            <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.3px' }}>Designation</label>
+            <input placeholder="CEO, SpaceX" value={formData.designation} onChange={e => setFormData({ ...formData, designation: e.target.value })} style={inputStyle} onFocus={focusIn} onBlur={focusOut} />
           </div>
 
           <div>
-            <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.3px' }}>Short Bio</label>
-            <textarea rows={3} placeholder="A brief introduction..." value={formData.bio} onChange={e => setFormData({ ...formData, bio: e.target.value })} style={{ ...inputStyle, resize: 'vertical' }} onFocus={focusIn} onBlur={focusOut} />
+            <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.3px' }}>Testimonial Description <span style={{ color: '#ef4444' }}>*</span></label>
+            <textarea required rows={4} placeholder="Their experience working with us..." value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })} style={{ ...inputStyle, resize: 'vertical' }} onFocus={focusIn} onBlur={focusOut} />
           </div>
 
           <div>
-            <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.3px', display: 'flex', alignItems: 'center', gap: '0.3rem' }}><Linkedin size={13} /> LinkedIn URL</label>
-            <input type="url" placeholder="https://linkedin.com/in/..." value={formData.linkedIn} onChange={e => setFormData({ ...formData, linkedIn: e.target.value })} style={inputStyle} onFocus={focusIn} onBlur={focusOut} />
+            <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.3px' }}>Rating (1-5)</label>
+            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+              {[1, 2, 3, 4, 5].map(star => (
+                <Star 
+                  key={star} 
+                  size={24} 
+                  fill={star <= formData.rating ? '#fbbf24' : 'transparent'} 
+                  strokeWidth={star <= formData.rating ? 0 : 1.5} 
+                  color={star <= formData.rating ? '#fbbf24' : 'var(--color-text-muted)'}
+                  style={{ cursor: 'pointer', transition: 'all 0.2s' }}
+                  onClick={() => setFormData({ ...formData, rating: star })}
+                />
+              ))}
+            </div>
           </div>
 
           {/* Image Upload */}
           <div>
-            <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.3px' }}>Profile Photo</label>
+            <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.3px' }}>Client Photo</label>
             <div
               onDragOver={e => { e.preventDefault(); setDragOver(true); }} onDragLeave={() => setDragOver(false)} onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
@@ -235,7 +289,7 @@ const ManageTeam = () => {
                 cursor: isSaving ? 'not-allowed' : 'pointer', opacity: isSaving ? 0.7 : 1,
                 boxShadow: '0 4px 12px rgba(0,0,0,0.15)', transition: 'all 0.2s',
               }}>
-              {isSaving ? <><Loader2 className="animate-spin" size={16} /> Saving...</> : (isEditing ? 'Update Member' : 'Save Member')}
+              {isSaving ? <><Loader2 className="animate-spin" size={16} /> Saving...</> : (isEditing ? 'Update Testimonial' : 'Save Testimonial')}
             </motion.button>
             {isEditing && (
               <motion.button whileTap={{ scale: 0.97 }} type="button" onClick={resetForm} disabled={isSaving}
@@ -251,4 +305,4 @@ const ManageTeam = () => {
   );
 };
 
-export default ManageTeam;
+export default ManageTestimonials;

@@ -156,7 +156,6 @@ const Contact = () => {
             
             <InfoCard icon={Mail} title="Email Us" content={<><a href="mailto:info@tiis.co.in" style={{ color: '#0284c7', textDecoration: 'none', fontWeight: 600 }}>info@tiis.co.in</a><br />Response within 24 hours</>} delay={0} />
             <InfoCard icon={Phone} title="Call Us" content={<><a href="tel:+91XXXXXXXXXX" style={{ color: '#0284c7', textDecoration: 'none', fontWeight: 600 }}>+91 XXX XXX XXXX</a><br />Mon-Fri, 9am - 6pm IST</>} delay={0.1} />
-            <InfoCard icon={MapPin} title="Visit Us" content={<>107, Malibu Towne, Sector 47<br />Gurugram, Haryana 122018</>} delay={0.2} />
 
             {/* Premium Map Embed */}
             <motion.div variants={fadeUp(0.3)} style={{ position: 'relative', marginTop: '1rem' }}>

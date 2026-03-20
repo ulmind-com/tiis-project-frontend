@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { Building2, Users, Briefcase, FileText, Layout, CheckCircle, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Building2, Users, Briefcase, FileText, Layout, CheckCircle, ArrowRight, Star, Quote, ChevronRight, Play } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { AnimatedTestimonials } from '../../components/ui/animated-testimonials';
 import api from '../../api';
 import { useTheme } from '../../hooks/useTheme';
 
@@ -178,6 +179,8 @@ const Home = () => {
   const [news, setNews] = useState([]);
   const [portfolio, setPortfolio] = useState([]);
   const [activeJobs, setActiveJobs] = useState([]);
+  const [testimonials, setTestimonials] = useState([]);
+  const [logos, setLogos] = useState([]);
   const [isMottoModalOpen, setIsMottoModalOpen] = useState(false);
   const [selectedNews, setSelectedNews] = useState(null);
   const [currentNewsIndex, setCurrentNewsIndex] = useState(0);
@@ -188,15 +191,19 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [newsRes, portRes, jobsRes] = await Promise.all([
+        const [newsRes, portRes, jobsRes, testRes, logosRes] = await Promise.all([
           api.get('/api/news'),
           api.get('/api/portfolio'),
           api.get('/api/jobs').catch(() => ({ data: [] })),
+          api.get('/api/testimonials?active=true').catch(() => ({ data: [] })),
+          api.get('/api/logos').catch(() => ({ data: [] })),
         ]);
         setNews(newsRes.data.slice(0, 4));
         setPortfolio(portRes.data.slice(0, 3));
         const active = (jobsRes.data || []).filter(j => j.isActive);
         setActiveJobs(active);
+        setTestimonials(testRes.data || []);
+        setLogos(logosRes.data || []);
       } catch (error) {
         console.error('Error fetching dynamic content:', error);
       }
@@ -389,8 +396,8 @@ const Home = () => {
             </div>
 
             <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', marginBottom: '1.5rem', fontWeight: '800', lineHeight: '1.1', color: 'var(--color-primary-dark)' }}>
-              Thoughtful Institute of <br />
-              <span className="text-gradient-primary">Innovative Solutions</span>
+              Thoughtful Institute of
+              <span className="text-gradient-primary"> Innovative Solutions, LLP</span>
             </h1>
 
             <p style={{ fontSize: '1.15rem', color: 'var(--color-text-muted)', marginBottom: '3rem', lineHeight: '1.8', maxWidth: '600px' }}>
@@ -460,79 +467,44 @@ const Home = () => {
         />
       </section>
 
-      {/* Services Overview */}
-      <section ref={capabilitiesRef} className="services-overview" style={{
-        padding: '7rem 0',
-        position: 'relative',
-        overflow: 'hidden',
-        background: isDark
-          ? 'linear-gradient(180deg, #0a0a0a 0%, #0f172a 40%, #0c1222 70%, #0a0a0a 100%)'
-          : 'linear-gradient(135deg, #f0f4ff 0%, #e8ecfa 15%, #f5e6f0 30%, #fce8e6 45%, #fff7ed 55%, #ecfdf5 70%, #e0f2fe 85%, #eef2ff 100%)',
-        transition: 'background 0.5s ease',
-      }}>
-        {/* Animated floating orbs */}
-        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
-          <div style={{
-            position: 'absolute', top: '10%', left: '5%', width: '400px', height: '400px', borderRadius: '50%',
-            background: isDark ? 'radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%)' : 'radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%)',
-            animation: 'capOrb1 12s ease-in-out infinite',
-          }} />
-          <div style={{
-            position: 'absolute', bottom: '5%', right: '8%', width: '350px', height: '350px', borderRadius: '50%',
-            background: isDark ? 'radial-gradient(circle, rgba(177,32,35,0.1) 0%, transparent 70%)' : 'radial-gradient(circle, rgba(177,32,35,0.06) 0%, transparent 70%)',
-            animation: 'capOrb2 15s ease-in-out infinite',
-          }} />
-          <div style={{
-            position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '500px', height: '500px', borderRadius: '50%',
-            background: isDark ? 'radial-gradient(circle, rgba(139,92,246,0.07) 0%, transparent 70%)' : 'radial-gradient(circle, rgba(139,92,246,0.04) 0%, transparent 70%)',
-            animation: 'capOrb3 18s ease-in-out infinite',
-          }} />
-          <div style={{
-            position: 'absolute', inset: 0,
-            backgroundImage: isDark ? 'radial-gradient(circle, rgba(255,255,255,0.02) 1px, transparent 1px)' : 'radial-gradient(circle, rgba(0,0,0,0.02) 1px, transparent 1px)',
-            backgroundSize: '30px 30px',
-          }} />
-        </div>
-
-        <style>{`
-          @keyframes capOrb1 { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(60px, 40px) scale(1.15); } 66% { transform: translate(-30px, 60px) scale(0.9); } }
-          @keyframes capOrb2 { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(-50px, -40px) scale(1.1); } 66% { transform: translate(40px, -30px) scale(0.95); } }
-          @keyframes capOrb3 { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.2); } }
-        `}</style>
-
-        <div className="container" style={{ maxWidth: '1300px', margin: '0 auto', position: 'relative', zIndex: 2 }}>
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            style={{ textAlign: 'center', marginBottom: '4rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1rem', color: isDark ? '#f87171' : 'var(--color-secondary)', fontWeight: '700', fontSize: '0.85rem', letterSpacing: '3px', textTransform: 'uppercase' }}>
-              <span style={{ width: '30px', height: '2px', backgroundColor: isDark ? '#f87171' : 'var(--color-secondary)', borderRadius: '2px' }}></span>
-              What We Do
-              <span style={{ width: '30px', height: '2px', backgroundColor: isDark ? '#f87171' : 'var(--color-secondary)', borderRadius: '2px' }}></span>
+      {logos.length > 0 && (
+        <div style={{ backgroundColor: isDark ? 'var(--color-bg-dark)' : '#fff', padding: '2.5rem 0', overflow: 'hidden', whiteSpace: 'nowrap', position: 'relative', zIndex: 3, borderBottom: '1px solid var(--border-color)', borderTop: '1px solid var(--border-color)' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: '150px', background: isDark ? 'linear-gradient(to right, var(--color-bg-dark), transparent)' : 'linear-gradient(to right, #fff, transparent)', zIndex: 2 }}></div>
+          <div style={{ position: 'absolute', top: 0, right: 0, bottom: 0, width: '150px', background: isDark ? 'linear-gradient(to left, var(--color-bg-dark), transparent)' : 'linear-gradient(to left, #fff, transparent)', zIndex: 2 }}></div>
+          
+          <div style={{ display: 'inline-block', animation: 'marqueeLogos 40s linear infinite', willChange: 'transform' }}>
+            <style>
+              {`@keyframes marqueeLogos { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }`}
+            </style>
+            
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6rem', paddingRight: '6rem' }}>
+              {[1, 2].map((set) => (
+                <React.Fragment key={set}>
+                  {logos.map((logo, idx) => (
+                    <img 
+                      key={`${set}-${logo._id || idx}`} 
+                      src={logo.imageUrl} 
+                      alt={logo.title || "Client/Partner Logo"} 
+                      title={logo.title || "Client/Partner"} 
+                      style={{ 
+                        height: '42px', 
+                        maxWidth: '200px',
+                        objectFit: 'contain',
+                        opacity: isDark ? 0.7 : 0.6, 
+                        filter: isDark ? 'grayscale(100%) brightness(1.5)' : 'grayscale(100%)', 
+                        transition: 'all 0.4s ease',
+                        cursor: 'pointer'
+                      }} 
+                      onMouseEnter={e => { e.currentTarget.style.opacity = 1; e.currentTarget.style.filter = isDark ? 'grayscale(0%) brightness(1.2)' : 'grayscale(0%)'; e.currentTarget.style.transform = 'scale(1.05)'; }} 
+                      onMouseLeave={e => { e.currentTarget.style.opacity = isDark ? 0.7 : 0.6; e.currentTarget.style.filter = isDark ? 'grayscale(100%) brightness(1.5)' : 'grayscale(100%)'; e.currentTarget.style.transform = 'scale(1)'; }} 
+                    />
+                  ))}
+                </React.Fragment>
+              ))}
             </div>
-            <h2 style={{ fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: '900', color: isDark ? 'white' : 'var(--color-primary-dark)', lineHeight: '1.1', marginBottom: '1.2rem', letterSpacing: '-1px' }}>
-              Our <span style={{ background: isDark ? 'linear-gradient(135deg, #e0f2fe 0%, #f87171 100%)' : 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-secondary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Capabilities</span>
-            </h2>
-            <p style={{ color: 'var(--color-text-muted)', fontSize: '1.15rem', maxWidth: '600px', margin: '0 auto', lineHeight: '1.7' }}>
-              End-to-end consulting, staffing, and training solutions designed to accelerate your growth.
-            </p>
-          </motion.div>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '2rem',
-            marginTop: '2rem',
-            width: '100%',
-          }}>
-            {capabilitiesData.map((service, i) => (
-              <CapabilityCard key={i} service={service} index={i} isDark={isDark} />
-            ))}
           </div>
         </div>
-      </section>
+      )}
 
       {/* Dynamic Portfolio Section */}
       {portfolio.length > 0 && (
@@ -722,6 +694,42 @@ const Home = () => {
         </section>
       )}
 
+      {/* ══════════════════════════════════════
+          TESTIMONIALS SECTION
+      ══════════════════════════════════════ */}
+      {testimonials.length > 0 && (
+        <section className="testimonials-section" style={{
+          padding: '6rem 0', backgroundColor: 'var(--color-bg-light)', position: 'relative', overflow: 'hidden'
+        }}>
+          {/* Subtle backgrounds */}
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, var(--border-color), transparent)' }} />
+          <motion.div animate={{ rotate: 360 }} transition={{ duration: 50, repeat: Infinity, ease: 'linear' }} style={{ position: 'absolute', top: '-10%', right: '-5%', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(177,32,35,0.04) 0%, transparent 70%)', pointerEvents: 'none' }} />
+
+          <div className="container" style={{ position: 'relative', zIndex: 2 }}>
+            <motion.div initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} style={{ textAlign: 'center', marginBottom: '4rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1.2rem', color: isDark ? '#f87171' : 'var(--color-secondary)', fontWeight: '700', fontSize: '0.85rem', letterSpacing: '3px', textTransform: 'uppercase' }}>
+                <span style={{ width: '30px', height: '2px', backgroundColor: isDark ? '#f87171' : 'var(--color-secondary)', borderRadius: '2px' }}></span>
+                Client Voices
+                <span style={{ width: '30px', height: '2px', backgroundColor: isDark ? '#f87171' : 'var(--color-secondary)', borderRadius: '2px' }}></span>
+              </div>
+              <h2 style={{ fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: '900', color: isDark ? 'white' : 'var(--color-primary-dark)', lineHeight: '1.1', marginBottom: '1.2rem', letterSpacing: '-1px' }}>
+                Trusted By <span style={{ background: isDark ? 'linear-gradient(135deg, #e0f2fe 0%, #f87171 100%)' : 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-secondary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Leaders</span>
+              </h2>
+            </motion.div>
+
+            <AnimatedTestimonials 
+              testimonials={testimonials.map(t => ({
+                name: t.clientName,
+                designation: t.designation || 'Client',
+                quote: t.description,
+                src: t.imageUrl || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=500&q=80'
+              }))} 
+              autoplay={true} 
+            />
+          </div>
+        </section>
+      )}
+
       {/* Why Us / CTA Section */}
       <section className="why-us-section" style={{ padding: '6rem 0 14rem 0', backgroundColor: 'var(--color-primary)', color: 'white', position: 'relative', overflow: 'hidden' }}>
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
@@ -775,11 +783,7 @@ const Home = () => {
               {[
                 "Serve client with integrity and honesty,",
                 "TIIS proposed collaborative, multidisciplinary, and innovative solutions that are based on research and supported by modern technology",
-                "To provide client satisfaction come first, always and every time",
-                "Innovating and leading customer's / stakeholder's success comes first, always and every time",
-                "Business units, individual functions, teams that we lead come next",
-                "Interest of self, personal needs, desires comes last, always and every time",
-                "TIIS is symbolic of a transformed organization that has an energized, disciplined, and passionate workforce marching towards a common goal with the principle of Service Before Self."
+                "To provide client satisfaction come first, always and every time"
               ].map((text, idx) => (
                 <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', fontSize: '1.1rem', color: 'var(--color-text-muted)', lineHeight: '1.6' }}>
                   <CheckCircle color="var(--color-secondary)" size={24} style={{ flexShrink: 0, marginTop: '2px' }} />
