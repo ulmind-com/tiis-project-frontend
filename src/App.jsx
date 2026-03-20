@@ -23,6 +23,8 @@ import ManageAdmins from './pages/admin/ManageAdmins';
 import ManagePortfolio from './pages/admin/ManagePortfolio';
 import ManageNews from './pages/admin/ManageNews';
 import ManageTeam from './pages/admin/ManageTeam';
+import ManageTestimonials from './pages/admin/ManageTestimonials';
+import ManageLogos from './pages/admin/ManageLogos';
 import ViewApplications from './pages/admin/ViewApplications';
 import Dashboard from './pages/admin/Dashboard';
 import VisitorAnalytics from './pages/admin/VisitorAnalytics';
@@ -66,6 +68,8 @@ const AppContent = () => {
                 <Route path="portfolio" element={<ManagePortfolio />} />
                 <Route path="news" element={<ManageNews />} />
                 <Route path="team" element={<ManageTeam />} />
+                <Route path="testimonials" element={<ManageTestimonials />} />
+                <Route path="logos" element={<ManageLogos />} />
                 <Route path="careers" element={<ManageJobs />} />
                 <Route path="applications" element={<ViewApplications />} />
                 <Route path="enquiries" element={<ViewEnquiries />} />

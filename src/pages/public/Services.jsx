@@ -272,8 +272,8 @@ const ServiceModal = ({ service, onClose }) => {
           transition={{ type: 'spring', stiffness: 280, damping: 26 }}
           onClick={e => e.stopPropagation()}
           style={{
-            backgroundColor: 'white',
-            border: '1px solid rgba(0,0,0,0.08)',
+            backgroundColor: 'var(--color-card-bg)',
+            border: '1px solid var(--border-color-strong)',
             borderRadius: '22px',
             padding: '3rem 2.75rem',
             maxWidth: '680px',

@@ -320,7 +320,7 @@ const Header = () => {
                   }}
                 >
                   <span className="tiis-cta-shimmer" />
-                  Get a Quote
+                  Connect Us
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" style={{ opacity: 0.9 }}>
                     <path d="M2 6.5h9M7.5 3 11 6.5 7.5 10" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
