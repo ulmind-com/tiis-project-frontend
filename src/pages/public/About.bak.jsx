@@ -1,14 +1,58 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle } from 'lucide-react';
 
 const About = () => {
   return (
-    <div className="about-page animate-fade-in" style={{ paddingBottom: '4rem', overflow: 'hidden' }}>
-      
+    <div className="about-page animate-fade-in" style={{ paddingBottom: '4rem', overflowX: 'hidden' }}>
+
+      {/* ─── ULTRA PREMIUM MOBILE RESPONSIVE CSS ─── */}
+      <style>{`
+        @media (max-width: 768px) {
+          /* General Adjustments */
+          .container { padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
+
+          /* Hero Section */
+          .about-hero { padding: 6rem 1.5rem 4rem !important; border-bottom: none !important; }
+          .about-hero-title { font-size: 2.8rem !important; margin-bottom: 0.5rem !important; }
+          .about-hero-box { 
+            padding: 2rem 1.5rem !important; 
+            margin-top: 2rem !important; 
+            border-radius: 20px !important; 
+          }
+          .about-hero-box h2 { font-size: 1.5rem !important; text-align: center; }
+          .about-hero-box p { font-size: 1rem !important; text-align: center; }
+
+          /* Vision / Mission / Philosophy Grid */
+          .about-grid-container { margin-top: -1.5rem !important; padding: 0 1rem !important; }
+          .about-grid { gap: 1.5rem !important; }
+          .about-card { padding: 2rem 1.5rem !important; }
+          .about-card h3 { font-size: 1.3rem !important; text-align: center; }
+          .about-card p { font-size: 0.95rem !important; text-align: center; }
+          .about-icon-wrapper { margin: 0 auto 1.5rem !important; }
+          .about-card-bar { display: none !important; } /* Hide left bar on mobile for cleaner look */
+
+          /* Alternating Clipart Sections */
+          .about-clipart-section { padding: 4rem 1.5rem !important; }
+          .about-clipart-wrapper { gap: 5rem !important; }
+          .about-clipart-row { 
+            flex-direction: column !important; 
+            gap: 2rem !important; 
+            text-align: center;
+          }
+          /* Override reverse for mobile to always keep image on top */
+          .about-clipart-row.reverse-desktop { flex-direction: column-reverse !important; }
+          
+          .about-clipart-text { padding: 0 !important; }
+          .about-clipart-text h2 { font-size: 2rem !important; margin-bottom: 1rem !important; }
+          .about-clipart-text p { font-size: 1rem !important; }
+          .about-clipart-img { width: 100% !important; max-width: 320px !important; }
+        }
+      `}</style>
+      {/* ────────────────────────────────────────── */}
+
       {/* Premium Hero Section */}
-      <section style={{ 
-        position: 'relative', 
+      <section className="about-hero" style={{
+        position: 'relative',
         padding: '8rem 5% 6rem',
         background: 'linear-gradient(135deg, var(--color-background) 0%, #f1f5f9 100%)',
         textAlign: 'center',
@@ -17,15 +61,16 @@ const About = () => {
         {/* Background Decorative Orbs */}
         <div style={{ position: 'absolute', top: '10%', left: '15%', width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(59,130,246,0.15) 0%, rgba(59,130,246,0) 70%)', filter: 'blur(40px)', zIndex: 0 }} />
         <div style={{ position: 'absolute', bottom: '10%', right: '15%', width: '400px', height: '400px', background: 'radial-gradient(circle, rgba(139,92,246,0.12) 0%, rgba(139,92,246,0) 70%)', filter: 'blur(50px)', zIndex: 0 }} />
-        
+
         <div className="container" style={{ position: 'relative', zIndex: 1, maxWidth: '900px', margin: '0 auto' }}>
-          <motion.h1 
+          <motion.h1
+            className="about-hero-title"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            style={{ 
-              fontSize: 'clamp(3rem, 5vw, 4.5rem)', 
-              fontWeight: '900', 
+            style={{
+              fontSize: 'clamp(3rem, 5vw, 4.5rem)',
+              fontWeight: '900',
               letterSpacing: '-1px',
               background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 50%, var(--color-secondary) 100%)',
               WebkitBackgroundClip: 'text',
@@ -37,6 +82,7 @@ const About = () => {
           </motion.h1>
 
           <motion.div
+            className="about-hero-box"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
@@ -52,10 +98,10 @@ const About = () => {
               textAlign: 'left'
             }}
           >
-            <h2 style={{ 
-              fontSize: '1.8rem', 
-              fontWeight: '800', 
-              color: 'var(--color-primary-dark)', 
+            <h2 style={{
+              fontSize: '1.8rem',
+              fontWeight: '800',
+              color: 'var(--color-primary-dark)',
               marginBottom: '1.5rem',
               letterSpacing: '-0.5px'
             }}>
@@ -73,25 +119,26 @@ const About = () => {
         </div>
       </section>
 
-      <div className="container" style={{ position: 'relative', zIndex: 2, marginTop: '-3rem', padding: '0 5%' }}>
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: '1fr', 
+      <div className="container about-grid-container" style={{ position: 'relative', zIndex: 2, marginTop: '-3rem', padding: '0 5%' }}>
+        <div className="about-grid" style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr',
           gap: '2.5rem',
           maxWidth: '1200px',
           margin: '0 auto'
         }}>
           {/* Vision Card */}
-          <motion.div 
+          <motion.div
+            className="about-card"
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6 }}
-            style={{ 
+            style={{
               background: 'rgba(255, 255, 255, 0.8)',
               backdropFilter: 'blur(16px)',
-              borderRadius: '20px', 
-              padding: '2.5rem', 
+              borderRadius: '20px',
+              padding: '2.5rem',
               boxShadow: '0 10px 30px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)',
               border: '1px solid rgba(226, 232, 240, 0.8)',
               display: 'flex',
@@ -100,11 +147,11 @@ const About = () => {
               overflow: 'hidden'
             }}
           >
-            <div style={{ position: 'absolute', top: 0, left: 0, width: '4px', height: '100%', background: 'linear-gradient(to bottom, #3b82f6, #60a5fa)' }} />
-            <div style={{ 
+            <div className="about-card-bar" style={{ position: 'absolute', top: 0, left: 0, width: '4px', height: '100%', background: 'linear-gradient(to bottom, #3b82f6, #60a5fa)' }} />
+            <div className="about-icon-wrapper" style={{
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6', marginBottom: '1.5rem'
             }}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>
             </div>
             <h3 style={{ color: 'var(--color-primary-dark)', fontSize: '1.5rem', fontWeight: '800', marginBottom: '1rem', letterSpacing: '-0.3px' }}>Vision</h3>
             <p style={{ color: 'var(--color-text-muted)', lineHeight: '1.7', fontSize: '1.05rem', flex: 1 }}>
@@ -113,16 +160,17 @@ const About = () => {
           </motion.div>
 
           {/* Mission Card */}
-          <motion.div 
+          <motion.div
+            className="about-card"
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6, delay: 0.15 }}
-            style={{ 
+            style={{
               background: 'rgba(255, 255, 255, 0.8)',
               backdropFilter: 'blur(16px)',
-              borderRadius: '20px', 
-              padding: '2.5rem', 
+              borderRadius: '20px',
+              padding: '2.5rem',
               boxShadow: '0 10px 30px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)',
               border: '1px solid rgba(226, 232, 240, 0.8)',
               display: 'flex',
@@ -131,11 +179,11 @@ const About = () => {
               overflow: 'hidden'
             }}
           >
-            <div style={{ position: 'absolute', top: 0, left: 0, width: '4px', height: '100%', background: 'linear-gradient(to bottom, #8b5cf6, #a78bfa)' }} />
-            <div style={{ 
+            <div className="about-card-bar" style={{ position: 'absolute', top: 0, left: 0, width: '4px', height: '100%', background: 'linear-gradient(to bottom, #8b5cf6, #a78bfa)' }} />
+            <div className="about-icon-wrapper" style={{
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6', marginBottom: '1.5rem'
             }}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" /></svg>
             </div>
             <h3 style={{ color: 'var(--color-primary-dark)', fontSize: '1.5rem', fontWeight: '800', marginBottom: '1rem', letterSpacing: '-0.3px' }}>Mission</h3>
             <p style={{ color: 'var(--color-text-muted)', lineHeight: '1.7', fontSize: '1.05rem', flex: 1 }}>
@@ -144,16 +192,17 @@ const About = () => {
           </motion.div>
 
           {/* Philosophy Card */}
-          <motion.div 
+          <motion.div
+            className="about-card"
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            style={{ 
+            style={{
               background: 'rgba(255, 255, 255, 0.8)',
               backdropFilter: 'blur(16px)',
-              borderRadius: '20px', 
-              padding: '2.5rem', 
+              borderRadius: '20px',
+              padding: '2.5rem',
               boxShadow: '0 10px 30px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)',
               border: '1px solid rgba(226, 232, 240, 0.8)',
               gridColumn: '1 / -1',
@@ -163,11 +212,11 @@ const About = () => {
               flexDirection: 'column'
             }}
           >
-            <div style={{ position: 'absolute', top: 0, left: 0, width: '4px', height: '100%', background: 'linear-gradient(to bottom, #10b981, #34d399)' }} />
-            <div style={{ 
+            <div className="about-card-bar" style={{ position: 'absolute', top: 0, left: 0, width: '4px', height: '100%', background: 'linear-gradient(to bottom, #10b981, #34d399)' }} />
+            <div className="about-icon-wrapper" style={{
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', marginBottom: '1.5rem'
             }}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.54 15H17a2 2 0 0 0-2 2v4.54"/><path d="M7 3.34V5a3 3 0 0 0 3 3v0a2 2 0 0 1 2 2v0c0 1.1.9 2 2 2v0a2 2 0 0 0 2-2v0c0-1.1.9-2 2-2h3.17"/><path d="M11 21.95V18a2 2 0 0 0-2-2v0a2 2 0 0 1-2-2v-1.26"/><circle cx="12" cy="12" r="10"/></svg>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.54 15H17a2 2 0 0 0-2 2v4.54" /><path d="M7 3.34V5a3 3 0 0 0 3 3v0a2 2 0 0 1 2 2v0c0 1.1.9 2 2 2v0a2 2 0 0 0 2-2v0c0-1.1.9-2 2-2h3.17" /><path d="M11 21.95V18a2 2 0 0 0-2-2v0a2 2 0 0 1-2-2v-1.26" /><circle cx="12" cy="12" r="10" /></svg>
             </div>
             <h3 style={{ color: 'var(--color-primary-dark)', fontSize: '1.5rem', fontWeight: '800', marginBottom: '1rem', letterSpacing: '-0.3px' }}>Philosophy</h3>
             <div style={{ color: 'var(--color-text-muted)', lineHeight: '1.7', fontSize: '1.05rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -182,18 +231,19 @@ const About = () => {
         </div>
 
         {/* Alternating Clipart Sections */}
-        <section style={{ padding: '6rem 5%' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8rem', maxWidth: '1200px', margin: '0 auto' }}>
-            
+        <section className="about-clipart-section" style={{ padding: '6rem 5%' }}>
+          <div className="about-clipart-wrapper" style={{ display: 'flex', flexDirection: 'column', gap: '8rem', maxWidth: '1200px', margin: '0 auto' }}>
+
             {/* Section 1: Text Left, Image Right */}
-            <motion.div 
+            <motion.div
+              className="about-clipart-row"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6 }}
               style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '4rem' }}
             >
-              <div style={{ flex: '1 1 400px', paddingRight: '2rem' }}>
+              <div className="about-clipart-text" style={{ flex: '1 1 400px', paddingRight: '2rem' }}>
                 <h2 style={{ fontSize: 'clamp(2rem, 3.5vw, 3.5rem)', fontWeight: '800', color: 'var(--color-primary-dark)', lineHeight: '1.2', marginBottom: '1.5rem', letterSpacing: '-0.5px' }}>
                   Envisioning the Future
                 </h2>
@@ -202,12 +252,13 @@ const About = () => {
                 </div>
               </div>
               <div style={{ flex: '1 1 400px', display: 'flex', justifyContent: 'center' }}>
-                <img src="/src/assets/images/about_future.svg" alt="Envisioning Future" style={{ width: '100%', maxWidth: '500px', height: 'auto', dropShadow: '0 20px 40px rgba(0,0,0,0.05)' }} />
+                <img className="about-clipart-img" src="/src/assets/images/about_future.svg" alt="Envisioning Future" style={{ width: '100%', maxWidth: '500px', height: 'auto', dropShadow: '0 20px 40px rgba(0,0,0,0.05)' }} />
               </div>
             </motion.div>
 
-            {/* Section 2: Image Left, Text Right */}
-            <motion.div 
+            {/* Section 2: Image Left, Text Right (Reversed on Desktop) */}
+            <motion.div
+              className="about-clipart-row reverse-desktop"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
@@ -215,9 +266,9 @@ const About = () => {
               style={{ display: 'flex', flexWrap: 'wrap-reverse', alignItems: 'center', gap: '4rem' }}
             >
               <div style={{ flex: '1 1 400px', display: 'flex', justifyContent: 'center' }}>
-                <img src="/src/assets/images/about_tech.svg" alt="Technical Proficiency" style={{ width: '100%', maxWidth: '500px', height: 'auto', dropShadow: '0 20px 40px rgba(0,0,0,0.05)' }} />
+                <img className="about-clipart-img" src="/src/assets/images/about_tech.svg" alt="Technical Proficiency" style={{ width: '100%', maxWidth: '500px', height: 'auto', dropShadow: '0 20px 40px rgba(0,0,0,0.05)' }} />
               </div>
-              <div style={{ flex: '1 1 400px', paddingLeft: '2rem' }}>
+              <div className="about-clipart-text" style={{ flex: '1 1 400px', paddingLeft: '2rem' }}>
                 <h2 style={{ fontSize: 'clamp(2rem, 3.5vw, 3.5rem)', fontWeight: '800', color: 'var(--color-primary-dark)', lineHeight: '1.2', marginBottom: '1.5rem', letterSpacing: '-0.5px' }}>
                   Technical Proficiency
                 </h2>
@@ -229,14 +280,15 @@ const About = () => {
             </motion.div>
 
             {/* Section 3: Text Left, Image Right */}
-            <motion.div 
+            <motion.div
+              className="about-clipart-row"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6 }}
               style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '4rem' }}
             >
-              <div style={{ flex: '1 1 400px', paddingRight: '2rem' }}>
+              <div className="about-clipart-text" style={{ flex: '1 1 400px', paddingRight: '2rem' }}>
                 <h2 style={{ fontSize: 'clamp(2rem, 3.5vw, 3.5rem)', fontWeight: '800', color: 'var(--color-primary-dark)', lineHeight: '1.2', marginBottom: '1.5rem', letterSpacing: '-0.5px' }}>
                   Research and Development
                 </h2>
@@ -247,7 +299,7 @@ const About = () => {
                 </div>
               </div>
               <div style={{ flex: '1 1 400px', display: 'flex', justifyContent: 'center' }}>
-                <img src="/src/assets/images/about_rnd.svg" alt="Research and Development" style={{ width: '100%', maxWidth: '500px', height: 'auto', dropShadow: '0 20px 40px rgba(0,0,0,0.05)' }} />
+                <img className="about-clipart-img" src="/src/assets/images/about_rnd.svg" alt="Research and Development" style={{ width: '100%', maxWidth: '500px', height: 'auto', dropShadow: '0 20px 40px rgba(0,0,0,0.05)' }} />
               </div>
             </motion.div>
 

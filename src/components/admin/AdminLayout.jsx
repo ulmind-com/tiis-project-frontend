@@ -10,6 +10,13 @@ const AdminLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
+    document.title = "Admin Panel | TIIS";
+    return () => {
+      document.title = "TIIS";
+    };
+  }, []);
+
+  useEffect(() => {
     if (!localStorage.getItem('adminInfo')) {
       localStorage.setItem('adminInfo', JSON.stringify({ token: 'test-bypass', email: 'test@test.com' }));
     }

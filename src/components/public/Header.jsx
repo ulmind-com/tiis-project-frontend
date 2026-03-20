@@ -5,23 +5,23 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../hooks/useTheme';
 
 const navLinks = [
-  { name: 'Home',     href: '/' },
+  { name: 'Home', href: '/' },
   { name: 'About Us', href: '/about' },
   { name: 'Services', href: '/services' },
-  { name: 'Careers',  href: '/careers' },
-  { name: 'Team',     href: '/team' },
-  { name: 'Contact',  href: '/contact' },
+  { name: 'Careers', href: '/careers' },
+  { name: 'Team', href: '/team' },
+  { name: 'Contact', href: '/contact' },
 ];
 
 const Header = () => {
-  const location  = useLocation();
-  const navigate  = useNavigate();
+  const location = useLocation();
+  const navigate = useNavigate();
   const { isDark, toggleTheme } = useTheme();
 
-  const [isOpen,    setIsOpen]    = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [isCompact, setIsCompact] = useState(false);
 
-  const lastY   = useRef(0);
+  const lastY = useRef(0);
   const ticking = useRef(false);
 
   useEffect(() => {
@@ -33,17 +33,14 @@ const Header = () => {
         const currentY = window.scrollY;
 
         if (currentY < 80) {
-          // Always full at top
           setIsCompact(false);
         } else if (currentY > lastY.current + 4) {
-          // Scrolling DOWN → compact
           setIsCompact(true);
         } else if (currentY < lastY.current - 4) {
-          // Scrolling UP → expand
           setIsCompact(false);
         }
 
-        lastY.current   = currentY;
+        lastY.current = currentY;
         ticking.current = false;
       });
     };
@@ -52,10 +49,8 @@ const Header = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => { setIsOpen(false); }, [location.pathname]);
 
-  // If mobile menu open, force full expand
   const compact = isCompact && !isOpen;
 
   const isActive = (href) =>
@@ -63,7 +58,6 @@ const Header = () => {
 
   return (
     <>
-      {/* ─── Styles ─── */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
         .tiis-header * { font-family: 'Inter', system-ui, sans-serif; box-sizing: border-box; }
@@ -90,7 +84,6 @@ const Header = () => {
         .tiis-nav-btn:hover   { color: var(--color-secondary); }
         .tiis-nav-btn:hover::after { transform: scaleX(1); }
 
-        /* Blinking dot */
         @keyframes tiis-ping {
           0%   { transform: scale(1);   opacity: 0.80; }
           70%  { transform: scale(2.4); opacity: 0; }
@@ -102,7 +95,6 @@ const Header = () => {
           animation: tiis-ping 1.4s ease-out infinite;
         }
 
-        /* CTA shimmer */
         @keyframes tiis-shimmer {
           0%   { left: -65%; }
           60%  { left: 120%; }
@@ -115,17 +107,16 @@ const Header = () => {
           animation: tiis-shimmer 2.6s ease-in-out infinite;
         }
 
-        /* Mobile link */
+        /* ─── Clean Mobile Link Style ─── */
         .tiis-mob-link {
           display: block; width: 100%; text-align: left;
           background: none; border: none; cursor: pointer;
-          font-size: 0.97rem; font-weight: 500; color: var(--color-text-main);
-          text-decoration: none; padding: 0.8rem 1rem;
-          border-radius: 12px; border-left: 3px solid transparent;
-          transition: background 0.15s, color 0.15s, border-color 0.15s;
+          font-size: 1rem; font-weight: 500; color: var(--color-text-main);
+          text-decoration: none; padding: 0;
+          transition: color 0.3s ease-in-out;
         }
-        .tiis-mob-link.active { color: var(--color-secondary); font-weight: 700; background: rgba(177,32,35,0.07); border-left-color: var(--color-secondary); }
-        .tiis-mob-link:hover:not(.active) { background: rgba(1,50,78,0.05); color: var(--color-primary); }
+        .tiis-mob-link.active { color: var(--color-secondary); font-weight: 600; }
+        .tiis-mob-link:hover:not(.active) { color: var(--color-secondary); }
 
         /* Responsive */
         @media (min-width: 769px) {
@@ -135,10 +126,11 @@ const Header = () => {
           .tiis-hamburger  { display: flex !important; }
           .tiis-desktop-nav { display: none !important; }
           .tiis-cta-btn     { display: none !important; }
+          .tiis-right-menu.is-compact { display: none !important; }
+          .tiis-center-nav.is-compact { justify-content: flex-end !important; }
         }
       `}</style>
 
-      {/* ─── Floating Navbar ─── */}
       <div
         className="tiis-header"
         style={{
@@ -172,7 +164,6 @@ const Header = () => {
               : '0 4px 28px rgba(1,50,78,0.10), 0 1px 0 rgba(255,255,255,0.8) inset',
           }}
         >
-          {/* ── Main Row ── */}
           <div style={{
             display: 'flex',
             alignItems: 'center',
@@ -182,7 +173,6 @@ const Header = () => {
             transition: 'padding 0.4s ease',
           }}>
 
-            {/* Logo */}
             <motion.div
               layout
               onClick={() => { navigate('/'); setIsOpen(false); }}
@@ -204,20 +194,19 @@ const Header = () => {
               />
             </motion.div>
 
-            {/* Center */}
             <motion.div
               layout
+              className={`tiis-center-nav ${compact ? 'is-compact' : ''}`}
               style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}
             >
               <AnimatePresence mode="popLayout" initial={false}>
                 {!compact ? (
-                  /* Full nav links */
                   <motion.div
                     key="full-nav"
                     className="tiis-desktop-nav"
                     initial={{ opacity: 0, filter: 'blur(6px)', scale: 0.97 }}
                     animate={{ opacity: 1, filter: 'blur(0px)', scale: 1 }}
-                    exit={{    opacity: 0, filter: 'blur(6px)', scale: 0.97 }}
+                    exit={{ opacity: 0, filter: 'blur(6px)', scale: 0.97 }}
                     transition={{ duration: 0.28, ease: 'easeInOut' }}
                     style={{ display: 'flex', alignItems: 'center', gap: '2.2rem' }}
                   >
@@ -232,13 +221,12 @@ const Header = () => {
                     ))}
                   </motion.div>
                 ) : (
-                  /* Compact "Available for work" */
                   <motion.button
                     key="compact-pill"
                     onClick={() => navigate('/contact')}
                     initial={{ opacity: 0, filter: 'blur(6px)', scale: 0.92 }}
                     animate={{ opacity: 1, filter: 'blur(0px)', scale: 1 }}
-                    exit={{    opacity: 0, filter: 'blur(6px)', scale: 0.92 }}
+                    exit={{ opacity: 0, filter: 'blur(6px)', scale: 0.92 }}
                     transition={{ duration: 0.28, ease: 'easeInOut' }}
                     style={{
                       display: 'flex', alignItems: 'center', gap: '10px',
@@ -254,7 +242,6 @@ const Header = () => {
                     <span style={{ fontSize: '0.92rem', fontWeight: '700', color: 'var(--color-text-main)', whiteSpace: 'nowrap', letterSpacing: '0.01em' }}>
                       Available for work
                     </span>
-                    {/* Blinking dot */}
                     <span style={{ position: 'relative', width: '10px', height: '10px', display: 'inline-flex', flexShrink: 0, alignItems: 'center', justifyContent: 'center' }}>
                       <span className="tiis-dot-ring" />
                       <span style={{ position: 'relative', width: '10px', height: '10px', borderRadius: '50%', background: 'var(--color-secondary)', boxShadow: '0 0 8px rgba(177,32,35,0.65)', display: 'block' }} />
@@ -264,10 +251,7 @@ const Header = () => {
               </AnimatePresence>
             </motion.div>
 
-            {/* Right — CTA + Hamburger */}
-            <motion.div layout style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexShrink: 0 }}>
-              
-              {/* Theme Toggle */}
+            <motion.div layout className={`tiis-right-menu ${compact ? 'is-compact' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexShrink: 0 }}>
               <button
                 onClick={toggleTheme}
                 aria-label="Toggle Dark Mode"
@@ -284,7 +268,6 @@ const Header = () => {
                 {isDark ? <Sun size={20} /> : <Moon size={20} />}
               </button>
 
-              {/* CTA — desktop only, hidden when compact */}
               {!compact && (
                 <Link
                   to="/contact"
@@ -312,41 +295,44 @@ const Header = () => {
                   <span className="tiis-cta-shimmer" />
                   Get a Quote
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" style={{ opacity: 0.9 }}>
-                    <path d="M2 6.5h9M7.5 3 11 6.5 7.5 10" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M2 6.5h9M7.5 3 11 6.5 7.5 10" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </Link>
               )}
 
-              {/* Hamburger — mobile */}
+              {/* ─── Transparent Mobile Hamburger ─── */}
               <button
                 aria-label="Toggle menu"
                 onClick={() => setIsOpen(p => !p)}
                 className="tiis-hamburger"
                 style={{
                   display: 'none', alignItems: 'center', justifyContent: 'center',
-                  background: 'var(--color-bg-light)',
-                  border: '1px solid var(--border-color)',
-                  borderRadius: '10px', padding: '0.45rem', cursor: 'pointer',
-                  color: 'var(--color-text-main)'
+                  background: 'transparent',
+                  border: 'none',
+                  borderRadius: '50%', padding: '0.45rem', cursor: 'pointer',
+                  color: 'var(--color-text-main)',
+                  transition: 'background 0.2s ease'
                 }}
               >
-                {isOpen ? <X size={20} /> : <Menu size={20} />}
+                {isOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
             </motion.div>
           </div>
 
-          {/* ── Mobile Dropdown ── */}
+          {/* ─── Updated Mobile Dropdown Container ─── */}
           <AnimatePresence>
             {isOpen && (
               <motion.div
+                layout /* layout prop add kora holo for smooth container expansion */
                 key="mobile-menu"
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
-                exit={{    opacity: 0, height: 0 }}
+                exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
                 style={{ borderTop: '1px solid var(--border-color)', overflow: 'hidden' }}
               >
-                <div style={{ padding: '0.9rem 0.9rem 1.2rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                {/* Clean Spacing: padding & gap */}
+                <div style={{ padding: '1.5rem 1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                   {navLinks.map(item => (
                     <button
                       key={item.name}
@@ -376,7 +362,6 @@ const Header = () => {
         </motion.div>
       </div>
 
-      {/* Spacer so page content starts below navbar */}
       <div style={{ height: '96px' }} />
     </>
   );
