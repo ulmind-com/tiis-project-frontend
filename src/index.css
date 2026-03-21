@@ -685,8 +685,8 @@ a[class*="btn"],
   }
 
   /* ─ Hero illustrations hide or center on mobile ─ */
-  [class*="hero"] svg,
-  [class*="hero"] img {
+  [class*="hero"] svg:not(.lucide),
+  [class*="hero"] img:not([src*="wave"]) {
     max-width: 90vw !important;
     width: 100% !important;
     height: auto !important;

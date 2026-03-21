@@ -8,63 +8,129 @@ const About = () => {
       {/* ─── ULTRA PREMIUM MOBILE RESPONSIVE CSS ─── */}
       <style>{`
         /* General resets to prevent horizontal scroll */
-        html, body { overflow-x: hidden; }
+        html, body { overflow-x: hidden; width: 100%; }
         
-        @media (max-width: 768px) {
-          /* Keep standard container padding */
-          .container { padding-left: 1.25rem !important; padding-right: 1.25rem !important; width: 100% !important; box-sizing: border-box !important; }
+        @media (max-width: 960px) {
+          /* Adjust master padding */
+          .about-page section {
+            padding-top: 5rem !important;
+            padding-bottom: 3rem !important;
+          }
 
-          /* Hero Section Mobile Grid */
-          .about-hero-grid { grid-template-columns: 1fr !important; gap: 2.5rem !important; text-align: center !important; }
-          .about-hero-text { text-align: center !important; }
-          .about-hero-text h2 { text-align: center !important; }
-          .about-hero-text div { text-align: center !important; }
+          .container { 
+            padding-left: 1.25rem !important; 
+            padding-right: 1.25rem !important; 
+            width: 100% !important; 
+            box-sizing: border-box !important; 
+            max-width: 100vw !important;
+          }
 
-          /* Hero Section - Reduced top padding */
-          .about-hero { padding: 5.5rem 0 2rem 0 !important; border-bottom: none !important; }
-          .about-hero-title { font-size: 2.5rem !important; line-height: 1.15 !important; margin-bottom: 0.5rem !important; }
-          
-          .about-hero-content { margin-top: 1.5rem !important; }
-          .about-hero-content h2 { font-size: 1.6rem !important; line-height: 1.3 !important; }
-          .about-hero-content div { font-size: 1rem !important; line-height: 1.7 !important; }
-
-          /* Vision / Mission / Philosophy Grid */
-          .about-grid-container { margin-top: 2rem !important; }
-          .about-grid { gap: 1.25rem !important; }
-          .about-card { padding: 1.8rem 1.5rem !important; border-radius: 16px !important; box-shadow: 0 4px 20px rgba(0,0,0,0.04) !important; }
-          .about-card h3 { font-size: 1.4rem !important; text-align: left !important; }
-          .about-card p, .about-card div { font-size: 0.95rem !important; text-align: left !important; }
-          .about-icon-wrapper { margin: 0 0 1.25rem 0 !important; display: inline-flex !important; }
-          
-          /* Keeping the sleek color bar on mobile but thinner */
-          .about-card-bar { display: block !important; width: 3px !important; } 
-
-          /* Our Solutions Section */
-          .solutions-section { padding-top: 3.5rem !important; padding-bottom: 2rem !important; }
-          .solutions-header h2 { font-size: 2.2rem !important; line-height: 1.2 !important; margin-bottom: 1rem !important; }
-          .solutions-header p { font-size: 1rem !important; text-align: left !important; }
-          .solutions-subheader h3 { font-size: 1.5rem !important; margin-bottom: 1.5rem !important; text-align: left !important; }
-          
-          /* Solution Cards Mobile App-like Layout */
-          .solutions-grid { grid-template-columns: 1fr !important; gap: 1rem !important; width: 100% !important; }
-          .solution-card { 
-            padding: 1.2rem 1.2rem !important; 
-            max-width: 100% !important; 
-            flex-direction: row !important; /* Sleek horizontal list */
+          /* ── Hero Section Mobile Grid ── */
+          .about-hero {
+            padding: 6rem 1.25rem 4rem !important;
+          }
+          .about-hero-grid { 
+            grid-template-columns: 1fr !important; 
+            gap: 3.5rem !important; 
+            text-align: center !important; 
             align-items: center !important;
-            text-align: left !important; 
-            justify-content: flex-start !important; 
-            border-radius: 16px !important;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03) !important;
           }
-          .solution-card-icon { 
-            width: 46px !important; 
-            height: 46px !important; 
-            margin-bottom: 0 !important; 
-            margin-right: 1.25rem !important; 
-            flex-shrink: 0 !important;
+          .about-hero-text { 
+            text-align: center !important; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
           }
-          .solution-card h4 { font-size: 1.1rem !important; text-align: left !important; margin: 0 !important; }
+          .about-hero-text h1 {
+            font-size: clamp(2.5rem, 8vw, 3.2rem) !important;
+            text-align: center !important;
+          }
+          .about-hero-text h2 { 
+            text-align: center !important; 
+            font-size: 1.5rem !important;
+          }
+          .about-hero-text div { 
+            text-align: center !important; 
+            font-size: 1rem !important;
+          }
+          .about-hero-text p {
+             text-align: center !important;
+          }
+
+          /* Hero Image Container */
+          .about-hero-grid > div:last-child {
+            width: 100% !important;
+            max-width: 500px !important;
+            margin: 0 auto;
+          }
+
+          /* ── Vision / Mission / Philosophy Grid ── */
+          .about-section-grid {
+            grid-template-columns: 1fr !important; /* Stack image and text */
+            gap: 2.5rem !important;
+            text-align: center !important;
+          }
+          
+          /* Force text to center on mobile for these sections */
+          .about-section-grid > div:last-child {
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+             text-align: center !important;
+          }
+          
+          .about-section-grid p {
+             text-align: center !important;
+          }
+          
+          .about-section-grid h3 {
+             font-size: 2rem !important;
+          }
+
+          /* Fix tag pill alignment on mobile */
+          .about-section-grid .tags-container {
+             justify-content: center !important;
+          }
+
+          /* Ensure images/svgs don't break width */
+          .about-section-grid svg {
+            max-width: 320px !important;
+            width: 100% !important;
+            height: auto !important;
+          }
+          
+          /* Re-order Mission section on mobile so Image comes first like the others */
+          .mission-section-grid {
+             direction: ltr !important; /* Reset RTL trick for mobile */
+          }
+          .mission-section-grid > div:last-child {
+             direction: ltr !important;
+          }
+
+          /* ── Our Solutions Section ── */
+          .solutions-header-grid {
+             grid-template-columns: 1fr !important;
+             gap: 2rem !important;
+             text-align: center !important;
+          }
+          
+          .solutions-header-grid > div:last-child {
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+          }
+          .solutions-header-grid p {
+             text-align: center !important;
+          }
+
+          .solutions-cards-grid { 
+             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important; 
+             gap: 1.25rem !important; 
+          }
+          
+          .solutions-cards-grid > div {
+             padding: 1.8rem 1.5rem !important;
+          }
         }
       `}</style>
       {/* ────────────────────────────────────────── */}
@@ -80,7 +146,7 @@ const About = () => {
         <div style={{ position: 'absolute', bottom: '10%', right: '15%', width: '400px', height: '400px', background: 'radial-gradient(circle, rgba(139,92,246,0.12) 0%, rgba(139,92,246,0) 70%)', filter: 'blur(50px)', zIndex: 0, maxWidth: '100vw' }} />
 
         <div className="container about-hero-grid" style={{ position: 'relative', zIndex: 1, maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'minmax(0, 1.2fr) minmax(0, 1fr)', gap: '4rem', alignItems: 'center' }}>
-          
+
           {/* Text Content Area */}
           <div className="about-hero-text" style={{ textAlign: 'left' }}>
             <motion.h1
@@ -139,7 +205,7 @@ const About = () => {
           >
             {/* Glowing Backdrop */}
             <div style={{ position: 'absolute', inset: '-20px', background: 'radial-gradient(circle, rgba(59,130,246,0.2) 0%, transparent 70%)', filter: 'blur(30px)', zIndex: 0 }} />
-            
+
             {/* Main Floating Image */}
             <motion.img
               animate={{ y: [-12, 12, -12] }}
@@ -193,6 +259,7 @@ const About = () => {
 
           {/* ── VISION ── Image Left / Content Right */}
           <motion.div
+            className="about-section-grid"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
@@ -228,8 +295,8 @@ const About = () => {
                 <circle cx="165" cy="208" r="10" fill="#3b82f6" />
                 <circle cx="240" cy="168" r="10" fill="#7c3aed" />
                 {/* Stars */}
-                {[[80,80],[300,60],[340,130],[60,200],[320,220],[140,50],[270,290]].map(([cx,cy],i) => (
-                  <circle key={i} cx={cx} cy={cy} r={i%2===0?4:3} fill={i%3===0?"#fbbf24":"#a78bfa"} opacity="0.8" />
+                {[[80, 80], [300, 60], [340, 130], [60, 200], [320, 220], [140, 50], [270, 290]].map(([cx, cy], i) => (
+                  <circle key={i} cx={cx} cy={cy} r={i % 2 === 0 ? 4 : 3} fill={i % 3 === 0 ? "#fbbf24" : "#a78bfa"} opacity="0.8" />
                 ))}
                 {/* Eye icon */}
                 <ellipse cx="200" cy="120" rx="50" ry="28" fill="white" stroke="#3b82f6" strokeWidth="3" />
@@ -244,7 +311,7 @@ const About = () => {
             {/* Content */}
             <div>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'linear-gradient(135deg, rgba(59,130,246,0.12), rgba(139,92,246,0.12))', border: '1px solid rgba(59,130,246,0.25)', borderRadius: '50px', padding: '0.5rem 1.2rem', marginBottom: '1.5rem' }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>
                 <span style={{ fontWeight: 700, color: '#3b82f6', fontSize: '0.85rem', letterSpacing: '1px', textTransform: 'uppercase' }}>Vision</span>
               </div>
               <h3 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', fontWeight: 900, color: 'var(--color-primary-dark)', letterSpacing: '-0.5px', lineHeight: 1.2, marginBottom: '1.2rem' }}>
@@ -253,7 +320,7 @@ const About = () => {
               <p style={{ color: 'var(--color-text-muted)', lineHeight: '1.85', fontSize: '1.08rem', marginBottom: '2rem', textAlign: 'justify' }}>
                 To become one of the top solution provider company in India by 2030, leading in the fields of Human happiness development and develop the strength of human capital so that overall and sustainable development is possible.
               </p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+              <div className="tags-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
                 {['Human Development', 'Sustainability', 'Top-Tier Leadership'].map(tag => (
                   <span key={tag} style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)', color: '#3b82f6', borderRadius: '50px', padding: '0.35rem 1rem', fontSize: '0.85rem', fontWeight: 600 }}>{tag}</span>
                 ))}
@@ -263,6 +330,7 @@ const About = () => {
 
           {/* ── MISSION ── Content Left / Image Right */}
           <motion.div
+            className="about-section-grid mission-section-grid"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
@@ -273,7 +341,7 @@ const About = () => {
             <motion.div
               animate={{ y: [10, -10, 10] }}
               transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-              style={{ position: 'relative', display: 'flex', justifyContent: 'center', direction: 'ltr' }}
+              style={{ position: 'relative', display: 'flex', justifySelf: 'center', justifyContent: 'center', direction: 'ltr', width: '100%' }}
             >
               <div style={{ position: 'absolute', inset: '-20px', background: 'radial-gradient(circle, rgba(139,92,246,0.22) 0%, transparent 65%)', filter: 'blur(30px)', borderRadius: '50%' }} />
               <svg viewBox="0 0 400 350" style={{ width: '100%', maxWidth: '420px', position: 'relative', zIndex: 1, filter: 'drop-shadow(0 20px 40px rgba(139,92,246,0.2))' }} xmlns="http://www.w3.org/2000/svg">
@@ -304,8 +372,8 @@ const About = () => {
                 <polygon points="235,160 215,160 225,200" fill="#a78bfa" />
                 {/* Stars/orbit rings */}
                 <ellipse cx="200" cy="175" rx="130" ry="50" fill="none" stroke="#c4b5fd" strokeWidth="1.5" strokeDasharray="8 6" opacity="0.5" />
-                {[[80,100],[320,90],[340,230],[60,260],[200,310],[130,310]].map(([cx,cy],i) => (
-                  <circle key={i} cx={cx} cy={cy} r={i%2===0?5:3} fill={i%2===0?"#fbbf24":"#c4b5fd"} opacity="0.75" />
+                {[[80, 100], [320, 90], [340, 230], [60, 260], [200, 310], [130, 310]].map(([cx, cy], i) => (
+                  <circle key={i} cx={cx} cy={cy} r={i % 2 === 0 ? 5 : 3} fill={i % 2 === 0 ? "#fbbf24" : "#c4b5fd"} opacity="0.75" />
                 ))}
               </svg>
             </motion.div>
@@ -313,7 +381,7 @@ const About = () => {
             {/* Content */}
             <div style={{ direction: 'ltr' }}>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'linear-gradient(135deg, rgba(139,92,246,0.12), rgba(236,72,153,0.1))', border: '1px solid rgba(139,92,246,0.25)', borderRadius: '50px', padding: '0.5rem 1.2rem', marginBottom: '1.5rem' }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" /></svg>
                 <span style={{ fontWeight: 700, color: '#8b5cf6', fontSize: '0.85rem', letterSpacing: '1px', textTransform: 'uppercase' }}>Mission</span>
               </div>
               <h3 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', fontWeight: 900, color: 'var(--color-primary-dark)', letterSpacing: '-0.5px', lineHeight: 1.2, marginBottom: '1.2rem' }}>
@@ -322,7 +390,7 @@ const About = () => {
               <p style={{ color: 'var(--color-text-muted)', lineHeight: '1.85', fontSize: '1.08rem', marginBottom: '2rem', textAlign: 'justify' }}>
                 To prepare and empower Solutionaries who is the business driver and implement equitable and sustainable solutions for India and the world.
               </p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+              <div className="tags-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
                 {['Empowerment', 'Equity', 'Impact-Driven'].map(tag => (
                   <span key={tag} style={{ background: 'rgba(139,92,246,0.08)', border: '1px solid rgba(139,92,246,0.2)', color: '#8b5cf6', borderRadius: '50px', padding: '0.35rem 1rem', fontSize: '0.85rem', fontWeight: 600 }}>{tag}</span>
                 ))}
@@ -332,6 +400,7 @@ const About = () => {
 
           {/* ── PHILOSOPHY ── Image Left / Content Right */}
           <motion.div
+            className="about-section-grid"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
@@ -367,7 +436,7 @@ const About = () => {
                 {/* Gear */}
                 <circle cx="200" cy="155" r="22" fill="none" stroke="url(#philoGrad1)" strokeWidth="3" />
                 <circle cx="200" cy="155" r="10" fill="url(#philoGrad1)" />
-                {[0,45,90,135,180,225,270,315].map((angle,i) => {
+                {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => {
                   const rad = angle * Math.PI / 180;
                   const x1 = 200 + 22 * Math.cos(rad);
                   const y1 = 155 + 22 * Math.sin(rad);
@@ -398,7 +467,7 @@ const About = () => {
             {/* Content */}
             <div>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'linear-gradient(135deg, rgba(16,185,129,0.12), rgba(59,130,246,0.1))', border: '1px solid rgba(16,185,129,0.25)', borderRadius: '50px', padding: '0.5rem 1.2rem', marginBottom: '1.5rem' }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21.54 15H17a2 2 0 0 0-2 2v4.54"/><path d="M7 3.34V5a3 3 0 0 0 3 3a2 2 0 0 1 2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2c0-1.1.9-2 2-2h3.17"/><path d="M11 21.95V18a2 2 0 0 0-2-2 2 2 0 0 1-2-2v-1.26"/><circle cx="12" cy="12" r="10"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21.54 15H17a2 2 0 0 0-2 2v4.54" /><path d="M7 3.34V5a3 3 0 0 0 3 3a2 2 0 0 1 2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2c0-1.1.9-2 2-2h3.17" /><path d="M11 21.95V18a2 2 0 0 0-2-2 2 2 0 0 1-2-2v-1.26" /><circle cx="12" cy="12" r="10" /></svg>
                 <span style={{ fontWeight: 700, color: '#10b981', fontSize: '0.85rem', letterSpacing: '1px', textTransform: 'uppercase' }}>Philosophy</span>
               </div>
               <h3 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', fontWeight: 900, color: 'var(--color-primary-dark)', letterSpacing: '-0.5px', lineHeight: 1.2, marginBottom: '1.2rem' }}>
@@ -412,7 +481,7 @@ const About = () => {
                   Our company is committed to changing the discourse in talent management by making it multidisciplinary and industry-relevant and with a focus on sustainability and design thinking. Through its unique pedagogy, each talent can be developed to become a solutionary—a revolutionary thinker with a solution-oriented mindset—and encouraged to chart her/his happiness.
                 </p>
               </div>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginTop: '1.5rem' }}>
+              <div className="tags-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginTop: '1.5rem' }}>
                 {['Design Thinking', 'Multidisciplinary', 'Innovation', 'Happiness'].map(tag => (
                   <span key={tag} style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)', color: '#10b981', borderRadius: '50px', padding: '0.35rem 1rem', fontSize: '0.85rem', fontWeight: 600 }}>{tag}</span>
                 ))}
@@ -426,7 +495,7 @@ const About = () => {
       {/* ═══════════════════════════════════════
           OUR SOLUTIONS SECTION – PREMIUM REDESIGN
       ═══════════════════════════════════════ */}
-      <section style={{ padding: '6rem 0 8rem', position: 'relative', overflow: 'hidden', background: 'linear-gradient(180deg, transparent 0%, rgba(59,130,246,0.04) 40%, rgba(139,92,246,0.04) 100%)' }}>
+      <section className="solutions-section" style={{ padding: '6rem 0 8rem', position: 'relative', overflow: 'hidden', background: 'linear-gradient(180deg, transparent 0%, rgba(59,130,246,0.04) 40%, rgba(139,92,246,0.04) 100%)' }}>
 
         {/* Decorative blobs */}
         <div style={{ position: 'absolute', top: '-5%', right: '-10%', width: '500px', height: '500px', background: 'radial-gradient(circle, rgba(59,130,246,0.07) 0%, transparent 70%)', filter: 'blur(60px)', pointerEvents: 'none' }} />
@@ -436,6 +505,7 @@ const About = () => {
 
           {/* ── HEADER ── */}
           <motion.div
+            className="solutions-header-grid"
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
@@ -451,57 +521,57 @@ const About = () => {
               <div style={{ position: 'absolute', inset: '-15px', background: 'radial-gradient(circle, rgba(59,130,246,0.18) 0%, transparent 65%)', filter: 'blur(25px)', borderRadius: '50%' }} />
               <svg viewBox="0 0 440 360" style={{ width: '100%', maxWidth: '430px', position: 'relative', zIndex: 1, filter: 'drop-shadow(0 20px 40px rgba(59,130,246,0.18))' }} xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                  <linearGradient id="solGrad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#3b82f6"/><stop offset="100%" stopColor="#8b5cf6"/></linearGradient>
-                  <linearGradient id="solGrad2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#dbeafe"/><stop offset="100%" stopColor="#ede9fe"/></linearGradient>
-                  <linearGradient id="solGrad3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#10b981"/><stop offset="100%" stopColor="#3b82f6"/></linearGradient>
+                  <linearGradient id="solGrad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#3b82f6" /><stop offset="100%" stopColor="#8b5cf6" /></linearGradient>
+                  <linearGradient id="solGrad2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#dbeafe" /><stop offset="100%" stopColor="#ede9fe" /></linearGradient>
+                  <linearGradient id="solGrad3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#10b981" /><stop offset="100%" stopColor="#3b82f6" /></linearGradient>
                 </defs>
                 {/* Platform */}
-                <ellipse cx="220" cy="310" rx="160" ry="20" fill="url(#solGrad2)" opacity="0.7"/>
+                <ellipse cx="220" cy="310" rx="160" ry="20" fill="url(#solGrad2)" opacity="0.7" />
                 {/* Building / dashboard */}
-                <rect x="80" y="120" width="280" height="180" rx="18" fill="white" stroke="url(#solGrad1)" strokeWidth="2.5"/>
-                <rect x="80" y="120" width="280" height="40" rx="18" fill="url(#solGrad1)"/>
-                <rect x="80" y="148" width="280" height="12" fill="url(#solGrad1)"/>
+                <rect x="80" y="120" width="280" height="180" rx="18" fill="white" stroke="url(#solGrad1)" strokeWidth="2.5" />
+                <rect x="80" y="120" width="280" height="40" rx="18" fill="url(#solGrad1)" />
+                <rect x="80" y="148" width="280" height="12" fill="url(#solGrad1)" />
                 {/* Traffic lights */}
-                <circle cx="102" cy="140" r="6" fill="#f87171"/>
-                <circle cx="120" cy="140" r="6" fill="#fbbf24"/>
-                <circle cx="138" cy="140" r="6" fill="#34d399"/>
+                <circle cx="102" cy="140" r="6" fill="#f87171" />
+                <circle cx="120" cy="140" r="6" fill="#fbbf24" />
+                <circle cx="138" cy="140" r="6" fill="#34d399" />
                 {/* Chart bars inside */}
-                <rect x="110" y="220" width="28" height="55" rx="6" fill="url(#solGrad1)" opacity="0.8"/>
-                <rect x="152" y="198" width="28" height="77" rx="6" fill="url(#solGrad3)" opacity="0.8"/>
-                <rect x="194" y="210" width="28" height="65" rx="6" fill="#f59e0b" opacity="0.8"/>
-                <rect x="236" y="185" width="28" height="90" rx="6" fill="url(#solGrad1)" opacity="0.9"/>
-                <rect x="278" y="205" width="28" height="70" rx="6" fill="url(#solGrad3)" opacity="0.8"/>
+                <rect x="110" y="220" width="28" height="55" rx="6" fill="url(#solGrad1)" opacity="0.8" />
+                <rect x="152" y="198" width="28" height="77" rx="6" fill="url(#solGrad3)" opacity="0.8" />
+                <rect x="194" y="210" width="28" height="65" rx="6" fill="#f59e0b" opacity="0.8" />
+                <rect x="236" y="185" width="28" height="90" rx="6" fill="url(#solGrad1)" opacity="0.9" />
+                <rect x="278" y="205" width="28" height="70" rx="6" fill="url(#solGrad3)" opacity="0.8" />
                 {/* Line chart */}
-                <polyline points="110,215 152,195 194,207 236,182 278,202 320,188" fill="none" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                {[110,152,194,236,278,320].map((x,i) => {
-                  const ys = [215,195,207,182,202,188];
-                  return <circle key={i} cx={x} cy={ys[i]} r="4" fill="#f59e0b"/>;
+                <polyline points="110,215 152,195 194,207 236,182 278,202 320,188" fill="none" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                {[110, 152, 194, 236, 278, 320].map((x, i) => {
+                  const ys = [215, 195, 207, 182, 202, 188];
+                  return <circle key={i} cx={x} cy={ys[i]} r="4" fill="#f59e0b" />;
                 })}
                 {/* Rocket */}
                 <g transform="translate(340,60) rotate(-30)">
-                  <ellipse cx="0" cy="0" rx="14" ry="28" fill="url(#solGrad1)"/>
-                  <polygon points="0,-32 8,-12 -8,-12" fill="#7c3aed"/>
-                  <ellipse cx="0" cy="22" rx="8" ry="10" fill="#c4b5fd"/>
-                  <ellipse cx="-4" cy="38" rx="4" ry="9" fill="#fb923c" opacity="0.9"/>
-                  <ellipse cx="0" cy="42" rx="5" ry="12" fill="#fbbf24" opacity="0.9"/>
-                  <ellipse cx="4" cy="38" rx="4" ry="9" fill="#fb923c" opacity="0.9"/>
+                  <ellipse cx="0" cy="0" rx="14" ry="28" fill="url(#solGrad1)" />
+                  <polygon points="0,-32 8,-12 -8,-12" fill="#7c3aed" />
+                  <ellipse cx="0" cy="22" rx="8" ry="10" fill="#c4b5fd" />
+                  <ellipse cx="-4" cy="38" rx="4" ry="9" fill="#fb923c" opacity="0.9" />
+                  <ellipse cx="0" cy="42" rx="5" ry="12" fill="#fbbf24" opacity="0.9" />
+                  <ellipse cx="4" cy="38" rx="4" ry="9" fill="#fb923c" opacity="0.9" />
                 </g>
                 {/* Floating badge */}
-                <rect x="30" y="60" width="130" height="44" rx="14" fill="white" stroke="url(#solGrad3)" strokeWidth="1.5" filter="url(#shadow)"/>
-                <circle cx="56" cy="82" r="12" fill="url(#solGrad3)"/>
+                <rect x="30" y="60" width="130" height="44" rx="14" fill="white" stroke="url(#solGrad3)" strokeWidth="1.5" filter="url(#shadow)" />
+                <circle cx="56" cy="82" r="12" fill="url(#solGrad3)" />
                 <text x="75" y="79" fontSize="10" fontWeight="700" fill="#1d4ed8">TIIS Solutions</text>
                 <text x="75" y="92" fontSize="9" fill="#64748b">Innovative &amp; Research-based</text>
                 {/* Stars */}
-                {[[50,30],[380,200],[400,120],[30,200],[220,40],[390,290]].map(([cx,cy],i)=>(
-                  <circle key={i} cx={cx} cy={cy} r={i%2===0?4:3} fill={i%3===0?"#fbbf24":"#a78bfa"} opacity="0.7"/>
+                {[[50, 30], [380, 200], [400, 120], [30, 200], [220, 40], [390, 290]].map(([cx, cy], i) => (
+                  <circle key={i} cx={cx} cy={cy} r={i % 2 === 0 ? 4 : 3} fill={i % 3 === 0 ? "#fbbf24" : "#a78bfa"} opacity="0.7" />
                 ))}
               </svg>
             </motion.div>
 
             {/* Header Text */}
-            <div>
+            <div className="solutions-header">
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.6rem', background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)', borderRadius: '50px', padding: '0.4rem 1.2rem', marginBottom: '1.4rem' }}>
-                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#3b82f6', display: 'inline-block' }}/>
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#3b82f6', display: 'inline-block' }} />
                 <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#3b82f6', letterSpacing: '1.5px', textTransform: 'uppercase' }}>What We Offer</span>
               </div>
               <h2 style={{ fontSize: 'clamp(2.2rem, 4vw, 3.2rem)', fontWeight: 900, color: 'var(--color-primary-dark)', letterSpacing: '-1px', lineHeight: 1.15, marginBottom: '1.5rem' }}>
@@ -515,6 +585,7 @@ const About = () => {
 
           {/* ── KEY SERVICES HEADER ── */}
           <motion.div
+            className="solutions-subheader"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
@@ -524,11 +595,11 @@ const About = () => {
             <h3 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 900, color: 'var(--color-primary-dark)', letterSpacing: '-0.5px', display: 'inline-block' }}>
               Our key services <span style={{ background: 'linear-gradient(135deg, #3b82f6, #10b981)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>are</span>
             </h3>
-            <div style={{ width: '60px', height: '4px', background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)', borderRadius: '50px', margin: '1rem auto 0' }}/>
+            <div style={{ width: '60px', height: '4px', background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)', borderRadius: '50px', margin: '1rem auto 0' }} />
           </motion.div>
 
           {/* ── SERVICE CARDS ── */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.75rem' }}>
+          <div className="solutions-cards-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.75rem' }}>
             {[
               {
                 name: 'Hiring Solutions',
@@ -538,13 +609,13 @@ const About = () => {
                 tag: 'Talent Acquisition',
                 icon: (
                   <svg viewBox="0 0 80 80" width="80" height="80">
-                    <defs><linearGradient id="hireG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#3b82f6"/><stop offset="100%" stopColor="#60a5fa"/></linearGradient></defs>
-                    <circle cx="40" cy="40" r="38" fill="rgba(59,130,246,0.1)"/>
-                    <circle cx="40" cy="28" r="12" fill="url(#hireG)"/>
-                    <path d="M18 62 Q40 48 62 62" fill="url(#hireG)" opacity="0.8"/>
-                    <circle cx="62" cy="28" r="5" fill="#34d399"/>
-                    <line x1="59" y1="22" x2="65" y2="22" stroke="#34d399" strokeWidth="2" strokeLinecap="round"/>
-                    <line x1="62" y1="19" x2="62" y2="25" stroke="#34d399" strokeWidth="2" strokeLinecap="round"/>
+                    <defs><linearGradient id="hireG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#3b82f6" /><stop offset="100%" stopColor="#60a5fa" /></linearGradient></defs>
+                    <circle cx="40" cy="40" r="38" fill="rgba(59,130,246,0.1)" />
+                    <circle cx="40" cy="28" r="12" fill="url(#hireG)" />
+                    <path d="M18 62 Q40 48 62 62" fill="url(#hireG)" opacity="0.8" />
+                    <circle cx="62" cy="28" r="5" fill="#34d399" />
+                    <line x1="59" y1="22" x2="65" y2="22" stroke="#34d399" strokeWidth="2" strokeLinecap="round" />
+                    <line x1="62" y1="19" x2="62" y2="25" stroke="#34d399" strokeWidth="2" strokeLinecap="round" />
                   </svg>
                 )
               },
@@ -556,15 +627,15 @@ const About = () => {
                 tag: 'L&D Programs',
                 icon: (
                   <svg viewBox="0 0 80 80" width="80" height="80">
-                    <defs><linearGradient id="ldG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#8b5cf6"/><stop offset="100%" stopColor="#a78bfa"/></linearGradient></defs>
-                    <circle cx="40" cy="40" r="38" fill="rgba(139,92,246,0.1)"/>
-                    <rect x="18" y="22" width="22" height="28" rx="3" fill="url(#ldG)"/>
-                    <rect x="40" y="22" width="22" height="28" rx="3" fill="url(#ldG)" opacity="0.7"/>
-                    <rect x="20" y="28" width="8" height="2" rx="1" fill="white" opacity="0.6"/>
-                    <rect x="20" y="33" width="16" height="2" rx="1" fill="white" opacity="0.6"/>
-                    <rect x="20" y="38" width="12" height="2" rx="1" fill="white" opacity="0.6"/>
-                    <circle cx="55" cy="56" r="10" fill="#fbbf24"/>
-                    <polyline points="50,56 54,60 62,52" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+                    <defs><linearGradient id="ldG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#8b5cf6" /><stop offset="100%" stopColor="#a78bfa" /></linearGradient></defs>
+                    <circle cx="40" cy="40" r="38" fill="rgba(139,92,246,0.1)" />
+                    <rect x="18" y="22" width="22" height="28" rx="3" fill="url(#ldG)" />
+                    <rect x="40" y="22" width="22" height="28" rx="3" fill="url(#ldG)" opacity="0.7" />
+                    <rect x="20" y="28" width="8" height="2" rx="1" fill="white" opacity="0.6" />
+                    <rect x="20" y="33" width="16" height="2" rx="1" fill="white" opacity="0.6" />
+                    <rect x="20" y="38" width="12" height="2" rx="1" fill="white" opacity="0.6" />
+                    <circle cx="55" cy="56" r="10" fill="#fbbf24" />
+                    <polyline points="50,56 54,60 62,52" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
                   </svg>
                 )
               },
@@ -576,15 +647,15 @@ const About = () => {
                 tag: 'Creative Content',
                 icon: (
                   <svg viewBox="0 0 80 80" width="80" height="80">
-                    <defs><linearGradient id="cdG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#10b981"/><stop offset="100%" stopColor="#34d399"/></linearGradient></defs>
-                    <circle cx="40" cy="40" r="38" fill="rgba(16,185,129,0.1)"/>
-                    <rect x="18" y="18" width="44" height="40" rx="5" fill="url(#cdG)"/>
-                    <rect x="24" y="26" width="28" height="3" rx="1.5" fill="white" opacity="0.8"/>
-                    <rect x="24" y="33" width="22" height="3" rx="1.5" fill="white" opacity="0.6"/>
-                    <rect x="24" y="40" width="18" height="3" rx="1.5" fill="white" opacity="0.5"/>
-                    <circle cx="56" cy="58" r="10" fill="#fbbf24"/>
-                    <path d="M52 62 l2-6 6-2-6 2z" fill="white"/>
-                    <line x1="57" y1="53" x2="60" y2="50" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+                    <defs><linearGradient id="cdG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#10b981" /><stop offset="100%" stopColor="#34d399" /></linearGradient></defs>
+                    <circle cx="40" cy="40" r="38" fill="rgba(16,185,129,0.1)" />
+                    <rect x="18" y="18" width="44" height="40" rx="5" fill="url(#cdG)" />
+                    <rect x="24" y="26" width="28" height="3" rx="1.5" fill="white" opacity="0.8" />
+                    <rect x="24" y="33" width="22" height="3" rx="1.5" fill="white" opacity="0.6" />
+                    <rect x="24" y="40" width="18" height="3" rx="1.5" fill="white" opacity="0.5" />
+                    <circle cx="56" cy="58" r="10" fill="#fbbf24" />
+                    <path d="M52 62 l2-6 6-2-6 2z" fill="white" />
+                    <line x1="57" y1="53" x2="60" y2="50" stroke="white" strokeWidth="2" strokeLinecap="round" />
                   </svg>
                 )
               },
@@ -596,13 +667,13 @@ const About = () => {
                 tag: 'Enterprise Growth',
                 icon: (
                   <svg viewBox="0 0 80 80" width="80" height="80">
-                    <defs><linearGradient id="bsG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#f59e0b"/><stop offset="100%" stopColor="#fbbf24"/></linearGradient></defs>
-                    <circle cx="40" cy="40" r="38" fill="rgba(245,158,11,0.1)"/>
-                    <rect x="20" y="32" width="16" height="26" rx="3" fill="url(#bsG)"/>
-                    <rect x="32" y="24" width="16" height="34" rx="3" fill="url(#bsG)" opacity="0.85"/>
-                    <rect x="44" y="18" width="16" height="40" rx="3" fill="url(#bsG)" opacity="0.7"/>
-                    <polyline points="24,44 36,36 48,28 60,22" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <circle cx="60" cy="22" r="4" fill="white"/>
+                    <defs><linearGradient id="bsG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#f59e0b" /><stop offset="100%" stopColor="#fbbf24" /></linearGradient></defs>
+                    <circle cx="40" cy="40" r="38" fill="rgba(245,158,11,0.1)" />
+                    <rect x="20" y="32" width="16" height="26" rx="3" fill="url(#bsG)" />
+                    <rect x="32" y="24" width="16" height="34" rx="3" fill="url(#bsG)" opacity="0.85" />
+                    <rect x="44" y="18" width="16" height="40" rx="3" fill="url(#bsG)" opacity="0.7" />
+                    <polyline points="24,44 36,36 48,28 60,22" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <circle cx="60" cy="22" r="4" fill="white" />
                   </svg>
                 )
               },
@@ -614,15 +685,16 @@ const About = () => {
                 tag: 'Regulatory & Risk',
                 icon: (
                   <svg viewBox="0 0 80 80" width="80" height="80">
-                    <defs><linearGradient id="csG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#ec4899"/><stop offset="100%" stopColor="#f472b6"/></linearGradient></defs>
-                    <circle cx="40" cy="40" r="38" fill="rgba(236,72,153,0.1)"/>
-                    <path d="M40 14 L60 22 L60 44 C60 54 50 62 40 66 C30 62 20 54 20 44 L20 22 Z" fill="url(#csG)" opacity="0.9"/>
-                    <polyline points="32,40 38,46 52,32" fill="none" stroke="white" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <defs><linearGradient id="csG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#ec4899" /><stop offset="100%" stopColor="#f472b6" /></linearGradient></defs>
+                    <circle cx="40" cy="40" r="38" fill="rgba(236,72,153,0.1)" />
+                    <path d="M40 14 L60 22 L60 44 C60 54 50 62 40 66 C30 62 20 54 20 44 L20 22 Z" fill="url(#csG)" opacity="0.9" />
+                    <polyline points="32,40 38,46 52,32" fill="none" stroke="white" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 )
               }
             ].map((service, index) => (
               <motion.div
+                className="solution-card"
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -647,19 +719,21 @@ const About = () => {
                 }}
               >
                 {/* Top gradient accent bar */}
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: `linear-gradient(90deg, ${service.color}, transparent)`, borderRadius: '24px 24px 0 0' }}/>
+                <div className="about-card-bar" style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: `linear-gradient(90deg, ${service.color}, transparent)`, borderRadius: '24px 24px 0 0' }} />
                 {/* Glow dot */}
-                <div style={{ position: 'absolute', top: '1.2rem', right: '1.2rem', width: '8px', height: '8px', borderRadius: '50%', background: service.color, opacity: 0.5 }}/>
+                <div style={{ position: 'absolute', top: '1.2rem', right: '1.2rem', width: '8px', height: '8px', borderRadius: '50%', background: service.color, opacity: 0.5 }} />
                 {/* Icon illustration */}
-                <div style={{ marginTop: '0.5rem' }}>
+                <div className="solution-card-icon" style={{ marginTop: '0.5rem' }}>
                   {service.icon}
                 </div>
-                <h4 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--color-primary-dark)', margin: 0, textAlign: 'center', letterSpacing: '-0.2px' }}>
-                  {service.name}
-                </h4>
-                <span style={{ background: service.bg, border: `1px solid ${service.border}`, color: service.color, borderRadius: '50px', padding: '0.3rem 0.9rem', fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.5px' }}>
-                  {service.tag}
-                </span>
+                <div>
+                  <h4 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--color-primary-dark)', margin: 0, textAlign: 'center', letterSpacing: '-0.2px', marginBottom: '0.5rem' }}>
+                    {service.name}
+                  </h4>
+                  <span style={{ display: 'inline-block', background: service.bg, border: `1px solid ${service.border}`, color: service.color, borderRadius: '50px', padding: '0.3rem 0.9rem', fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.5px' }}>
+                    {service.tag}
+                  </span>
+                </div>
               </motion.div>
             ))}
           </div>

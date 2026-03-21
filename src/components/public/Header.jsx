@@ -155,7 +155,11 @@ const Header = () => {
           
           .tiis-right-menu.is-compact { display: none !important; }
           .tiis-center-nav.is-compact { justify-content: flex-end !important; }
+          
+          /* Less gap on mobile so pages move up */
+          .tiis-header-spacer { height: 30px !important; }
         }
+        .tiis-header-spacer { height: 96px; }
       `}</style>
 
       <div
@@ -202,7 +206,7 @@ const Header = () => {
 
             <motion.div
               layout
-              onClick={() => { navigate('/'); setIsOpen(false); }}
+              onClick={() => { navigate('/'); setIsOpen(false); setTimeout(() => window.scrollTo(0, 0), 100); }}
               style={{ cursor: 'pointer', flexShrink: 0, display: 'flex', alignItems: 'center' }}
               whileHover={{ filter: 'drop-shadow(0 4px 12px rgba(1,50,78,0.20))' }}
               transition={{ duration: 0.18 }}
@@ -363,7 +367,7 @@ const Header = () => {
                   {navLinks.map(item => (
                     <button
                       key={item.name}
-                      onClick={() => { navigate(item.href); setIsOpen(false); }}
+                      onClick={() => { navigate(item.href); setIsOpen(false); setTimeout(() => window.scrollTo(0, 0), 100); }}
                       className={`tiis-mob-link${isActive(item.href) ? ' active' : ''}`}
                     >
                       {item.name}
@@ -371,7 +375,7 @@ const Header = () => {
                   ))}
                   <Link
                     to="/contact"
-                    onClick={() => setIsOpen(false)}
+                    onClick={() => { setIsOpen(false); setTimeout(() => window.scrollTo(0, 0), 100); }}
                     style={{
                       marginTop: '0.5rem', display: 'block', textAlign: 'center',
                       padding: '0.8rem 1rem', borderRadius: '12px',
@@ -389,7 +393,7 @@ const Header = () => {
         </motion.div>
       </div>
 
-      <div style={{ height: '96px' }} />
+      <div className="tiis-header-spacer" />
     </>
   );
 };
