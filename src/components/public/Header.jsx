@@ -246,7 +246,7 @@ const Header = () => {
                     {navLinks.map(item => (
                       <button
                         key={item.name}
-                        onClick={() => navigate(item.href)}
+                        onClick={() => { navigate(item.href); window.scrollTo(0, 0); }}
                         className={`tiis-nav-btn${isActive(item.href) ? ' active' : ''}`}
                       >
                         {item.name}
@@ -256,7 +256,7 @@ const Header = () => {
                 ) : (
                   <motion.button
                     key="compact-pill"
-                    onClick={() => navigate('/contact')}
+                    onClick={() => { navigate('/contact'); window.scrollTo(0, 0); }}
                     initial={{ opacity: 0, filter: 'blur(6px)', scale: 0.92 }}
                     animate={{ opacity: 1, filter: 'blur(0px)', scale: 1 }}
                     exit={{ opacity: 0, filter: 'blur(6px)', scale: 0.92 }}
@@ -304,6 +304,7 @@ const Header = () => {
               {!compact && (
                 <Link
                   to="/contact"
+                  onClick={() => window.scrollTo(0, 0)}
                   className={`tiis-cta-btn ${isOpen ? 'hidden-on-mobile' : ''}`}
                   style={{
                     display: 'inline-flex', alignItems: 'center', gap: '0.45rem',

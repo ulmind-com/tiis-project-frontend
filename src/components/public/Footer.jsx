@@ -8,6 +8,7 @@ const Footer = () => {
     { name: 'About Us', path: '/about' },
     { name: 'Services', path: '/services' },
     { name: 'Careers', path: '/careers' },
+    { name: 'Caregivers', path: '/caregivers' },
     { name: 'Team', path: '/team' },
     { name: 'Contact', path: '/contact' },
   ];
@@ -106,11 +107,11 @@ const Footer = () => {
             {/* Logo Link e click korle top e scroll hobe */}
             <Link to="/" onClick={scrollToTop}>
               <img
-                src="/icons.png"
+                src="/Fotter.png"
                 alt="TIIS Logo"
                 style={{
                   height: '76px', width: 'auto', objectFit: 'contain',
-                  marginBottom: '1.5rem', display: 'block', filter: 'brightness(0) invert(1)'
+                  marginBottom: '1.5rem', display: 'block'
                 }}
               />
             </Link>

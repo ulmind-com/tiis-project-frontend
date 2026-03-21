@@ -34,6 +34,11 @@ const AppContent = () => {
   const location = useLocation();
   const isAdmin = location.pathname.startsWith('/admin');
 
+  // Scroll to top on every route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   // Track page visits on every route change (public pages only)
   useEffect(() => {
     if (!isAdmin) {
