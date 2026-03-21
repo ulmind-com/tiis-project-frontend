@@ -17,6 +17,7 @@ const AdminLayout = () => {
   }, []);
 
   useEffect(() => {
+    // Tomar existing login logic untouched rakhlam
     if (!localStorage.getItem('adminInfo')) {
       localStorage.setItem('adminInfo', JSON.stringify({ token: 'test-bypass', email: 'test@test.com' }));
     }
@@ -25,37 +26,105 @@ const AdminLayout = () => {
   }, [navigate]);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', backgroundColor: 'var(--color-bg-light)', color: 'var(--color-text-main)', transition: 'background-color 0.3s ease' }}>
-      
-      {/* Top Navbar (Full Width) */}
-      <AdminHeader setIsSidebarOpen={setIsSidebarOpen} />
+    <>
+      <style>{`
+        /* Root container */
+        .admin-layout-root {
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
+          background-color: var(--color-bg-light);
+          color: var(--color-text-main);
+          transition: background-color 0.3s ease;
+        }
 
-      {/* Under Navbar Structure */}
-      <div style={{ display: 'flex', flex: 1, position: 'relative' }}>
+        /* Body wrapper prevents unwanted body scrolling when sidebar is open */
+        .admin-body-wrapper {
+          display: flex;
+          flex: 1;
+          position: relative;
+          overflow: hidden; 
+        }
+
+        /* Main Content Area - Mobile First */
+        .admin-main-content {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          min-width: 0;
+          height: calc(100vh - 70px); /* Syncs with mobile header height */
+          overflow-y: auto;
+          scroll-behavior: smooth;
+        }
+
+        .admin-container {
+          flex: 1;
+          width: 100%;
+          max-width: 1400px;
+          margin: 0 auto;
+          /* Mobile Padding: Ekdom clean, beshi chapa chapi lagbe na */
+          padding: 1rem 0.8rem; 
+        }
+
+        /* Web View (Desktop Pro feel) */
+        @media (min-width: 768px) {
+          .admin-main-content {
+            height: calc(100vh - 85px); /* Syncs with desktop header height */
+          }
+          .admin-container {
+            padding: 1.5rem 2rem; /* Boro screen e ektu beshi space */
+          }
+        }
         
-        {/* Sidebar (Left) */}
-        <AdminSidebar isMobileOpen={isSidebarOpen} setIsMobileOpen={setIsSidebarOpen} />
+        /* Ultra Premium Custom Scrollbar (Mac/iOS style) */
+        .admin-main-content::-webkit-scrollbar {
+          width: 6px;
+        }
+        .admin-main-content::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .admin-main-content::-webkit-scrollbar-thumb {
+          background-color: rgba(156, 163, 175, 0.3);
+          border-radius: 10px;
+        }
+        .admin-main-content:hover::-webkit-scrollbar-thumb {
+          background-color: rgba(156, 163, 175, 0.6);
+        }
+      `}</style>
 
-        {/* Scrollable Page Content (Right) */}
-        <main style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-          <div className="admin-content-container" style={{ flex: 1, overflowY: 'auto', width: '100%', maxWidth: '1400px', margin: '0 auto' }}>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={location.pathname}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2 }}
-                style={{ height: '100%' }}
-              >
-                <Outlet />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </main>
+      <div className="admin-layout-root">
+
+        {/* Top Navbar (Full Width) */}
+        <AdminHeader setIsSidebarOpen={setIsSidebarOpen} />
+
+        {/* Under Navbar Structure */}
+        <div className="admin-body-wrapper">
+
+          {/* Sidebar (Left) */}
+          <AdminSidebar isMobileOpen={isSidebarOpen} setIsMobileOpen={setIsSidebarOpen} />
+
+          {/* Scrollable Page Content (Right) */}
+          <main className="admin-main-content">
+            <div className="admin-container">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={location.pathname}
+                  /* Premium Blur & Fade transition add kora holo */
+                  initial={{ opacity: 0, y: 12, filter: 'blur(4px)' }}
+                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                  exit={{ opacity: 0, y: -12, filter: 'blur(4px)' }}
+                  transition={{ duration: 0.25, ease: "easeOut" }}
+                  style={{ height: '100%' }}
+                >
+                  <Outlet />
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </main>
+        </div>
+
       </div>
-
-    </div>
+    </>
   );
 };
 

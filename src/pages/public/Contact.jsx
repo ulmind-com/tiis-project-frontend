@@ -137,6 +137,16 @@ const Contact = () => {
       
       {/* ── Hero Section ── */}
       <section className="contact-hero" style={{ position: 'relative', overflow: 'hidden', background: 'var(--color-hero-grad)', padding: '7rem 2rem 5rem', color: 'white' }}>
+        {/* Subtle Background Image Overlay */}
+        <div style={{
+          position: 'absolute', inset: 0, zIndex: 0,
+          backgroundImage: 'url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=2070&q=80")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          mixBlendMode: 'overlay',
+          opacity: 0.55,
+          pointerEvents: 'none',
+        }} />
         {/* Animated Blobs */}
         <motion.div animate={{ scale: [1, 1.15, 1], opacity: [0.12, 0.2, 0.12] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }} style={{ position: 'absolute', top: '-80px', right: '-80px', width: '350px', height: '350px', borderRadius: '50%', background: 'rgba(177,32,35,0.15)', filter: 'blur(60px)', pointerEvents: 'none' }} />
         <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.08, 0.16, 0.08] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }} style={{ position: 'absolute', bottom: '-60px', left: '-60px', width: '280px', height: '280px', borderRadius: '50%', background: 'rgba(14,165,233,0.14)', filter: 'blur(50px)', pointerEvents: 'none' }} />

@@ -455,6 +455,17 @@ const Careers = () => {
         background: 'var(--color-hero-grad)',
         padding: '7rem 2rem 5rem', color: 'white',
       }}>
+        {/* Subtle Background Image Overlay */}
+        <div style={{
+          position: 'absolute', inset: 0, zIndex: 0,
+          backgroundImage: 'url("https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=2070&q=80")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          mixBlendMode: 'overlay',
+          opacity: 0.55,
+          pointerEvents: 'none',
+        }} />
+
         {/* Animated floating blobs */}
         <motion.div
           animate={{ scale: [1, 1.15, 1], opacity: [0.12, 0.2, 0.12] }}
