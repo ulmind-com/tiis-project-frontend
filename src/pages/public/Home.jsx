@@ -568,7 +568,7 @@ const Home = () => {
             style={{ position: 'relative' }}
           >
             <div style={{ position: 'relative', borderRadius: '30px', overflow: 'hidden', boxShadow: '0 30px 60px -15px rgba(0,0,0,0.2)' }}>
-              <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="TIIS Collaboration" style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover', aspectRatio: '4/4' }} />
+              <img src="/About us.png" alt="TIIS Collaboration" style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover', aspectRatio: '4/4' }} />
             </div>
 
 

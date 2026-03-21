@@ -210,7 +210,7 @@ const About = () => {
             <motion.img
               animate={{ y: [-12, 12, -12] }}
               transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80"
+              src="/About_us_page.png"
               alt="TIIS Team Collaboration"
               style={{
                 width: '100%',
