@@ -33,23 +33,45 @@ const News = () => {
   }
 
   return (
-    <div style={{ backgroundColor: '#f4f6f0', minHeight: '100vh', padding: '6rem 0' }}>
-      <div className="container" style={{ maxWidth: '1000px' }}>
+    <div className="news-page-wrapper animate-fade-in" style={{ backgroundColor: '#f4f6f0', minHeight: '100vh', padding: '6rem 2rem' }}>
+      
+      {/* ─── ULTRA PREMIUM MOBILE RESPONSIVE CSS ─── */}
+      <style>{`
+        @media (max-width: 768px) {
+          .news-page-wrapper { padding: 4rem 1.25rem !important; }
+          .news-header { flex-direction: column !important; align-items: flex-start !important; gap: 1.5rem !important; margin-bottom: 2.5rem !important; }
+          .news-title { font-size: 2.3rem !important; line-height: 1.15 !important; letter-spacing: -0.5px !important; }
+          .news-subtitle { font-size: 1rem !important; line-height: 1.6 !important; }
+          .news-card { flex-direction: column !important; min-height: auto !important; }
+          .news-card-image-wrap { flex: none !important; height: 240px !important; }
+          .news-card-content { flex: none !important; padding: 1.75rem !important; }
+          .news-card-title { font-size: 1.45rem !important; line-height: 1.2 !important; margin-bottom: 0.75rem !important; }
+          .news-card-desc { font-size: 0.95rem !important; line-height: 1.6 !important; margin-bottom: 1.5rem !important; }
+          .news-back-link { align-self: flex-start !important; padding-top: 0.5rem !important; }
+          .news-modal-content { padding: 1.5rem !important; }
+          .news-modal-image { height: 180px !important; }
+          .news-modal-title { font-size: 1.5rem !important; }
+          .news-modal-text { font-size: 1rem !important; line-height: 1.7 !important; }
+        }
+      `}</style>
+      {/* ────────────────────────────────────────── */}
+
+      <div className="container" style={{ maxWidth: '1000px', margin: '0 auto' }}>
         
-        <div style={{ marginBottom: '4rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div className="news-header" style={{ marginBottom: '4rem', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1rem', color: 'var(--color-secondary)', fontWeight: '700', fontSize: '0.85rem', letterSpacing: '3px', textTransform: 'uppercase' }}>
               <span style={{ width: '30px', height: '2px', backgroundColor: 'var(--color-secondary)', borderRadius: '2px' }}></span>
               Knowledge Hub
             </div>
-            <h1 style={{ fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: '900', color: 'var(--color-primary-dark)', lineHeight: '1.1', marginBottom: '1.2rem', letterSpacing: '-1px' }}>
+            <h1 className="news-title" style={{ fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: '900', color: 'var(--color-primary-dark)', lineHeight: '1.1', marginBottom: '1.2rem', letterSpacing: '-1px' }}>
               All Insights <span style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-secondary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>&amp; Blog</span>
             </h1>
-            <p style={{ color: 'var(--color-text-muted)', fontSize: '1.15rem', marginTop: '1rem', maxWidth: '600px', lineHeight: '1.7' }}>
+            <p className="news-subtitle" style={{ color: 'var(--color-text-muted)', fontSize: '1.15rem', marginTop: '1rem', maxWidth: '600px', lineHeight: '1.7' }}>
               Stay updated with our latest thought leadership, strategies, and industry news carefully curated for ambitious leaders.
             </p>
           </motion.div>
-          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-primary)', fontWeight: '600', textDecoration: 'none' }}>
+          <Link to="/" className="news-back-link" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-primary)', fontWeight: '600', textDecoration: 'none', padding: '0.5rem 1rem', borderRadius: '50px', backgroundColor: 'rgba(1, 50, 78, 0.05)', transition: 'background-color 0.2s' }}>
             <ArrowLeft size={16} /> Back to Home
           </Link>
         </div>
@@ -74,10 +96,10 @@ const News = () => {
                   transition: 'transform 0.3s ease, box-shadow 0.3s ease',
                   minHeight: '350px'
                 }}
-                className="group hover:scale-[1.01] hover:shadow-2xl cursor-pointer"
+                className="news-card group hover:scale-[1.01] hover:shadow-2xl cursor-pointer"
               >
                 {/* Left side: Image */}
-                <div style={{ flex: '0 0 45%', position: 'relative', overflow: 'hidden' }}>
+                <div className="news-card-image-wrap" style={{ flex: '0 0 45%', position: 'relative', overflow: 'hidden' }}>
                   <div 
                     style={{ 
                       position: 'absolute', inset: 0, 
@@ -91,7 +113,7 @@ const News = () => {
                 </div>
 
                 {/* Right side: Content */}
-                <div style={{ flex: '1 1 55%', padding: '3rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <div className="news-card-content" style={{ flex: '1 1 55%', padding: '3rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                   <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
                     <span style={{ padding: '0.3rem 0.8rem', backgroundColor: 'rgba(177,32,35,0.1)', color: 'var(--color-secondary)', borderRadius: '50px', fontSize: '0.75rem', fontWeight: '700', letterSpacing: '1px', textTransform: 'uppercase' }}>
                       Article
@@ -101,11 +123,11 @@ const News = () => {
                     </span>
                   </div>
                   
-                  <h2 style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--color-primary-dark)', lineHeight: '1.2', marginBottom: '1rem' }}>
+                  <h2 className="news-card-title" style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--color-primary-dark)', lineHeight: '1.2', marginBottom: '1rem' }}>
                     {item.title}
                   </h2>
                   
-                  <p style={{ fontSize: '1rem', color: 'var(--color-text-muted)', lineHeight: '1.7', marginBottom: '2rem' }}>
+                  <p className="news-card-desc" style={{ fontSize: '1rem', color: 'var(--color-text-muted)', lineHeight: '1.7', marginBottom: '2rem' }}>
                     {item.content.length > 200 ? item.content.substring(0, 200) + '...' : item.content}
                   </p>
 
@@ -136,7 +158,7 @@ const News = () => {
           >
             <button onClick={() => setSelectedNews(null)} className="absolute top-4 right-4 z-20 w-10 h-10 bg-white/50 backdrop-blur-md rounded-full flex items-center justify-center text-xl hover:bg-white transition-colors cursor-pointer border border-black/10">&times;</button>
             
-            <div className="h-64 relative shrink-0">
+            <div className="news-modal-image h-64 relative shrink-0">
                {selectedNews.imageUrl ? (
                  <img src={selectedNews.imageUrl} alt={selectedNews.title} className="w-full h-full object-cover" />
                ) : (
@@ -149,11 +171,11 @@ const News = () => {
                  <div className="text-white/80 text-sm font-bold tracking-widest uppercase mb-2">
                    {new Date(selectedNews.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
                  </div>
-                 <h2 className="text-3xl text-white font-black leading-tight uppercase relative z-10">{selectedNews.title}</h2>
+                 <h2 className="news-modal-title text-3xl text-white font-black leading-tight uppercase relative z-10">{selectedNews.title}</h2>
                </div>
             </div>
             
-            <div style={{ padding: '3rem 4rem', overflowY: 'auto' }}>
+            <div className="news-modal-content" style={{ padding: '3rem 4rem', overflowY: 'auto' }}>
               
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2.5rem', paddingBottom: '2.5rem', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
                 <div style={{ width: '50px', height: '50px', borderRadius: '50%', backgroundColor: 'var(--color-secondary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '1.2rem' }}>
@@ -165,7 +187,7 @@ const News = () => {
                 </div>
               </div>
 
-              <div style={{ 
+              <div className="news-modal-text" style={{ 
                 color: '#334155', 
                 fontSize: '1.15rem', 
                 lineHeight: '1.9', 

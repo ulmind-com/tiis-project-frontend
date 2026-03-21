@@ -502,24 +502,69 @@ const AdminLogin = () => {
           transform: scale(1.08);
         }
 
-        /* ── Responsive ── */
+        /* ── Ultra Premium Mobile Responsive ── */
         @media (max-width: 960px) {
           .admin-login-page {
             flex-direction: column;
+            display: block;
+            overflow-y: auto;
           }
           .admin-login-left {
-            padding: 3rem 2rem;
+            padding: 4rem 1.5rem 6rem; /* Extra bottom padding creates space for overlap */
+            text-align: center;
+            align-items: center;
             flex: none;
           }
+          .brand-badge {
+            margin: 0 auto 1.5rem;
+          }
           .brand-title {
-            font-size: 2rem;
+            font-size: 2.25rem;
+          }
+          .brand-subtitle {
+            font-size: 0.95rem;
+            margin-bottom: 0;
+            max-width: 100%;
           }
           .feature-list {
             display: none;
           }
           .admin-login-right {
-            flex: 1;
-            padding: 2rem 1.5rem;
+            padding: 0 1.25rem 3rem;
+            display: block;
+            min-height: calc(100vh - 350px);
+          }
+          .login-card {
+            margin: -4.5rem auto 0; /* Magic Overlap: Pulls the card up over the header */
+            background: ${t.rightBg}; /* Syncs with right background color to make it look like a solid card */
+            padding: 2.5rem 1.5rem;
+            border-radius: 28px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, ${isDark ? '0.5' : '0.15'});
+            border: 1px solid ${t.footerBorder};
+            z-index: 10;
+          }
+          .theme-toggle-btn {
+            position: fixed; /* Floats perfectly at top right on mobile */
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(0, 0, 0, 0.15) !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: #ffffff !important; /* Force white icon against the dark left panel */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 50;
+          }
+          .login-input {
+            padding: 1.05rem 1rem 1.05rem 3.2rem; /* Larger touch area */
+            font-size: 1rem;
+            border-radius: 16px;
+          }
+          .login-submit {
+            padding: 1.15rem;
+            border-radius: 16px;
+            font-size: 1.05rem;
+            margin-top: 1rem;
           }
         }
       `}</style>

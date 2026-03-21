@@ -38,7 +38,7 @@ const StatCard = ({ title, value, icon: Icon, color, delay, isDark, subtitle, li
       style={{ textDecoration: 'none' }}
     >
       <Link to={link || '#'} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-        <div style={{
+        <div className="premium-stat-card" style={{
           backgroundColor: 'var(--color-card-bg)',
           border: '1px solid var(--border-color)',
           borderRadius: '20px',
@@ -59,7 +59,7 @@ const StatCard = ({ title, value, icon: Icon, color, delay, isDark, subtitle, li
           }} />
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div style={{
+            <div className="stat-icon-wrap" style={{
               width: '52px', height: '52px', borderRadius: '14px',
               background: `${color}18`,
               border: `1px solid ${color}25`,
@@ -69,7 +69,7 @@ const StatCard = ({ title, value, icon: Icon, color, delay, isDark, subtitle, li
               <Icon size={24} />
             </div>
             {subtitle && (
-              <span style={{
+              <span className="stat-subtitle" style={{
                 display: 'flex', alignItems: 'center', gap: '0.3rem',
                 fontSize: '0.78rem', fontWeight: 600,
                 color: 'var(--color-text-muted)',
@@ -83,14 +83,14 @@ const StatCard = ({ title, value, icon: Icon, color, delay, isDark, subtitle, li
           </div>
 
           <div>
-            <h3 style={{
+            <h3 className="stat-value" style={{
               fontSize: '2.25rem', fontWeight: 800, margin: 0,
               color: 'var(--color-text-main)',
               fontVariantNumeric: 'tabular-nums',
             }}>
               {typeof value === 'number' ? animatedValue.toLocaleString() : value}
             </h3>
-            <p style={{
+            <p className="stat-title" style={{
               color: 'var(--color-text-muted)',
               fontSize: '0.9rem', fontWeight: 500, margin: '0.3rem 0 0 0',
             }}>{title}</p>
@@ -103,7 +103,7 @@ const StatCard = ({ title, value, icon: Icon, color, delay, isDark, subtitle, li
 
 /* ─── Activity item ─── */
 const ActivityItem = ({ icon: Icon, color, title, subtitle, time, isDark }) => (
-  <div style={{
+  <div className="activity-item" style={{
     display: 'flex', alignItems: 'flex-start', gap: '1rem',
     padding: '1rem 0',
     borderBottom: '1px solid var(--border-color)',
@@ -126,7 +126,7 @@ const ActivityItem = ({ icon: Icon, color, title, subtitle, time, isDark }) => (
 
 /* ─── Quick action button ─── */
 const QuickAction = ({ icon: Icon, label, to, color }) => (
-  <Link to={to} style={{
+  <Link to={to} className="quick-action-btn" style={{
     display: 'flex', alignItems: 'center', gap: '0.75rem',
     padding: '0.9rem 1.2rem',
     borderRadius: '14px',
@@ -268,33 +268,117 @@ const Dashboard = () => {
   return (
     <div style={{ paddingBottom: '2rem' }}>
 
+      {/* Ultra Premium Mobile Responsive Styles Injector */}
+      <style>{`
+        /* Tablet & Mobile Stack */
+        @media (max-width: 1024px) {
+          .dashboard-bottom-row {
+            grid-template-columns: 1fr !important;
+          }
+        }
+
+        /* Mobile App-like Adjustments */
+        @media (max-width: 768px) {
+          .dashboard-header h1 {
+            font-size: 1.5rem !important;
+          }
+          
+          /* Force 2x2 grid for stat cards on mobile for that premium App feel */
+          .dashboard-grid-1, .dashboard-grid-2 {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 0.85rem !important;
+            margin-bottom: 1.5rem !important;
+          }
+          
+          /* Make the last odd item in grid 2 span full width for symmetry */
+          .dashboard-grid-2 > div:last-child {
+             grid-column: span 2;
+          }
+
+          .premium-stat-card {
+            padding: 1.1rem !important;
+            border-radius: 16px !important;
+            gap: 0.75rem !important;
+          }
+
+          .stat-icon-wrap {
+            width: 40px !important;
+            height: 40px !important;
+            border-radius: 10px !important;
+          }
+          
+          .stat-icon-wrap svg {
+            width: 20px !important;
+            height: 20px !important;
+          }
+
+          .stat-value {
+            font-size: 1.6rem !important;
+          }
+
+          .stat-title {
+            font-size: 0.75rem !important;
+          }
+
+          .stat-subtitle {
+            font-size: 0.65rem !important;
+            padding: 0.2rem 0.5rem !important;
+          }
+
+          .premium-panel {
+            padding: 1.25rem !important;
+            border-radius: 16px !important;
+          }
+
+          .quick-action-btn {
+            padding: 0.85rem 1rem !important;
+          }
+          
+          .activity-item {
+            padding: 0.85rem 0 !important;
+          }
+        }
+        
+        /* Ultra small screens (iPhone SE etc) */
+        @media (max-width: 380px) {
+          .dashboard-grid-1, .dashboard-grid-2 {
+             grid-template-columns: 1fr !important;
+          }
+          .dashboard-grid-2 > div:last-child {
+             grid-column: span 1;
+          }
+        }
+      `}</style>
+
       {/* Header */}
-      <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} style={{ marginBottom: '2rem' }}>
+      <motion.div className="dashboard-header" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} style={{ marginBottom: '2rem' }}>
         <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', margin: '0 0 0.3rem 0', fontWeight: 500 }}>{greeting} 👋</p>
         <h1 style={{ fontSize: '1.85rem', fontWeight: 800, color: 'var(--color-text-main)', margin: 0 }}>
           Welcome back, <span style={{ color: '#3b82f6' }}>{adminName}</span>
         </h1>
       </motion.div>
 
-      {/* Stats Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginBottom: '2rem' }}>
+      {/* Stats Grid 1 */}
+      <div className="dashboard-grid-1" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginBottom: '2rem' }}>
         <StatCard title="Total Enquiries" value={stats.enquiries} icon={MessageSquare} color="#3b82f6" delay={0.05} isDark={isDark} subtitle={`${stats.newEnquiries} new`} link="/admin/enquiries" />
         <StatCard title="Job Applications" value={stats.applications} icon={UserCheck} color="#f59e0b" delay={0.1} isDark={isDark} subtitle={`${stats.pendingApps} pending`} link="/admin/applications" />
         <StatCard title="Active Jobs" value={stats.jobs} icon={Briefcase} color="#10b981" delay={0.15} isDark={isDark} link="/admin/careers" />
         <StatCard title="Published News" value={stats.news} icon={Newspaper} color="#8b5cf6" delay={0.2} isDark={isDark} link="/admin/news" />
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1.25rem', marginBottom: '2.5rem' }}>
+      {/* Stats Grid 2 */}
+      <div className="dashboard-grid-2" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1.25rem', marginBottom: '2.5rem' }}>
         <StatCard title="Portfolio Items" value={stats.portfolio} icon={FolderOpen} color="#ec4899" delay={0.25} isDark={isDark} link="/admin/portfolio" />
         <StatCard title="Team Members" value={stats.team} icon={UsersRound} color="#06b6d4" delay={0.3} isDark={isDark} link="/admin/team" />
         <StatCard title="Admin Users" value={stats.admins} icon={Users} color="#f97316" delay={0.35} isDark={isDark} link="/admin/admins" />
       </div>
 
       {/* Bottom row: Activity + Quick Actions */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr', gap: '1.5rem' }}>
+      <div className="dashboard-bottom-row" style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr', gap: '1.5rem' }}>
 
         {/* Recent Activity */}
         <motion.div
+          className="premium-panel"
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
           style={{
             backgroundColor: 'var(--color-card-bg)',
@@ -341,6 +425,7 @@ const Dashboard = () => {
         {/* Right column: Quick Actions + Recent News */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           <motion.div
+            className="premium-panel"
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
             style={{
               backgroundColor: 'var(--color-card-bg)',
@@ -361,6 +446,7 @@ const Dashboard = () => {
           {/* Recent News mini-feed */}
           {recentNews.length > 0 && (
             <motion.div
+              className="premium-panel"
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
               style={{
                 backgroundColor: 'var(--color-card-bg)',
