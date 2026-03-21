@@ -36,15 +36,16 @@ const Portfolio = () => {
       {/* ─── ULTRA PREMIUM MOBILE RESPONSIVE CSS ─── */}
       <style>{`
         @media (max-width: 768px) {
-          .portfolio-page-wrapper { padding: 4rem 1.25rem !important; }
-          .portfolio-header { flex-direction: column !important; align-items: flex-start !important; gap: 1.5rem !important; margin-bottom: 3rem !important; }
-          .portfolio-title { font-size: 2.3rem !important; line-height: 1.15 !important; letter-spacing: -0.5px !important; }
-          .portfolio-subtitle { font-size: 1rem !important; line-height: 1.6 !important; }
-          .portfolio-grid { grid-template-columns: 1fr !important; gap: 1.5rem !important; }
-          .portfolio-card { height: 420px !important; border-radius: 20px !important; padding: 1.25rem !important; }
-          .portfolio-badge { font-size: 0.7rem !important; padding: 0.3rem 0.6rem !important; }
-          .portfolio-card-title { font-size: 1.4rem !important; }
-          .portfolio-back-link { align-self: flex-start !important; padding-top: 0.5rem !important; }
+          .portfolio-page-wrapper { padding: 5rem 1rem !important; }
+          .portfolio-header { flex-direction: column !important; align-items: center !important; gap: 1.5rem !important; margin-bottom: 3rem !important; text-align: center !important; }
+          .portfolio-header > div > div:first-child { justify-content: center !important; margin-bottom: 1.2rem !important; }
+          .portfolio-title { font-size: 2.6rem !important; line-height: 1.1 !important; letter-spacing: -1px !important; text-align: center !important; }
+          .portfolio-subtitle { font-size: 1.05rem !important; line-height: 1.6 !important; text-align: center !important; padding: 0 0.5rem; margin-top: 1rem !important; }
+          .portfolio-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
+          .portfolio-card { height: 400px !important; border-radius: 24px !important; padding: 1.5rem !important; }
+          .portfolio-badge { font-size: 0.75rem !important; padding: 0.4rem 0.8rem !important; }
+          .portfolio-card-title { font-size: 1.6rem !important; line-height: 1.2 !important; }
+          .portfolio-back-link { align-self: center !important; padding-top: 0 !important; margin-top: 0.5rem !important; background-color: rgba(1, 50, 78, 0.08) !important; padding: 0.6rem 1.2rem !important; }
         }
       `}</style>
       {/* ────────────────────────────────────────── */}

@@ -38,20 +38,27 @@ const News = () => {
       {/* ─── ULTRA PREMIUM MOBILE RESPONSIVE CSS ─── */}
       <style>{`
         @media (max-width: 768px) {
-          .news-page-wrapper { padding: 4rem 1.25rem !important; }
-          .news-header { flex-direction: column !important; align-items: flex-start !important; gap: 1.5rem !important; margin-bottom: 2.5rem !important; }
-          .news-title { font-size: 2.3rem !important; line-height: 1.15 !important; letter-spacing: -0.5px !important; }
-          .news-subtitle { font-size: 1rem !important; line-height: 1.6 !important; }
-          .news-card { flex-direction: column !important; min-height: auto !important; }
-          .news-card-image-wrap { flex: none !important; height: 240px !important; }
-          .news-card-content { flex: none !important; padding: 1.75rem !important; }
-          .news-card-title { font-size: 1.45rem !important; line-height: 1.2 !important; margin-bottom: 0.75rem !important; }
-          .news-card-desc { font-size: 0.95rem !important; line-height: 1.6 !important; margin-bottom: 1.5rem !important; }
-          .news-back-link { align-self: flex-start !important; padding-top: 0.5rem !important; }
-          .news-modal-content { padding: 1.5rem !important; }
-          .news-modal-image { height: 180px !important; }
-          .news-modal-title { font-size: 1.5rem !important; }
-          .news-modal-text { font-size: 1rem !important; line-height: 1.7 !important; }
+          .news-page-wrapper { padding: 5rem 1rem !important; }
+          .news-header { flex-direction: column !important; align-items: center !important; gap: 1.5rem !important; margin-bottom: 3rem !important; text-align: center !important; }
+          .news-header > div > div:first-child { justify-content: center !important; margin-bottom: 1.2rem !important; }
+          .news-title { font-size: 2.6rem !important; line-height: 1.1 !important; letter-spacing: -1px !important; text-align: center !important; }
+          .news-subtitle { font-size: 1.05rem !important; line-height: 1.6 !important; text-align: center !important; padding: 0 0.5rem; margin-top: 1rem !important; }
+          .news-back-link { align-self: center !important; padding-top: 0 !important; margin-top: 0.5rem !important; background-color: rgba(1, 50, 78, 0.08) !important; padding: 0.6rem 1.2rem !important; }
+          
+          .news-card { flex-direction: column !important; min-height: auto !important; border-radius: 20px !important; }
+          .news-card-image-wrap { flex: none !important; height: 220px !important; }
+          .news-card-content { flex: none !important; padding: 1.75rem 1.5rem !important; }
+          .news-card-title { font-size: 1.6rem !important; line-height: 1.2 !important; margin-bottom: 1rem !important; }
+          .news-card-desc { font-size: 1rem !important; line-height: 1.6 !important; margin-bottom: 2rem !important; }
+          
+          /* Modal Adjustments */
+          .news-modal-content { padding: 1.75rem 1.25rem !important; }
+          .news-modal-image { height: 220px !important; }
+          .news-modal-title { font-size: 1.6rem !important; line-height: 1.2 !important; }
+          .news-modal-image > div.absolute.bottom-6 { bottom: 1rem !important; left: 1.25rem !important; right: 1.25rem !important; }
+          .news-modal-text { font-size: 1.05rem !important; line-height: 1.8 !important; }
+          .modal-close-btn { top: 1rem !important; right: 1rem !important; background: rgba(255,255,255,0.8) !important; color: #000 !important; border: none !important; }
+          .modal-author-block { padding-bottom: 1.5rem !important; margin-bottom: 1.5rem !important; }
         }
       `}</style>
       {/* ────────────────────────────────────────── */}
@@ -156,7 +163,7 @@ const News = () => {
             onClick={e => e.stopPropagation()}
             style={{ maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}
           >
-            <button onClick={() => setSelectedNews(null)} className="absolute top-4 right-4 z-20 w-10 h-10 bg-white/50 backdrop-blur-md rounded-full flex items-center justify-center text-xl hover:bg-white transition-colors cursor-pointer border border-black/10">&times;</button>
+            <button onClick={() => setSelectedNews(null)} className="modal-close-btn absolute top-4 right-4 z-20 w-10 h-10 bg-white/50 backdrop-blur-md rounded-full flex items-center justify-center text-xl hover:bg-white transition-colors cursor-pointer border border-black/10">&times;</button>
             
             <div className="news-modal-image h-64 relative shrink-0">
                {selectedNews.imageUrl ? (
@@ -177,7 +184,7 @@ const News = () => {
             
             <div className="news-modal-content" style={{ padding: '3rem 4rem', overflowY: 'auto' }}>
               
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2.5rem', paddingBottom: '2.5rem', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
+              <div className="modal-author-block" style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2.5rem', paddingBottom: '2.5rem', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
                 <div style={{ width: '50px', height: '50px', borderRadius: '50%', backgroundColor: 'var(--color-secondary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '1.2rem' }}>
                   T
                 </div>
