@@ -84,7 +84,6 @@ const JobCard = ({ job, index, onApply }) => {
         cursor: 'pointer',
         border: '1px solid var(--border-color-strong)',
         breakInside: 'avoid',
-        marginBottom: '2rem',
       }}
       onClick={() => onApply(job)}
     >
@@ -427,8 +426,8 @@ const Careers = () => {
           .careers-section { padding: 4rem 1.5rem !important; }
           .section-header-title { font-size: 2rem !important; line-height: 1.2 !important; }
 
-          /* Job Card Layout (Fix columnWidth for mobile) */
-          .job-cards-container { column-count: 1 !important; display: flex !important; flex-direction: column !important; gap: 1.5rem !important; }
+          /* Column Grid Stacking for Mobile */
+          .job-categories-wrapper { grid-template-columns: 1fr !important; gap: 3rem !important; }
           
           /* Inner Card Spacing */
           .job-card-banner { padding: 1.5rem 1.5rem 1.25rem !important; }
@@ -600,10 +599,56 @@ const Careers = () => {
               <p style={{ color: 'var(--color-text-muted)', marginTop: '0.5rem' }}>Check back later for new opportunities.</p>
             </div>
           ) : (
-            <div className="job-cards-container" style={{ columnWidth: '320px', columnGap: '2rem' }}>
-              {jobs.map((job, index) => (
-                <JobCard key={job._id} job={job} index={index} onApply={setSelectedJob} />
-              ))}
+            <div className="job-categories-wrapper" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2.5rem' }}>
+              
+              {/* Category 1: Open Position */}
+              <div className="job-category-column">
+                <h3 style={{ fontSize: '1.35rem', fontWeight: '800', color: 'var(--color-text-heading)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.6rem', borderBottom: '2px solid rgba(177,32,35,0.15)', paddingBottom: '0.75rem' }}>
+                  <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#3b82f6', boxShadow: '0 0 10px rgba(59,130,246,0.6)' }} /> Open Positions
+                </h3>
+                {jobs.filter(job => job.category === 'Open Position' || !job.category).length > 0 ? (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                    {jobs.filter(job => job.category === 'Open Position' || !job.category).map((job, index) => (
+                      <JobCard key={job._id} job={job} index={index} onApply={setSelectedJob} />
+                    ))}
+                  </div>
+                ) : (
+                  <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', background: 'var(--color-card-bg)', padding: '1.5rem', borderRadius: '16px', border: '1px dashed var(--border-color)', textAlign: 'center' }}>No openings right now.</p>
+                )}
+              </div>
+
+              {/* Category 2: Caregivers Enroll */}
+              <div className="job-category-column">
+                <h3 style={{ fontSize: '1.35rem', fontWeight: '800', color: 'var(--color-text-heading)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.6rem', borderBottom: '2px solid rgba(177,32,35,0.15)', paddingBottom: '0.75rem' }}>
+                   <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#10b981', boxShadow: '0 0 10px rgba(16,185,129,0.6)' }} /> Caregivers Enroll
+                </h3>
+                {jobs.filter(job => job.category === 'Caregivers Enroll').length > 0 ? (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                    {jobs.filter(job => job.category === 'Caregivers Enroll').map((job, index) => (
+                      <JobCard key={job._id} job={job} index={index} onApply={setSelectedJob} />
+                    ))}
+                  </div>
+                ) : (
+                  <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', background: 'var(--color-card-bg)', padding: '1.5rem', borderRadius: '16px', border: '1px dashed var(--border-color)', textAlign: 'center' }}>No openings right now.</p>
+                )}
+              </div>
+
+              {/* Category 3: TIIS Openings */}
+              <div className="job-category-column">
+                <h3 style={{ fontSize: '1.35rem', fontWeight: '800', color: 'var(--color-text-heading)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.6rem', borderBottom: '2px solid rgba(177,32,35,0.15)', paddingBottom: '0.75rem' }}>
+                  <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#8b5cf6', boxShadow: '0 0 10px rgba(139,92,246,0.6)' }} /> TIIS Openings
+                </h3>
+                {jobs.filter(job => job.category === 'TIIS Openings').length > 0 ? (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                    {jobs.filter(job => job.category === 'TIIS Openings').map((job, index) => (
+                      <JobCard key={job._id} job={job} index={index} onApply={setSelectedJob} />
+                    ))}
+                  </div>
+                ) : (
+                   <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', background: 'var(--color-card-bg)', padding: '1.5rem', borderRadius: '16px', border: '1px dashed var(--border-color)', textAlign: 'center' }}>No openings right now.</p>
+                )}
+              </div>
+
             </div>
           )}
         </div>

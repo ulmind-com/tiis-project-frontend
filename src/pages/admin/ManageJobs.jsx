@@ -17,7 +17,7 @@ const ManageJobs = () => {
   const [dragOver, setDragOver] = useState(false);
   const fileInputRef = useRef(null);
   const [formData, setFormData] = useState({
-    title: '', description: '', location: '', industry: '', experience: '', isActive: true, image: null,
+    title: '', description: '', location: '', industry: '', experience: '', category: 'Open Position', isActive: true, image: null,
   });
 
   const context = useOutletContext();
@@ -40,13 +40,13 @@ const ManageJobs = () => {
 
   const handleEdit = (job) => {
     setIsEditing(true); setCurrentJobId(job._id);
-    setFormData({ title: job.title, description: job.description, location: job.location, industry: job.industry, experience: job.experience, isActive: job.isActive, image: null });
+    setFormData({ title: job.title, description: job.description, location: job.location, industry: job.industry, experience: job.experience, category: job.category || 'Open Position', isActive: job.isActive, image: null });
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   const resetForm = () => {
     setIsEditing(false); setCurrentJobId(null);
-    setFormData({ title: '', description: '', location: '', industry: '', experience: '', isActive: true, image: null });
+    setFormData({ title: '', description: '', location: '', industry: '', experience: '', category: 'Open Position', isActive: true, image: null });
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
@@ -211,7 +211,10 @@ const ManageJobs = () => {
 
                       <td data-label="Position" style={{ padding: '0.75rem 1rem' }}>
                         <div style={{ fontWeight: 600, color: 'var(--color-text-main)' }}>{job.title}</div>
-                        {job.industry && <span style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)' }}>{job.industry}</span>}
+                        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '0.2rem' }}>
+                          <span style={{ fontSize: '0.7rem', color: '#10b981', background: '#10b98115', padding: '0.1rem 0.4rem', borderRadius: '4px', fontWeight: 600 }}>{job.category || 'Open Position'}</span>
+                          {job.industry && <span style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)', paddingTop: '0.1rem' }}>{job.industry}</span>}
+                        </div>
                       </td>
 
                       <td data-label="Location" style={{ padding: '0.75rem 1rem' }}>
@@ -279,9 +282,19 @@ const ManageJobs = () => {
               </div>
             </div>
 
-            <div>
-              <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.3px' }}>Experience Required <span style={{ color: '#ef4444' }}>*</span></label>
-              <input required placeholder="3-5 years" value={formData.experience} onChange={e => setFormData({ ...formData, experience: e.target.value })} style={inputStyle} onFocus={focusIn} onBlur={focusOut} />
+            <div className="job-form-split" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+              <div>
+                <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.3px' }}>Experience Required <span style={{ color: '#ef4444' }}>*</span></label>
+                <input required placeholder="3-5 years" value={formData.experience} onChange={e => setFormData({ ...formData, experience: e.target.value })} style={inputStyle} onFocus={focusIn} onBlur={focusOut} />
+              </div>
+              <div>
+                <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.3px' }}>Category <span style={{ color: '#ef4444' }}>*</span></label>
+                <select required value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })} style={inputStyle} onFocus={focusIn} onBlur={focusOut}>
+                  <option value="Open Position">Open Position</option>
+                  <option value="Caregivers Enroll">Caregivers Enroll</option>
+                  <option value="TIIS Openings">TIIS Openings</option>
+                </select>
+              </div>
             </div>
 
             <div>
