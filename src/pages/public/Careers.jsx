@@ -417,8 +417,11 @@ const Careers = () => {
           
           /* Hero Section */
           .careers-hero { padding: 6rem 1.5rem 4rem !important; }
-          .careers-hero h1 { font-size: 2.5rem !important; margin-bottom: 1rem !important; line-height: 1.2 !important; }
-          .careers-hero p { font-size: 1rem !important; line-height: 1.6 !important; padding: 0 0.5rem; }
+          .careers-hero-grid { grid-template-columns: 1fr !important; gap: 3rem !important; text-align: center !important; }
+          .careers-hero-content { text-align: center !important; align-items: center !important; }
+          .careers-hero-content div { margin: 0 auto 1.5rem !important; }
+          .careers-hero h1 { font-size: 2.5rem !important; margin-bottom: 1rem !important; line-height: 1.2 !important; text-align: center !important; }
+          .careers-hero p { font-size: 1rem !important; line-height: 1.6 !important; padding: 0 0.5rem; text-align: center !important; margin: 0 auto !important; }
 
           /* Cards Section */
           .careers-section { padding: 4rem 1.5rem !important; }
@@ -450,7 +453,7 @@ const Careers = () => {
       <section className="careers-hero" style={{
         position: 'relative', overflow: 'hidden',
         background: 'var(--color-hero-grad)',
-        padding: '6rem 2rem 5rem', textAlign: 'center', color: 'white',
+        padding: '7rem 2rem 5rem', color: 'white',
       }}>
         {/* Subtle Background Image Overlay */}
         <div style={{
@@ -459,7 +462,7 @@ const Careers = () => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           mixBlendMode: 'overlay',
-          opacity: 0.4,
+          opacity: 0.55,
           pointerEvents: 'none',
         }} />
 
@@ -480,47 +483,86 @@ const Careers = () => {
             borderRadius: '50%', background: 'rgba(14,165,233,0.14)', filter: 'blur(50px)', pointerEvents: 'none',
           }}
         />
-        <motion.div
-          animate={{ y: [0, -20, 0], opacity: [0.05, 0.1, 0.05] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
-          style={{
-            position: 'absolute', top: '20%', left: '30%', width: '200px', height: '200px',
-            borderRadius: '50%', background: 'rgba(148,163,184,0.08)', filter: 'blur(40px)', pointerEvents: 'none',
-          }}
-        />
 
-        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-          {/* Badge */}
-          <motion.span
-            initial={{ opacity: 0, y: -16, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              display: 'inline-block', backgroundColor: 'rgba(177,32,35,0.28)', color: '#f87171', padding: '0.4rem 1.25rem',
-              borderRadius: '999px', fontSize: '0.85rem', fontWeight: '600', letterSpacing: '0.08em',
-              marginBottom: '1.25rem', textTransform: 'uppercase',
-            }}
-          >
-            Join Our Team
-          </motion.span>
+        <div className="container careers-hero-grid" style={{ position: 'relative', zIndex: 1, maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '4rem', alignItems: 'center' }}>
+          
+          {/* Text Content */}
+          <div className="careers-hero-content" style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+            {/* Badge */}
+            <motion.span
+              initial={{ opacity: 0, y: -16, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                display: 'inline-block', backgroundColor: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)', color: '#f87171', padding: '0.4rem 1.25rem',
+                borderRadius: '999px', fontSize: '0.85rem', fontWeight: '600', letterSpacing: '0.08em',
+                marginBottom: '1.25rem', textTransform: 'uppercase', border: '1px solid rgba(255,255,255,0.1)'
+              }}
+            >
+              Join Our Team
+            </motion.span>
 
-          {/* H1 */}
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            style={{ fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', fontWeight: '800', marginBottom: '1.25rem', lineHeight: '1.2' }}
-          >
-            Careers at TIIS
-          </motion.h1>
+            {/* H1 */}
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+              style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: '800', marginBottom: '1.25rem', lineHeight: '1.1', textShadow: '0 2px 10px rgba(0,0,0,0.2)' }}
+            >
+              Careers at TIIS
+            </motion.h1>
 
+            <motion.div
+              initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              style={{ height: '3px', width: '60px', background: 'linear-gradient(90deg, #b12023, #f43f5e)', borderRadius: '2px', margin: '0 0 1.5rem 0', originX: 0 }}
+            />
+
+            <motion.p
+              initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              style={{ fontSize: '1.2rem', maxWidth: '600px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.7', margin: 0 }}
+            >
+              We partner with leaders to unlock sustainable performance. Come architect the future of consulting with us and chart your happiness.
+            </motion.p>
+          </div>
+
+          {/* Premium Illustration / Image */}
           <motion.div
-            initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            style={{ height: '3px', width: '60px', background: 'linear-gradient(90deg, #b12023, #f43f5e)', borderRadius: '2px', margin: '0 auto 1.5rem', originX: 0.5 }}
-          />
-
-          <motion.p
-            initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            style={{ fontSize: '1.2rem', maxWidth: '700px', margin: '0 auto', color: 'rgba(255,255,255,0.72)', lineHeight: '1.7' }}
+            initial={{ opacity: 0, scale: 0.85, x: 30 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.35, ease: "easeOut" }}
+            style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}
           >
-            We partner with leaders to unlock sustainable performance. Come architect the future of consulting with us.
-          </motion.p>
+            {/* Glowing Backdrop */}
+            <div style={{ position: 'absolute', inset: '-10px', background: 'radial-gradient(circle, rgba(177,32,35,0.3) 0%, transparent 60%)', filter: 'blur(20px)', zIndex: 0 }} />
+            
+            <motion.img
+              animate={{ y: [-15, 15, -15] }}
+              transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80"
+              alt="Careers at TIIS Workspace"
+              style={{
+                width: '100%',
+                maxHeight: '400px',
+                objectFit: 'cover',
+                borderRadius: '24px',
+                boxShadow: '0 30px 60px -15px rgba(0,0,0,0.5)',
+                position: 'relative',
+                zIndex: 1,
+                border: '1px solid rgba(255,255,255,0.15)'
+              }}
+            />
+
+            {/* Floating Element Check */}
+            <motion.div
+              animate={{ y: [10, -10, 10] }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+              style={{
+                position: 'absolute', top: '20%', right: '-10%',
+                background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(12px)',
+                padding: '1rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.2)',
+                zIndex: 2, boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
+              }}
+            >
+              <CheckCircle size={28} color="#10b981" />
+            </motion.div>
+          </motion.div>
+
         </div>
       </section>
 

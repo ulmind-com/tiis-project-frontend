@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../api';
-import { UserPlus, KeyRound, Eye, EyeOff, X } from 'lucide-react';
+import { UserPlus, KeyRound, Eye, EyeOff, X, Trash2 } from 'lucide-react';
+import Swal from 'sweetalert2';
 
 const ManageAdmins = () => {
   const [admins, setAdmins] = useState([]);
@@ -58,6 +59,40 @@ const ManageAdmins = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteAdmin = async (adminId) => {
+    const result = await Swal.fire({
+      title: 'Delete this admin?',
+      text: "They will immediately lose access to the admin panel. This cannot be undone.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Yes, delete admin'
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      await api.delete(`/api/auth/admins/${adminId}`, getAuthHeaders());
+      Swal.fire({
+        title: 'Deleted!',
+        text: 'The admin has been successfully removed.',
+        icon: 'success',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+      });
+      fetchAdmins();
+    } catch (error) {
+      Swal.fire({
+        title: 'Error',
+        text: error.response?.data?.message || 'Failed to delete admin',
+        icon: 'error'
+      });
     }
   };
 
@@ -180,7 +215,7 @@ const ManageAdmins = () => {
           
           /* Touch-friendly buttons */
           .pw-action-btn {
-            width: 100% !important;
+            flex: 1 !important;
             justify-content: center !important;
             padding: 0.85rem !important;
             font-size: 0.9rem !important;
@@ -221,28 +256,54 @@ const ManageAdmins = () => {
                     </span>
                   </td>
                   <td data-label="Actions" style={{ padding: '0.85rem 1rem', textAlign: 'center' }}>
-                    <button
-                      className="pw-action-btn"
-                      onClick={() => openChangePwModal(admin)}
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.4rem',
-                        padding: '0.4rem 0.85rem',
-                        background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '8px',
-                        fontSize: '0.8rem',
-                        fontWeight: '500',
-                        cursor: 'pointer',
-                        transition: 'transform 0.2s, box-shadow 0.2s',
-                      }}
-                      onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(59,130,246,0.3)'; }}
-                      onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
-                    >
-                      <KeyRound size={14} /> Change Password
-                    </button>
+                    <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', width: '100%' }}>
+                      <button
+                        className="pw-action-btn"
+                        onClick={() => openChangePwModal(admin)}
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.4rem',
+                          padding: '0.4rem 0.85rem',
+                          background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '8px',
+                          fontSize: '0.8rem',
+                          fontWeight: '500',
+                          cursor: 'pointer',
+                          transition: 'transform 0.2s, box-shadow 0.2s',
+                        }}
+                        onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(59,130,246,0.3)'; }}
+                        onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+                      >
+                        <KeyRound size={14} /> Password
+                      </button>
+                      
+                      {/* Delete Admin Button */}
+                      <button
+                        className="pw-action-btn"
+                        onClick={() => handleDeleteAdmin(admin._id)}
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.4rem',
+                          padding: '0.4rem 0.85rem',
+                          background: 'linear-gradient(135deg, #ef4444, #dc2626)',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '8px',
+                          fontSize: '0.8rem',
+                          fontWeight: '500',
+                          cursor: 'pointer',
+                          transition: 'transform 0.2s, box-shadow 0.2s',
+                        }}
+                        onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(239,68,68,0.3)'; }}
+                        onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+                      >
+                        <Trash2 size={14} /> Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
