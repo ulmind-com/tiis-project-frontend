@@ -505,7 +505,7 @@ const Careers = () => {
               initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
               style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: '800', marginBottom: '1.25rem', lineHeight: '1.1', textShadow: '0 2px 10px rgba(0,0,0,0.2)' }}
             >
-              Careers at TIIS
+              Careers 
             </motion.h1>
 
             <motion.div

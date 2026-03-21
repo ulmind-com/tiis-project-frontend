@@ -223,8 +223,8 @@ const Contact = () => {
           {/* Sidebar Area */}
           <motion.div initial="hidden" animate="visible" variants={staggerContainer(0.15, 0.2)} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             
-            <InfoCard icon={Mail} title="Email Us" content={<><a href="mailto:info@tiis.co.in" style={{ color: '#0284c7', textDecoration: 'none', fontWeight: 600 }}>info@tiis.co.in</a><br />Response within 24 hours</>} delay={0} />
-            <InfoCard icon={Phone} title="Call Us" content={<><a href="tel:+91XXXXXXXXXX" style={{ color: '#0284c7', textDecoration: 'none', fontWeight: 600 }}>+91 XXX XXX XXXX</a><br />Mon-Fri, 9am - 6pm IST</>} delay={0.1} />
+            <InfoCard icon={Mail} title="Mail Us" content={<><a href="mailto:support@tiis.co.in" style={{ color: '#0284c7', textDecoration: 'none', fontWeight: 600 }}>support@tiis.co.in</a><br />Response within 24 hours</>} delay={0} />
+            <InfoCard icon={Phone} title="Call / WhatsApp" content={<><a href="tel:8700409793" style={{ color: '#0284c7', textDecoration: 'none', fontWeight: 600 }}>8700409793</a><br />(Mon – Fri , 10 am to 5 pm IST)</>} delay={0.1} />
 
             {/* Premium Map Embed */}
             <motion.div variants={fadeUp(0.3)} style={{ position: 'relative', marginTop: '1rem' }}>

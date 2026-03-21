@@ -151,11 +151,11 @@ const Footer = () => {
               </li>
               <li style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                 <Phone size={20} color="var(--color-secondary, #b12023)" style={{ flexShrink: 0 }} />
-                <a href="tel:+910000000000" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'white'} onMouseLeave={e => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.75)'}>+91 XXX XXX XXXX</a>
+                <a href="tel:8700409793" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'white'} onMouseLeave={e => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.75)'}>8700409793</a>
               </li>
               <li style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                 <Mail size={20} color="var(--color-secondary, #b12023)" style={{ flexShrink: 0 }} />
-                <a href="mailto:info@tiis.co.in" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'white'} onMouseLeave={e => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.75)'}>info@tiis.co.in</a>
+                <a href="mailto:support@tiis.co.in" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'white'} onMouseLeave={e => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.75)'}>support@tiis.co.in</a>
               </li>
             </ul>
           </div>
@@ -170,7 +170,7 @@ const Footer = () => {
               Stay connected with us for the latest industry insights and updates.
             </p>
             <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-              <a href="#" aria-label="LinkedIn" className="footer-social-btn"><Linkedin size={18} /></a>
+              <a href="https://www.linkedin.com/in/tiis-thoughtful-institute-of-innovative-solutions-llpa05675382/" aria-label="LinkedIn" className="footer-social-btn" target="_blank" rel="noopener noreferrer"><Linkedin size={18} /></a>
               <a href="#" aria-label="Twitter" className="footer-social-btn"><Twitter size={18} /></a>
               <a href="#" aria-label="Facebook" className="footer-social-btn"><Facebook size={18} /></a>
               <a href="#" aria-label="Instagram" className="footer-social-btn"><Instagram size={18} /></a>
@@ -201,11 +201,7 @@ const Footer = () => {
           </div>
 
           <div className="footer-bottom-links" style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-            {/* Admin Login link e click korleo top e scroll hobe */}
-            <Link to="/admin/login" onClick={scrollToTop} style={{ color: 'rgba(255, 255, 255, 0.6)', textDecoration: 'none', transition: 'color 0.2s', display: 'flex', alignItems: 'center', gap: '0.4rem' }} onMouseEnter={e => e.currentTarget.style.color = 'white'} onMouseLeave={e => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.6)'}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-              Admin Login
-            </Link>
+            {/* Removed Admin Login link from footer based on request */}
           </div>
         </div>
       </div>

@@ -8,6 +8,7 @@ import Home from './pages/public/Home';
 import About from './pages/public/About';
 import Services from './pages/public/Services';
 import Careers from './pages/public/Careers';
+import Caregivers from './pages/public/Caregivers';
 import Contact from './pages/public/Contact';
 import News from './pages/public/News';
 import Portfolio from './pages/public/Portfolio';
@@ -51,6 +52,7 @@ const AppContent = () => {
             <Route path="/about" element={<About />} />
             <Route path="/services" element={<Services />} />
             <Route path="/careers" element={<Careers />} />
+            <Route path="/caregivers" element={<Caregivers />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/news" element={<News />} />
             <Route path="/portfolio" element={<Portfolio />} />

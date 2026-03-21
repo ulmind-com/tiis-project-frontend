@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { Building2, Users, Briefcase, FileText, Layout, CheckCircle, ArrowRight, Star, Quote, ChevronRight, Play, Cpu, Car, Rocket, ShoppingCart, Droplet } from 'lucide-react';
+import { Building2, Users, Briefcase, FileText, Layout, CheckCircle, ArrowRight, Star, Quote, ChevronRight, Play, Cpu, Car, Rocket, ShoppingCart, Droplet, HeartPulse, Microscope, HeartHandshake, Hotel, Monitor } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { AnimatedTestimonials } from '../../components/ui/animated-testimonials';
@@ -706,6 +706,57 @@ const Home = () => {
         </section>
       )}
 
+      {/* ── Client Logos Marquee ── */}
+      {logos.length > 0 && (
+        <section style={{
+          padding: '1.5rem 0',
+          backgroundColor: isDark ? 'var(--color-bg-dark)' : '#fff',
+          overflow: 'hidden',
+          position: 'relative',
+          borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
+          borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
+        }}>
+          {/* Fade edges */}
+          <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: '120px', background: isDark ? 'linear-gradient(to right, var(--color-bg-dark), transparent)' : 'linear-gradient(to right, #fff, transparent)', zIndex: 3, pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', top: 0, right: 0, bottom: 0, width: '120px', background: isDark ? 'linear-gradient(to left, var(--color-bg-dark), transparent)' : 'linear-gradient(to left, #fff, transparent)', zIndex: 3, pointerEvents: 'none' }} />
+
+          <style>{`
+            @keyframes marqueeLogos {
+              0%   { transform: translateX(0); }
+              100% { transform: translateX(-50%); }
+            }
+          `}</style>
+
+          <div style={{ display: 'inline-flex', animation: 'marqueeLogos 25s linear infinite', whiteSpace: 'nowrap', willChange: 'transform' }}>
+            {[1, 2].map((set) => (
+              <React.Fragment key={set}>
+                {logos.map((logo, idx) => (
+                  <img
+                    key={`${set}-${logo._id || idx}`}
+                    src={logo.imageUrl}
+                    alt={logo.title || 'Client/Partner Logo'}
+                    title={logo.title || 'Client/Partner'}
+                    style={{
+                      height: '72px',
+                      maxWidth: '220px',
+                      objectFit: 'contain',
+                      opacity: 0.9,
+                      filter: 'none',
+                      transition: 'all 0.4s cubic-bezier(.4,0,.2,1)',
+                      cursor: 'pointer',
+                      flexShrink: 0,
+                      marginRight: '6rem',
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.15)'; e.currentTarget.style.filter = 'drop-shadow(0 4px 12px rgba(0,0,0,0.15))'; }}
+                    onMouseLeave={e => { e.currentTarget.style.opacity = '0.9'; e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.filter = 'none'; }}
+                  />
+                ))}
+              </React.Fragment>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* ══════════════════════════════════════
           INDUSTRIES WE SERVE SECTION
       ══════════════════════════════════════ */}
@@ -733,7 +784,7 @@ const Home = () => {
             __html: `
             @keyframes scrollIndustries {
               0% { transform: translateX(0); }
-              100% { transform: translateX(calc(-350px * 6 - 2rem * 6)); }
+              100% { transform: translateX(calc(-350px * 5 - 2rem * 5)); }
             }
             .industry-track {
               display: flex;
@@ -818,12 +869,11 @@ const Home = () => {
               {[...Array(2)].map((_, setIdx) => (
                 <React.Fragment key={setIdx}>
                   {[
-                    { name: 'Agritech', icon: <Cpu size={48} strokeWidth={1.5} />, desc: 'Hiring a regenerative agriculture specialist, a research head or toxicologist? We hear from you!' },
-                    { name: 'Automobile', icon: <Car size={48} strokeWidth={1.5} />, desc: 'Design engineers, automation experts, and battery specialists could make all the difference.' },
-                    { name: 'Aerospace', icon: <Rocket size={48} strokeWidth={1.5} />, desc: 'Space is the next frontier only with great aerospace engineers and scientists.' },
-                    { name: 'Retail & E-commerce', icon: <ShoppingCart size={48} strokeWidth={1.5} />, desc: 'Find the customer\'s basket with retail specialists and great customer care managers.' },
-                    { name: 'Semiconductor', icon: <Cpu size={48} strokeWidth={1.5} />, desc: 'Hire design engineers and QC experts who ensure that a NAND Gate does not delay customer delight.' },
-                    { name: 'Oil and Gas', icon: <Droplet size={48} strokeWidth={1.5} />, desc: 'Hire reservoir engineers to identify new opportunities and chemical engineers to refine existing processes.' }
+                    { name: 'Healthcare', icon: <HeartPulse size={48} strokeWidth={1.5} />, desc: 'Connecting top-tier medical professionals—from specialists to researchers—with leading institutions.' },
+                    { name: 'Medical Devices', icon: <Microscope size={48} strokeWidth={1.5} />, desc: 'Sourcing visionary engineers and regulatory experts to drive innovation in medical technology.' },
+                    { name: 'Eldercare', icon: <HeartHandshake size={48} strokeWidth={1.5} />, desc: 'Empowering specialized care facilities with compassionate, highly-trained geriatric professionals.' },
+                    { name: 'Hospitality', icon: <Hotel size={48} strokeWidth={1.5} />, desc: 'Providing exceptional service talent to elevate guest experiences globally.' },
+                    { name: 'IT', icon: <Monitor size={48} strokeWidth={1.5} />, desc: 'Fueling digital transformation with elite software developers and systems architects.' }
                   ].map((ind, i) => (
                     <div className="industry-card" key={i}>
                       <div className="industry-icon-wrapper">
@@ -992,56 +1042,7 @@ const Home = () => {
         </section>
       )}
 
-      {/* ── Client Logos Marquee ── full-width, below Trusted By Leaders */}
-      {logos.length > 0 && (
-        <section style={{
-          padding: '1.5rem 0',
-          backgroundColor: isDark ? 'var(--color-bg-dark)' : '#fff',
-          overflow: 'hidden',
-          position: 'relative',
-          borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
-          borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
-        }}>
-          {/* Fade edges */}
-          <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: '120px', background: isDark ? 'linear-gradient(to right, var(--color-bg-dark), transparent)' : 'linear-gradient(to right, #fff, transparent)', zIndex: 3, pointerEvents: 'none' }} />
-          <div style={{ position: 'absolute', top: 0, right: 0, bottom: 0, width: '120px', background: isDark ? 'linear-gradient(to left, var(--color-bg-dark), transparent)' : 'linear-gradient(to left, #fff, transparent)', zIndex: 3, pointerEvents: 'none' }} />
 
-          <style>{`
-            @keyframes marqueeLogos {
-              0%   { transform: translateX(0); }
-              100% { transform: translateX(-50%); }
-            }
-          `}</style>
-
-          <div style={{ display: 'inline-flex', animation: 'marqueeLogos 25s linear infinite', whiteSpace: 'nowrap', willChange: 'transform' }}>
-            {[1, 2].map((set) => (
-              <React.Fragment key={set}>
-                {logos.map((logo, idx) => (
-                  <img
-                    key={`${set}-${logo._id || idx}`}
-                    src={logo.imageUrl}
-                    alt={logo.title || 'Client/Partner Logo'}
-                    title={logo.title || 'Client/Partner'}
-                    style={{
-                      height: '72px',
-                      maxWidth: '220px',
-                      objectFit: 'contain',
-                      opacity: 0.9,
-                      filter: 'none',
-                      transition: 'all 0.4s cubic-bezier(.4,0,.2,1)',
-                      cursor: 'pointer',
-                      flexShrink: 0,
-                      marginRight: '6rem',
-                    }}
-                    onMouseEnter={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.15)'; e.currentTarget.style.filter = 'drop-shadow(0 4px 12px rgba(0,0,0,0.15))'; }}
-                    onMouseLeave={e => { e.currentTarget.style.opacity = '0.9'; e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.filter = 'none'; }}
-                  />
-                ))}
-              </React.Fragment>
-            ))}
-          </div>
-        </section>
-      )}
 
       {/* ══════════════════════════════════════
           WHY US / CTA SECTION
@@ -1092,7 +1093,7 @@ const Home = () => {
               style={{ flex: '1 1 400px', position: 'relative' }}
             >
               <div style={{ borderRadius: '20px', overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)' }}>
-                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80" alt="Transform Your Enterprise" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80" alt="Transform Your Enterprise" style={{ width: '100%', height: 'auto', display: 'block' }} />
               </div>
             </motion.div>
           </div>
