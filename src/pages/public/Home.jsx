@@ -227,7 +227,7 @@ const Home = () => {
         /* Global Mobile Overflow Fix */
         html, body { overflow-x: hidden !important; width: 100%; }
         
-        @media (max-width: 768px) {
+        @media (max-width: 960px) {
           /* Containers strictly limited to viewport */
           .container { 
             padding-left: 1.25rem !important; 
@@ -245,7 +245,7 @@ const Home = () => {
           .hero-container { 
             flex-direction: column !important; 
             text-align: center; 
-            gap: 2.5rem !important; 
+            gap: 3.5rem !important; 
             width: 100% !important; 
             margin: 0 !important; 
           }
@@ -259,10 +259,10 @@ const Home = () => {
           }
           
           .hero-text-block { align-items: center !important; padding: 0 !important; }
-          .hero-text-block h1 { font-size: 2.3rem !important; line-height: 1.2 !important; word-wrap: break-word; }
-          .hero-text-block p { font-size: 1rem !important; margin-bottom: 2rem !important; padding: 0 0.5rem !important; }
+          .hero-text-block h1 { font-size: clamp(2.2rem, 8vw, 3rem) !important; line-height: 1.2 !important; word-wrap: break-word; }
+          .hero-text-block p { font-size: 1rem !important; margin-bottom: 2.5rem !important; padding: 0 0.5rem !important; }
           
-          .hero-buttons { justify-content: center !important; width: 100%; flex-direction: column !important; gap: 0.8rem !important; }
+          .hero-buttons { justify-content: center !important; width: 100%; flex-direction: column !important; gap: 1rem !important; }
           .hero-buttons a, .hero-buttons button { width: 100% !important; margin-bottom: 0 !important; text-align: center; justify-content: center; box-sizing: border-box !important; }
           
           /* Visual Wrapper & Image */
@@ -275,19 +275,25 @@ const Home = () => {
             align-items: center; 
             position: relative !important;
           }
-          .hero-image-mask { width: 100% !important; border-radius: 20px !important; }
           
           /* Fixed Badge Layout */
-          .hero-badge {
-            position: relative !important;
-            margin-top: -1.5rem !important;
-            bottom: auto !important; right: auto !important; left: auto !important;
-            transform: none !important;
-            width: 90% !important;
-            max-width: 320px !important;
-            z-index: 10 !important;
+          .premium-badge {
+             top: -20px !important; right: 5% !important;
+             padding: 0.8rem 1.2rem !important;
+             transform: scale(0.9) !important;
+          }
+          .global-badge {
+             bottom: 40px !important; left: 5% !important;
+             padding: 0.8rem 1.2rem !important;
+             transform: scale(0.9) !important;
           }
 
+          /* About Section */
+          .about-section .container { grid-template-columns: 1fr !important; gap: 3rem !important; text-align: center; }
+          .about-section h2 { font-size: 2.2rem !important; }
+          .about-section .flex { justify-content: center !important; }
+          .about-section .grid { grid-template-columns: 1fr !important; text-align: left; }
+          
           /* Services / Capabilities */
           .services-overview { padding: 4rem 0 !important; }
           .capability-card-wrapper { height: auto !important; min-height: 480px !important; }
@@ -304,7 +310,7 @@ const Home = () => {
             flex-direction: column !important;
             height: auto !important;
             min-height: 600px !important;
-            border-radius: 20px !important;
+            border-radius: 24px !important;
           }
           .news-slider-image { flex: 0 0 240px !important; width: 100% !important; }
           .news-slider-content {
@@ -319,22 +325,24 @@ const Home = () => {
 
           /* Why Us Section */
           .why-us-section { padding: 5rem 0 8rem 0 !important; text-align: center; }
-          .why-us-container { flex-direction: column !important; gap: 3rem !important; width: 100% !important; }
-          .why-us-text { align-items: center !important; display: flex; flex-direction: column; width: 100% !important; }
-          .why-us-text h2 { font-size: 2rem !important; }
-          .why-us-text p { font-size: 1rem !important; }
-          .why-us-text ul { grid-template-columns: 1fr !important; text-align: left; width: 100%; padding-left: 0; box-sizing: border-box !important;}
-          .why-us-text ul li { font-size: 0.95rem !important; }
-          .why-us-text a { width: 100%; justify-content: center; text-align: center; box-sizing: border-box !important; }
-          .why-us-image { max-width: 100% !important; width: 100% !important; margin-top: 1rem; }
+          .why-us-section .container > div { flex-direction: column !important; gap: 3rem !important; width: 100% !important; }
+          .why-us-section h2 { font-size: 2rem !important; }
+          .why-us-section p { font-size: 1rem !important; }
+          .why-us-section .grid { grid-template-columns: 1fr !important; text-align: left; width: 100%; box-sizing: border-box !important;}
+          .why-us-section .grid div { font-size: 0.95rem !important; justify-content: center; }
+          .why-us-section a { width: 100%; justify-content: center; text-align: center; box-sizing: border-box !important; }
 
           /* Modals */
           .motto-modal-content { padding: 2rem 1.5rem !important; width: 92% !important; margin: 0 auto; border-radius: 16px !important; }
           .motto-modal-content h2 { font-size: 1.4rem !important; }
           .motto-modal-content li { font-size: 0.95rem !important; }
+          
+          .news-modal-wrapper { padding: 1rem !important; }
+          .news-modal-content { max-height: 95vh !important; border-radius: 20px !important; }
           .news-modal-body { padding: 1.5rem 1.2rem !important; }
           .news-modal-header-img { height: 200px !important; }
-          .news-modal-header-img h2 { font-size: 1.8rem !important; }
+          .news-modal-header-img h2 { font-size: 1.5rem !important; }
+          .drop-cap { font-size: 3.5rem !important; }
         }
       `}</style>
       {/* ────────────────────────────────────────── */}
@@ -380,7 +388,7 @@ const Home = () => {
 
       {/* Premium Split Hero Section */}
       <section className="hero-section" style={{ backgroundColor: 'var(--color-bg-light)', padding: '7rem 0 16rem 0', overflow: 'hidden', position: 'relative' }}>
-        
+
         {/* Animated Background Blobs */}
         <motion.div animate={{ scale: [1, 1.15, 1], opacity: [0.1, 0.18, 0.1] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }} style={{ position: 'absolute', top: '-10%', right: '-5%', width: '500px', height: '500px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--color-primary) 0%, #0ea5e9 100%)', filter: 'blur(80px)', pointerEvents: 'none', zIndex: 0 }} />
         <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.08, 0.15, 0.08] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 2 }} style={{ position: 'absolute', bottom: '-10%', left: '-5%', width: '400px', height: '400px', borderRadius: '50%', background: 'linear-gradient(135deg, #f43f5e 0%, var(--color-secondary) 100%)', filter: 'blur(70px)', pointerEvents: 'none', zIndex: 0 }} />
@@ -411,7 +419,7 @@ const Home = () => {
               transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
               style={{ fontSize: 'clamp(2.8rem, 5vw, 4.5rem)', marginBottom: '1.5rem', fontWeight: '900', lineHeight: '1.15', color: 'var(--color-primary-dark)', letterSpacing: '-0.5px' }}
             >
-              Thoughtful Institute of<br/>
+              Thoughtful Institute of<br />
               <span style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 50%, var(--color-secondary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'inline-block', paddingTop: '0.2rem' }}>
                 Innovative Solutions, LLP
               </span>
@@ -437,7 +445,7 @@ const Home = () => {
                 Get Started
                 <ArrowRight size={18} style={{ marginLeft: '0.5rem' }} />
               </Link>
-              <button onClick={() => setIsMottoModalOpen(true)} className="btn-pill-secondary" style={{ border: '2px solid rgba(1, 50, 78, 0.1)', color: 'var(--color-text-main)', padding: '0.9rem 2.2rem', fontSize: '1.05rem', background: '#fff' }}>
+              <button onClick={() => setIsMottoModalOpen(true)} className="btn-pill-secondary" style={{ border: '2px solid rgba(1, 50, 78, 0.1)', color: isDark ? '#000000' : 'var(--color-text-main)', padding: '0.9rem 2.2rem', fontSize: '1.05rem', background: '#fff' }}>
                 Our Motto
               </button>
             </motion.div>
@@ -452,10 +460,10 @@ const Home = () => {
             transition={{ duration: 0.9, delay: 0.4, ease: "easeOut" }}
           >
             <div className="hero-visual-wrapper" style={{ position: 'relative', width: '100%', maxWidth: '550px' }}>
-              
+
               {/* Glowing Outline / Shadow */}
               <div style={{ position: 'absolute', inset: '-25px', background: 'radial-gradient(circle, rgba(14,165,233,0.3) 0%, transparent 65%)', filter: 'blur(35px)', zIndex: 0 }} />
-              
+
               <motion.img
                 animate={{ y: [-15, 15, -15] }}
                 transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
@@ -463,7 +471,7 @@ const Home = () => {
                 alt="Premium Strategy & Innovation"
                 style={{
                   width: '100%',
-                  height: 'aUto',
+                  height: 'auto',
                   aspectRatio: '4/3',
                   objectFit: 'cover',
                   borderRadius: '32px',
@@ -476,6 +484,7 @@ const Home = () => {
 
               {/* Floating Element 1 - Innovation */}
               <motion.div
+                className="premium-badge"
                 animate={{ y: [12, -12, 12] }}
                 transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
                 style={{
@@ -489,7 +498,7 @@ const Home = () => {
                 <div style={{ background: 'rgba(14,165,233,0.15)', padding: '0.8rem', borderRadius: '50%', color: '#0ea5e9' }}>
                   <Star size={24} />
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
                   <span style={{ fontWeight: 800, color: 'var(--color-primary-dark)', fontSize: '1.1rem', lineHeight: '1.2' }}>Premium</span>
                   <span style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>Solutions</span>
                 </div>
@@ -497,6 +506,7 @@ const Home = () => {
 
               {/* Floating Element 2 - Excellence */}
               <motion.div
+                className="global-badge"
                 animate={{ y: [-10, 10, -10] }}
                 transition={{ duration: 6.5, repeat: Infinity, ease: 'easeInOut', delay: 2.5 }}
                 style={{
@@ -510,7 +520,7 @@ const Home = () => {
                 <div style={{ background: 'rgba(244,63,94,0.12)', padding: '0.8rem', borderRadius: '50%', color: '#f43f5e' }}>
                   <Briefcase size={24} />
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
                   <span style={{ fontWeight: 800, color: 'var(--color-primary-dark)', fontSize: '1.1rem', lineHeight: '1.2' }}>Global</span>
                   <span style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>Expertise</span>
                 </div>
@@ -546,9 +556,9 @@ const Home = () => {
       <section className="about-section" style={{ padding: '8rem 0', backgroundColor: 'var(--color-bg-light)', position: 'relative', overflow: 'hidden' }}>
         {/* Abstract Background Shapes */}
         <div style={{ position: 'absolute', top: '0', left: '-10%', width: '400px', height: '400px', background: 'radial-gradient(circle, var(--color-primary-light) 0%, transparent 70%)', opacity: 0.6, filter: 'blur(50px)', zIndex: 0 }} />
-        
+
         <div className="container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '5rem', alignItems: 'center', position: 'relative', zIndex: 2 }}>
-          
+
           {/* Visual Side */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -560,7 +570,7 @@ const Home = () => {
             <div style={{ position: 'relative', borderRadius: '30px', overflow: 'hidden', boxShadow: '0 30px 60px -15px rgba(0,0,0,0.2)' }}>
               <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="TIIS Collaboration" style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover', aspectRatio: '4/4' }} />
             </div>
-            
+
 
           </motion.div>
 
@@ -571,23 +581,23 @@ const Home = () => {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '1.5rem', color: 'var(--color-secondary)', fontWeight: '700', fontSize: '0.9rem', letterSpacing: '2px', textTransform: 'uppercase' }}>
+            <div className="flex" style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '1.5rem', color: 'var(--color-secondary)', fontWeight: '700', fontSize: '0.9rem', letterSpacing: '2px', textTransform: 'uppercase' }}>
               <span style={{ width: '40px', height: '3px', backgroundColor: 'var(--color-secondary)', borderRadius: '2px' }}></span>
               About TIIS
             </div>
             <h2 style={{ fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: '900', color: isDark ? 'white' : 'var(--color-primary-dark)', lineHeight: '1.1', marginBottom: '1.5rem', letterSpacing: '-1px' }}>
               Empowering Growth Through <span style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 50%, var(--color-secondary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Partnership</span>
             </h2>
-            
+
             <p style={{ fontSize: '1.1rem', color: 'var(--color-text-muted)', lineHeight: '1.8', marginBottom: '1.5rem', textAlign: 'justify' }}>
               We at TIIS offer customized-based solutions that help increase productivity, performance, and profitability. We believe in customizing and developing specific solutions through a collaborative process designed to identify a client’s needs. Our approach is based on experiential learning combined with the technology and strong faculty of experts and competent solutions providers.
             </p>
-            
+
             <p style={{ fontSize: '1.1rem', color: 'var(--color-text-muted)', lineHeight: '1.8', marginBottom: '2.5rem', textAlign: 'justify' }}>
               We aim to develop a partnership with our clients by collaborating, cooperating, and coordinating. By improving practices in people and organization development, we ensure that work benefits individuals, businesses, economies, and society at large.
             </p>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
+            <div className="grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
                 <CheckCircle size={24} color="var(--color-secondary)" style={{ flexShrink: 0, marginTop: '0.2rem' }} />
                 <div>
@@ -603,11 +613,11 @@ const Home = () => {
                 </div>
               </div>
             </div>
-            
+
             <div style={{ marginTop: '3rem' }}>
-               <Link to="/about" onClick={() => window.scrollTo(0, 0)} className="btn-pill-primary" style={{ padding: '0.9rem 2.2rem', fontSize: '1.05rem', boxShadow: '0 10px 25px -5px rgba(1, 50, 78, 0.4)' }}>
-                  Discover More <ArrowRight size={18} style={{ marginLeft: '0.5rem' }} />
-               </Link>
+              <Link to="/about" onClick={() => window.scrollTo(0, 0)} className="btn-pill-primary" style={{ padding: '0.9rem 2.2rem', fontSize: '1.05rem', boxShadow: '0 10px 25px -5px rgba(1, 50, 78, 0.4)' }}>
+                Discover More <ArrowRight size={18} style={{ marginLeft: '0.5rem' }} />
+              </Link>
             </div>
           </motion.div>
         </div>
@@ -719,7 +729,8 @@ const Home = () => {
           </motion.div>
 
           {/* Scrolling Marquee implementation for OP smooth infinite scroll */}
-          <style dangerouslySetInnerHTML={{__html: `
+          <style dangerouslySetInnerHTML={{
+            __html: `
             @keyframes scrollIndustries {
               0% { transform: translateX(0); }
               100% { transform: translateX(calc(-350px * 6 - 2rem * 6)); }
@@ -873,15 +884,15 @@ const Home = () => {
                     }}
                   >
                     <div className="news-slider-image" style={{ flex: '1 1 50%', position: 'relative', overflow: 'hidden' }}>
-                      <motion.div 
+                      <motion.div
                         initial={{ scale: 1.2 }}
                         animate={{ scale: 1 }}
                         transition={{ duration: 1.5, ease: 'easeOut' }}
-                        style={{ position: 'absolute', inset: -20, backgroundImage: `url(${news[currentNewsIndex].imageUrl || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop'})`, backgroundSize: 'cover', backgroundPosition: 'center', transition: 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)' }} 
+                        style={{ position: 'absolute', inset: -20, backgroundImage: `url(${news[currentNewsIndex].imageUrl || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop'})`, backgroundSize: 'cover', backgroundPosition: 'center', transition: 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)' }}
                         className="group-hover:scale-105"
                       />
                       <div style={{ position: 'absolute', inset: 0, background: isDark ? 'linear-gradient(to right, rgba(0,0,0,0.2), #0a0a0a)' : 'linear-gradient(to right, rgba(255,255,255,0), #ffffff)' }} />
-                      
+
                       {/* Floating Date Badge */}
                       <motion.div
                         initial={{ opacity: 0, x: -20 }}
@@ -889,8 +900,8 @@ const Home = () => {
                         transition={{ delay: 0.4 }}
                         style={{ position: 'absolute', top: '2.5rem', left: '2.5rem', background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(15px)', WebkitBackdropFilter: 'blur(15px)', padding: '0.8rem 1.2rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.3)', color: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}
                       >
-                         <span style={{ fontSize: '1.8rem', fontWeight: 900, lineHeight: 1 }}>{new Date(news[currentNewsIndex].createdAt).getDate()}</span>
-                         <span style={{ fontSize: '0.85rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>{new Date(news[currentNewsIndex].createdAt).toLocaleString('default', { month: 'short' })}</span>
+                        <span style={{ fontSize: '1.8rem', fontWeight: 900, lineHeight: 1 }}>{new Date(news[currentNewsIndex].createdAt).getDate()}</span>
+                        <span style={{ fontSize: '0.85rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>{new Date(news[currentNewsIndex].createdAt).toLocaleString('default', { month: 'short' })}</span>
                       </motion.div>
                     </div>
 
@@ -967,15 +978,15 @@ const Home = () => {
           <motion.div animate={{ rotate: 360 }} transition={{ duration: 50, repeat: Infinity, ease: 'linear' }} style={{ position: 'absolute', top: '-10%', right: '-5%', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(177,32,35,0.04) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
           <div className="container" style={{ position: 'relative', zIndex: 2 }}>
-            <AnimatedTestimonials 
+            <AnimatedTestimonials
               testimonials={testimonials.map(t => ({
                 name: t.clientName,
                 designation: t.designation || 'Client',
                 quote: t.description,
                 src: t.imageUrl || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=500&q=80',
                 rating: t.rating || 5
-              }))} 
-              autoplay={true} 
+              }))}
+              autoplay={true}
             />
           </div>
         </section>
@@ -1053,7 +1064,7 @@ const Home = () => {
                 Partner with TIIS to unlock innovative solutions tailored for your industry. Our strategic expertise and global experience deliver measurable results and long-term success.
               </p>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '3rem' }}>
+              <div className="grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '3rem' }}>
                 {[
                   { title: 'Cost-Effective' },
                   { title: 'Global Experience' },
@@ -1080,9 +1091,9 @@ const Home = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               style={{ flex: '1 1 400px', position: 'relative' }}
             >
-               <div style={{ borderRadius: '20px', overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)' }}>
-                  <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80" alt="Transform Your Enterprise" style={{ width: '100%', height: 'auto', display: 'block' }} />
-               </div>
+              <div style={{ borderRadius: '20px', overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)' }}>
+                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80" alt="Transform Your Enterprise" style={{ width: '100%', height: 'auto', display: 'block' }} />
+              </div>
             </motion.div>
           </div>
         </div>
@@ -1126,11 +1137,11 @@ const Home = () => {
 
       {/* News Detail Modal */}
       {selectedNews && createPortal(
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }} onClick={() => setSelectedNews(null)}>
+        <div className="news-modal-wrapper" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }} onClick={() => setSelectedNews(null)}>
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            className="w-full max-w-3xl rounded-3xl overflow-hidden shadow-2xl relative"
+            className="w-full max-w-3xl rounded-3xl overflow-hidden shadow-2xl relative news-modal-content"
             onClick={e => e.stopPropagation()}
             style={{ maxHeight: '90vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--color-card-bg)' }}
           >
@@ -1155,7 +1166,7 @@ const Home = () => {
 
             <div className="news-modal-body" style={{ padding: '3rem 4rem', overflowY: 'auto' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2.5rem', paddingBottom: '2.5rem', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
-                <div style={{ width: '50px', height: '50px', borderRadius: '50%', backgroundColor: 'var(--color-secondary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '1.2rem' }}>
+                <div style={{ width: '50px', height: '50px', borderRadius: '50%', backgroundColor: 'var(--color-secondary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '1.2rem', flexShrink: 0 }}>
                   T
                 </div>
                 <div>
