@@ -98,7 +98,7 @@ export const AnimatedTestimonials = ({
                 {testimonials[active].name} <span className="text-white/60 font-normal text-[15px] md:text-base ml-1">/ {testimonials[active].designation}</span>
               </h3>
               
-              <div className="bg-[#1e293b] rounded-xl px-4 py-2.5 flex items-center gap-3 border border-indigo-500/10 shadow-lg">
+              <div className="bg-white/10 backdrop-blur-xl rounded-full px-5 py-2.5 flex items-center gap-3 border border-white/20 shadow-[0_8px_30px_rgba(0,0,0,0.2)]">
                  <div className="flex gap-1 text-[#22c55e]">
                     {[...Array(5)].map((_, i) => (
                        <svg key={i} width="18" height="18" viewBox="0 0 24 24" fill={i < (testimonials[active].rating || 5) ? "currentColor" : "transparent"} stroke="currentColor" strokeWidth="2">

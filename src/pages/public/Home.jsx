@@ -222,7 +222,7 @@ const Home = () => {
   return (
     <div className="home-page animate-fade-in" style={{ backgroundColor: 'var(--color-bg-light)', overflowX: 'hidden', width: '100%' }}>
 
-      {/* ─── ULTRA PREMIUM MOBILE RESPONSIVE CSS ─── */}
+      {/* ── ULTRA PREMIUM MOBILE RESPONSIVE CSS ── */}
       <style>{`
         /* Global Mobile Overflow Fix */
         html, body { overflow-x: hidden !important; width: 100%; }
@@ -239,6 +239,7 @@ const Home = () => {
           
           /* Marquee Text Size */
           .marquee-text-span { padding: 0 1.5rem !important; font-size: 0.8rem !important; }
+          .jobs-marquee-wrapper { margin-top: 76px !important; margin-bottom: -15px !important; }
 
           /* ── Hero Section Fixes ── */
           .hero-section { padding: 5rem 0 6rem 0 !important; width: 100vw !important; overflow-x: hidden !important; }
@@ -349,7 +350,7 @@ const Home = () => {
 
       {/* ── Jobs Hiring Marquee ── */}
       {activeJobs.length > 0 && (
-        <div style={{
+        <div className="jobs-marquee-wrapper" style={{
           background: 'linear-gradient(90deg, #0ea5e9, #0284c7, #0369a1)',
           color: '#fff', overflow: 'hidden', position: 'relative', zIndex: 50,
           boxShadow: '0 2px 12px rgba(2,132,199,0.3)',
@@ -775,7 +776,7 @@ const Home = () => {
               <span style={{ width: '30px', height: '2px', backgroundColor: isDark ? '#f87171' : 'var(--color-secondary)', borderRadius: '2px' }}></span>
             </div>
             <h2 style={{ fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: '900', color: isDark ? 'white' : 'var(--color-primary-dark)', lineHeight: '1.1', marginBottom: '1.2rem', letterSpacing: '-1px' }}>
-              Industries We <span style={{ background: isDark ? 'linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)' : 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'inline-block', transform: 'translateZ(0)', isolation: 'isolate' }}>Serve</span>
+              Industries We <span style={{ background: isDark ? 'linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)' : 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Serve</span>
             </h2>
           </motion.div>
 
@@ -858,12 +859,9 @@ const Home = () => {
               opacity: 0.85;
             }
           `}} />
+        </div>
 
-          <div style={{ position: 'relative', overflow: 'hidden', padding: '1rem 0 3rem 0' }}>
-            {/* Fade Edges */}
-            <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: '150px', background: isDark ? 'linear-gradient(to right, #080808, transparent)' : 'linear-gradient(to right, #ffffff, transparent)', zIndex: 2, pointerEvents: 'none' }} />
-            <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: '150px', background: isDark ? 'linear-gradient(to left, #080808, transparent)' : 'linear-gradient(to left, #ffffff, transparent)', zIndex: 2, pointerEvents: 'none' }} />
-
+        <div style={{ position: 'relative', overflow: 'hidden', padding: '1rem 0 3rem 0', width: '100vw', left: '50%', transform: 'translateX(-50%)', maxWidth: '100vw' }}>
             <div className="industry-track">
               {/* Duplicate array for infinite scroll */}
               {[...Array(2)].map((_, setIdx) => (
@@ -887,7 +885,6 @@ const Home = () => {
               ))}
             </div>
           </div>
-        </div>
       </section>
 
       {/* News Bento Grid Section */}
@@ -908,7 +905,7 @@ const Home = () => {
                 <span style={{ width: '30px', height: '2px', backgroundColor: isDark ? '#f87171' : 'var(--color-secondary)', borderRadius: '2px' }}></span>
               </div>
               <h2 style={{ fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: '900', color: isDark ? 'white' : 'var(--color-primary-dark)', lineHeight: '1.1', marginBottom: '1.2rem', letterSpacing: '-1px' }}>
-                Latest Insights <span style={{ background: isDark ? 'linear-gradient(135deg, #e0f2fe 0%, #f87171 100%)' : 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-secondary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'inline-block', transform: 'translateZ(0)', isolation: 'isolate' }}>&amp; Blog</span>
+                Latest Insights <span style={{ background: isDark ? 'linear-gradient(135deg, #e0f2fe 0%, #f87171 100%)' : 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-secondary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>&amp; Blog</span>
               </h2>
               <p style={{ color: 'var(--color-text-muted)', fontSize: '1.15rem', maxWidth: '600px', margin: '0 auto', lineHeight: '1.7' }}>
                 Discover our latest research, strategic perspectives, and industry updates carefully curated for ambitious leaders.
@@ -941,7 +938,7 @@ const Home = () => {
                         style={{ position: 'absolute', inset: -20, backgroundImage: `url(${news[currentNewsIndex].imageUrl || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop'})`, backgroundSize: 'cover', backgroundPosition: 'center', transition: 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)' }}
                         className="group-hover:scale-105"
                       />
-                      <div style={{ position: 'absolute', inset: 0, background: isDark ? 'linear-gradient(to right, rgba(0,0,0,0.2), #0a0a0a)' : 'linear-gradient(to right, rgba(255,255,255,0), #ffffff)' }} />
+
 
                       {/* Floating Date Badge */}
                       <motion.div

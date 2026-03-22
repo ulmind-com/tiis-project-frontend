@@ -55,8 +55,7 @@ const Team = () => {
       <section className="team-hero" style={{
         position: 'relative',
         padding: '8rem 5% 6rem',
-        background: 'transparent',
-        borderBottom: '1px solid rgba(226, 232, 240, 0.8)'
+        background: 'transparent'
       }}>
         <div style={{ position: 'absolute', top: '20%', left: '10%', width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(59,130,246,0.15) 0%, rgba(59,130,246,0) 70%)', filter: 'blur(40px)', zIndex: 0 }} />
         <div style={{ position: 'absolute', bottom: '10%', right: '15%', width: '400px', height: '400px', background: 'radial-gradient(circle, rgba(139,92,246,0.12) 0%, rgba(139,92,246,0) 70%)', filter: 'blur(50px)', zIndex: 0 }} />
