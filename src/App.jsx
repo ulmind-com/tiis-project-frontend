@@ -19,6 +19,7 @@ import AdminLayout from './components/admin/AdminLayout';
 import AdminLogin from './pages/admin/AdminLogin';
 import ManageJobs from './pages/admin/ManageJobs';
 import ViewEnquiries from './pages/admin/ViewEnquiries';
+import ViewCaregiverEnquiries from './pages/admin/ViewCaregiverEnquiries';
 import ManageContent from './pages/admin/ManageContent';
 import ManageAdmins from './pages/admin/ManageAdmins';
 import ManagePortfolio from './pages/admin/ManagePortfolio';
@@ -80,6 +81,7 @@ const AppContent = () => {
                 <Route path="careers" element={<ManageJobs />} />
                 <Route path="applications" element={<ViewApplications />} />
                 <Route path="enquiries" element={<ViewEnquiries />} />
+                <Route path="caregiver-enquiries" element={<ViewCaregiverEnquiries />} />
                 <Route path="admins" element={<ManageAdmins />} />
                 <Route path="analytics" element={<VisitorAnalytics />} />
               </Route>

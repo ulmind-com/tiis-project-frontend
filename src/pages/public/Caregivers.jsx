@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Heart, ShieldCheck, Clock, Activity, UserPlus, FileText, CheckCircle, ArrowRight, Phone, CalendarHeart, Sparkles } from 'lucide-react';
+import { Heart, ShieldCheck, Clock, Activity, UserPlus, FileText, CheckCircle, ArrowRight, Phone, CalendarHeart, Sparkles, Send, Loader2, CheckCircle2, AlertCircle, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import api from '../../api';
 
 const fadeUp = (delay = 0) => ({
   hidden: { opacity: 0, y: 40 },
@@ -14,6 +15,35 @@ const staggerContainer = (staggerChildren = 0.1, delayChildren = 0) => ({
 });
 
 const Caregivers = () => {
+  const [formData, setFormData] = useState({ name: '', phone: '', location: '', service: '', note: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
+
+  const handleFormChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+    try {
+      await api.post('/api/caregiver-enquiries', {
+        name: formData.name,
+        phone: formData.phone,
+        location: formData.location,
+        service: formData.service,
+        note: formData.note
+      });
+      setSubmitStatus('success');
+      setFormData({ name: '', phone: '', location: '', service: '', note: '' });
+    } catch (error) {
+      console.error("Error submitting caregiver request:", error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+      setTimeout(() => setSubmitStatus(null), 8000);
+    }
+  };
+
   return (
     <div className="caregivers-page animate-fade-in" style={{ backgroundColor: 'var(--color-page-bg)', overflowX: 'hidden' }}>
       
@@ -58,9 +88,14 @@ const Caregivers = () => {
             </motion.p>
 
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.55 }} style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <Link to="/contact" style={{ background: 'white', color: '#b12023', padding: '1.1rem 2.2rem', borderRadius: '50px', fontWeight: '800', fontSize: '1.05rem', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.6rem', boxShadow: '0 10px 30px rgba(0,0,0,0.2)', transition: 'all 0.3s' }} onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 15px 35px rgba(0,0,0,0.25)' }} onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.2)' }}>
+              <button 
+                onClick={() => document.getElementById('caregiver-form')?.scrollIntoView({ behavior: 'smooth' })} 
+                style={{ background: 'white', color: '#b12023', padding: '1.1rem 2.2rem', borderRadius: '50px', fontWeight: '800', fontSize: '1.05rem', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.6rem', boxShadow: '0 10px 30px rgba(0,0,0,0.2)', transition: 'all 0.3s', border: 'none', cursor: 'pointer' }} 
+                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 15px 35px rgba(0,0,0,0.25)' }} 
+                onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.2)' }}
+              >
                 Request Caregiver <ArrowRight size={18} />
-              </Link>
+              </button>
             </motion.div>
           </div>
 
@@ -168,32 +203,122 @@ const Caregivers = () => {
         </div>
       </section>
 
-      {/* ── 5. PREMIUM CTA SECTION ── */}
-      <section style={{ background: 'linear-gradient(135deg, #01324e 0%, #b12023 100%)', padding: '7rem 2rem', textAlign: 'center', color: 'white', position: 'relative', overflow: 'hidden' }}>
-        <motion.div animate={{ rotate: [0, 360] }} transition={{ duration: 45, repeat: Infinity, ease: 'linear' }} style={{ position: 'absolute', top: '-120px', right: '-120px', width: '500px', height: '500px', borderRadius: '30%', border: '2px solid rgba(255,255,255,0.05)', pointerEvents: 'none' }} />
-        <motion.div animate={{ rotate: [360, 0] }} transition={{ duration: 35, repeat: Infinity, ease: 'linear' }} style={{ position: 'absolute', bottom: '-100px', left: '-100px', width: '400px', height: '400px', borderRadius: '30%', border: '2px solid rgba(255,255,255,0.05)', pointerEvents: 'none' }} />
+      {/* ── 5. PREMIUM CAREGIVER REQUEST FORM ── */}
+      <section id="caregiver-form" style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311634 100%)', padding: '8rem 2rem', position: 'relative', overflow: 'hidden' }}>
+        <motion.div animate={{ rotate: [0, 360] }} transition={{ duration: 60, repeat: Infinity, ease: 'linear' }} style={{ position: 'absolute', top: '-20%', right: '-10%', width: '800px', height: '800px', borderRadius: '40%', background: 'radial-gradient(circle, rgba(147,51,234,0.15) 0%, transparent 60%)', filter: 'blur(60px)', pointerEvents: 'none' }} />
+        <motion.div animate={{ rotate: [360, 0] }} transition={{ duration: 50, repeat: Infinity, ease: 'linear' }} style={{ position: 'absolute', bottom: '-20%', left: '-10%', width: '600px', height: '600px', borderRadius: '40%', background: 'radial-gradient(circle, rgba(236,72,153,0.1) 0%, transparent 60%)', filter: 'blur(50px)', pointerEvents: 'none' }} />
         
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: '850px', margin: '0 auto' }}>
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer(0.1)}>
-            <motion.div variants={fadeUp()} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem', background: 'rgba(255,255,255,0.15)', padding: '0.6rem 1.25rem', borderRadius: '50px', marginBottom: '1.75rem', backdropFilter: 'blur(10px)' }}>
-              <CheckCircle size={18} /> <span style={{ fontSize: '0.95rem', fontWeight: '700', letterSpacing: '0.5px' }}>Trusted by Leading Healthcare Professionals</span>
+        <div className="container" style={{ position: 'relative', zIndex: 1, maxWidth: '1250px', margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1.2fr)', gap: '4rem', alignItems: 'center' }} className="caregiver-form-grid">
+            
+            {/* Left Content */}
+            <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} style={{ color: 'white' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.6rem', padding: '0.5rem 1.2rem', backgroundColor: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '50px', marginBottom: '1.5rem', backdropFilter: 'blur(10px)' }}>
+                <Sparkles size={16} color="#fbbf24" />
+                <span style={{ fontSize: '0.85rem', fontWeight: '700', letterSpacing: '1px', textTransform: 'uppercase', color: '#fbbf24' }}>Request Caregiver</span>
+              </div>
+              <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 3.8rem)', fontWeight: '800', marginBottom: '1.5rem', lineHeight: '1.1', textShadow: '0 4px 20px rgba(0,0,0,0.3)', letterSpacing: '-1px' }}>
+                Find the Perfect Match for Your <span style={{ background: 'linear-gradient(135deg, #f472b6, #fb7185)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Loved Ones.</span>
+              </h2>
+              <p style={{ fontSize: '1.15rem', color: 'rgba(255,255,255,0.7)', lineHeight: '1.7', marginBottom: '2.5rem', fontWeight: '400', maxWidth: '500px' }}>
+                Fill out the secure form to request a professional caregiver. Our placement team will review your requirements and connect you with a specialized expert within 24 hours.
+              </p>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                {[
+                  { title: 'Tailored Pairing', desc: 'Matched by medical needs, personality, and expertise.', icon: UserPlus },
+                  { title: 'Verified Professionals', desc: '100% background-checked and medically certified.', icon: ShieldCheck },
+                  { title: 'Secure & Confidential', desc: 'Your medical data is strongly encrypted and private.', icon: CheckCircle }
+                ].map((feature, i) => (
+                  <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                    <div style={{ backgroundColor: 'rgba(255,255,255,0.05)', padding: '0.75rem', borderRadius: '12px', color: '#fbbf24', border: '1px solid rgba(255,255,255,0.05)' }}>
+                      <feature.icon size={22} />
+                    </div>
+                    <div>
+                      <h4 style={{ color: 'white', fontSize: '1.1rem', fontWeight: '700', margin: '0 0 0.3rem 0' }}>{feature.title}</h4>
+                      <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.95rem', margin: 0, lineHeight: '1.5' }}>{feature.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </motion.div>
-            <motion.h2 variants={fadeUp()} style={{ fontSize: 'clamp(2.2rem, 5vw, 3.8rem)', fontWeight: '800', marginBottom: '1.25rem', lineHeight: '1.15', letterSpacing: '-0.5px', textShadow: '0 4px 15px rgba(0,0,0,0.2)' }}>
-              Ensure Your Loved Ones Get the Absolute Best Care.
-            </motion.h2>
-            <motion.p variants={fadeUp()} style={{ fontSize: '1.25rem', color: 'rgba(255,255,255,0.9)', marginBottom: '3.5rem', lineHeight: '1.7', fontWeight: '400', maxWidth: '700px', margin: '0 auto 3.5rem' }}>
-              Don't wait. Reach out to set up a personalized, professional strategy for elite caregiving support today.
-            </motion.p>
-            <motion.div variants={fadeUp()} style={{ display: 'flex', gap: '1.25rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-              <Link to="/contact" onClick={() => window.scrollTo(0,0)} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.75rem', padding: '1.25rem 3rem', borderRadius: '50px', background: 'white', color: '#b12023', fontWeight: '800', fontSize: '1.1rem', textDecoration: 'none', transition: 'all 0.3s', boxShadow: '0 15px 30px rgba(0,0,0,0.25)' }} onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.3)' }} onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 15px 30px rgba(0,0,0,0.25)' }}>
-                Contact Us Now <ArrowRight size={20} />
-              </Link>
-              <a href="tel:8700409793" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.75rem', padding: '1.25rem 3rem', borderRadius: '50px', background: 'transparent', color: 'white', border: '2px solid rgba(255,255,255,0.4)', fontWeight: '800', fontSize: '1.1rem', textDecoration: 'none', transition: 'all 0.3s' }} onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.borderColor = 'white' }} onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.4)' }}>
-                <Phone size={20} /> 8700409793
-              </a>
+
+            {/* Right Form */}
+            <motion.div initial={{ opacity: 0, scale: 0.95, y: 20 }} whileInView={{ opacity: 1, scale: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.2 }}>
+              <div style={{ background: 'rgba(255,255,255,0.03)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '30px', padding: '3rem', boxShadow: '0 30px 60px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)' }}>
+                <h3 style={{ color: 'white', fontSize: '1.8rem', fontWeight: '800', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <Send size={24} color="#f472b6" /> Request Details
+                </h3>
+
+                {submitStatus === 'success' ? (
+                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{ backgroundColor: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)', borderRadius: '16px', padding: '2rem', textAlign: 'center', color: '#34d399' }}>
+                    <CheckCircle2 size={48} style={{ margin: '0 auto 1rem' }} />
+                    <h4 style={{ fontSize: '1.4rem', fontWeight: '700', marginBottom: '0.5rem', color: 'white' }}>Request Received!</h4>
+                    <p style={{ margin: 0, opacity: 0.8 }}>Thank you for reaching out. Our team will contact you shortly to confirm the caregiver assignment.</p>
+                  </motion.div>
+                ) : (
+                  <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.25rem' }}>
+                    
+                    {submitStatus === 'error' && (
+                      <div style={{ backgroundColor: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: '12px', padding: '1rem', color: '#fca5a5', fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <AlertCircle size={18} /> Something went wrong. Please try again later.
+                      </div>
+                    )}
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }} className="form-row">
+                      <div>
+                        <label style={{ display: 'block', color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Name *</label>
+                        <input type="text" name="name" required value={formData.name} onChange={handleFormChange} placeholder="Enter your name" style={{ width: '100%', backgroundColor: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '1rem 1.2rem', color: 'white', fontSize: '1rem', outline: 'none', transition: 'all 0.3s' }} onFocus={e => { e.target.style.borderColor = '#f472b6'; e.target.style.backgroundColor = 'rgba(0,0,0,0.4)'; }} onBlur={e => { e.target.style.borderColor = 'rgba(255,255,255,0.1)'; e.target.style.backgroundColor = 'rgba(0,0,0,0.2)'; }} />
+                      </div>
+                      <div>
+                        <label style={{ display: 'block', color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Phone *</label>
+                        <input type="tel" name="phone" required value={formData.phone} onChange={handleFormChange} placeholder="Enter your phone" style={{ width: '100%', backgroundColor: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '1rem 1.2rem', color: 'white', fontSize: '1rem', outline: 'none', transition: 'all 0.3s' }} onFocus={e => { e.target.style.borderColor = '#f472b6'; e.target.style.backgroundColor = 'rgba(0,0,0,0.4)'; }} onBlur={e => { e.target.style.borderColor = 'rgba(255,255,255,0.1)'; e.target.style.backgroundColor = 'rgba(0,0,0,0.2)'; }} />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Location *</label>
+                      <input type="text" name="location" required value={formData.location} onChange={handleFormChange} placeholder="City, Area" style={{ width: '100%', backgroundColor: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '1rem 1.2rem', color: 'white', fontSize: '1rem', outline: 'none', transition: 'all 0.3s' }} onFocus={e => { e.target.style.borderColor = '#f472b6'; e.target.style.backgroundColor = 'rgba(0,0,0,0.4)'; }} onBlur={e => { e.target.style.borderColor = 'rgba(255,255,255,0.1)'; e.target.style.backgroundColor = 'rgba(0,0,0,0.2)'; }} />
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Choose a Service *</label>
+                      <div style={{ position: 'relative' }}>
+                        <select name="service" required value={formData.service} onChange={handleFormChange} style={{ width: '100%', backgroundColor: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '1rem 1.2rem', color: formData.service ? 'white' : 'rgba(255,255,255,0.5)', fontSize: '1rem', outline: 'none', transition: 'all 0.3s', appearance: 'none', cursor: 'pointer' }} onFocus={e => { e.target.style.borderColor = '#f472b6'; e.target.style.backgroundColor = 'rgba(0,0,0,0.4)'; }} onBlur={e => { e.target.style.borderColor = 'rgba(255,255,255,0.1)'; e.target.style.backgroundColor = 'rgba(0,0,0,0.2)'; }}>
+                          <option value="" disabled>Select the specialized care needed</option>
+                          <option value="Specialized Nurse" style={{ color: 'black' }}>Specialized Nurse</option>
+                          <option value="Trained attendant at Home" style={{ color: 'black' }}>Trained attendant at Home</option>
+                          <option value="Senior Care" style={{ color: 'black' }}>Senior Care</option>
+                          <option value="Post surgery care" style={{ color: 'black' }}>Post surgery care</option>
+                          <option value="Others" style={{ color: 'black' }}>Others</option>
+                        </select>
+                        <div style={{ position: 'absolute', right: '1.2rem', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', opacity: 0.5, color: 'white' }}>
+                          <ChevronRight size={18} style={{ transform: 'rotate(90deg)' }} />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Note (Optional)</label>
+                      <textarea name="note" value={formData.note} onChange={handleFormChange} placeholder="Any specific requirements..." rows="3" style={{ width: '100%', backgroundColor: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '1rem 1.2rem', color: 'white', fontSize: '1rem', outline: 'none', transition: 'all 0.3s', resize: 'vertical' }} onFocus={e => { e.target.style.borderColor = '#f472b6'; e.target.style.backgroundColor = 'rgba(0,0,0,0.4)'; }} onBlur={e => { e.target.style.borderColor = 'rgba(255,255,255,0.1)'; e.target.style.backgroundColor = 'rgba(0,0,0,0.2)'; }}></textarea>
+                    </div>
+
+                    <button type="submit" disabled={isSubmitting} style={{ width: '100%', background: 'linear-gradient(135deg, #f472b6, #fb7185)', color: 'white', border: 'none', borderRadius: '12px', padding: '1.25rem', fontSize: '1.1rem', fontWeight: '800', cursor: isSubmitting ? 'not-allowed' : 'pointer', transition: 'all 0.3s', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem', marginTop: '0.75rem', opacity: isSubmitting ? 0.7 : 1, boxShadow: '0 10px 20px rgba(244,114,182,0.3)' }} onMouseEnter={e => { if(!isSubmitting) { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 15px 30px rgba(244,114,182,0.4)'; } }} onMouseLeave={e => { if(!isSubmitting) { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 10px 20px rgba(244,114,182,0.3)'; } }}>
+                      {isSubmitting ? <><Loader2 size={20} className="animate-spin" /> Submitting Request...</> : 'Send Caregiver Request'}
+                    </button>
+                  </form>
+                )}
+              </div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
+
+        <style>{`
+          @media (max-width: 900px) {
+            .caregiver-form-grid { grid-template-columns: 1fr !important; gap: 3rem !important; }
+            .form-row { grid-template-columns: 1fr !important; }
+          }
+        `}</style>
       </section>
 
     </div>

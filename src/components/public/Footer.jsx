@@ -148,7 +148,7 @@ const Footer = () => {
             <ul style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', listStyle: 'none', padding: 0, margin: 0, color: 'rgba(255, 255, 255, 0.75)' }}>
               <li style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
                 <MapPin size={20} color="var(--color-secondary, #b12023)" style={{ flexShrink: 0, marginTop: '2px' }} />
-                <span style={{ fontSize: '0.95rem', lineHeight: '1.6' }}>TIIS Corporate Hub, Bangalore, India</span>
+                <span style={{ fontSize: '0.95rem', lineHeight: '1.6' }}>TIIS Corporate Hub, Gurgaon, India</span>
               </li>
               <li style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                 <Phone size={20} color="var(--color-secondary, #b12023)" style={{ flexShrink: 0 }} />

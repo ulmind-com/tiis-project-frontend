@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { Building2, Users, Briefcase, FileText, Layout, CheckCircle, ArrowRight, Star, Quote, ChevronRight, Play, Cpu, Car, Rocket, ShoppingCart, Droplet, HeartPulse, Microscope, HeartHandshake, Hotel, Monitor } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
-import { AnimatedTestimonials } from '../../components/ui/animated-testimonials';
+import { TestimonialStack } from '../../components/ui/glass-testimonial-swiper';
 import api from '../../api';
 import { useTheme } from '../../hooks/useTheme';
 
@@ -1017,24 +1017,61 @@ const Home = () => {
           TESTIMONIALS SECTION
       ══════════════════════════════════════ */}
       {testimonials.length > 0 && (
-        <section className="testimonials-section" style={{
-          padding: '4rem 0', backgroundColor: 'var(--color-bg-light)', position: 'relative', overflow: 'hidden'
+        <section className="testimonials-section relative" style={{
+          padding: '8rem 0', overflow: 'hidden', minHeight: '80vh', display: 'flex', alignItems: 'center'
         }}>
-          {/* Subtle backgrounds */}
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, var(--border-color), transparent)' }} />
-          <motion.div animate={{ rotate: 360 }} transition={{ duration: 50, repeat: Infinity, ease: 'linear' }} style={{ position: 'absolute', top: '-10%', right: '-5%', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(177,32,35,0.04) 0%, transparent 70%)', pointerEvents: 'none' }} />
+          {/* Background image layer directly from the provided demo code */}
+          <div 
+              className="absolute inset-0 bg-cover bg-bottom bg-no-repeat opacity-[0.85] dark:opacity-40 scale-[1.2] md:scale-100 dark:mix-blend-color-dodge transition-opacity duration-500"
+              style={{ backgroundImage: 'url("https://res.cloudinary.com/drhx7imeb/image/upload/v1756215257/gradient-optimized_nfrakk.svg")' }}
+          />
+
+          {/* Dark mode base layer so the colored image still looks good in dark mode */}
+          {isDark && <div className="absolute inset-0 bg-[#060608] z-[-1]" />}
 
           <div className="container" style={{ position: 'relative', zIndex: 2 }}>
-            <AnimatedTestimonials
-              testimonials={testimonials.map(t => ({
-                name: t.clientName,
-                designation: t.designation || 'Client',
-                quote: t.description,
-                src: t.imageUrl || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=500&q=80',
-                rating: t.rating || 5
-              }))}
-              autoplay={true}
-            />
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              style={{ textAlign: 'center', marginBottom: '5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1rem', color: isDark ? '#fff' : 'var(--color-secondary)', fontWeight: '700', fontSize: '0.85rem', letterSpacing: '3px', textTransform: 'uppercase' }}>
+                <span style={{ width: '30px', height: '2px', backgroundColor: isDark ? '#fff' : 'var(--color-secondary)', borderRadius: '2px' }}></span>
+                Client Reviews
+                <span style={{ width: '30px', height: '2px', backgroundColor: isDark ? '#fff' : 'var(--color-secondary)', borderRadius: '2px' }}></span>
+              </div>
+              <h2 style={{ fontSize: 'clamp(2.8rem, 5vw, 4rem)', fontWeight: '900', color: isDark ? 'white' : 'var(--color-primary-dark)', lineHeight: '1.1', marginBottom: '1.2rem', letterSpacing: '-1px' }}>
+                What Our Customers Say
+              </h2>
+            </motion.div>
+
+            <div style={{ padding: '0 1rem' }}>
+              <TestimonialStack
+                isDark={isDark}
+                autoplay={true}
+                testimonials={testimonials.map((t, idx) => {
+                  const gradients = [
+                    'linear-gradient(135deg, #0ea5e9, #2563eb)',
+                    'linear-gradient(135deg, #10b981, #059669)',
+                    'linear-gradient(135deg, #f59e0b, #d97706)',
+                    'linear-gradient(135deg, #ec4899, #d946ef)',
+                    'linear-gradient(135deg, #3b82f6, #6366f1)'
+                  ];
+                  return {
+                    id: t._id || idx,
+                    name: t.clientName,
+                    role: t.designation || 'Client',
+                    quote: t.description,
+                    rating: t.rating || 5,
+                    initials: t.clientName ? t.clientName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'C',
+                    avatarGradient: gradients[idx % gradients.length],
+                    tags: [{ text: 'Verified Client', type: 'featured' }]
+                  };
+                })}
+              />
+            </div>
           </div>
         </section>
       )}

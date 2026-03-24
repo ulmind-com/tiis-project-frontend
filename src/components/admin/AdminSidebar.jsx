@@ -12,6 +12,7 @@ import {
   BarChart3,
   Star,
   Image as ImageIcon,
+  Heart,
   X // Added close icon for mobile
 } from 'lucide-react';
 
@@ -24,6 +25,7 @@ const navItems = [
   { path: '/admin/testimonials', label: 'Testimonials', icon: Star },
   { path: '/admin/logos', label: 'Client Logos', icon: ImageIcon },
   { path: '/admin/enquiries', label: 'Enquiries', icon: MessageSquare },
+  { path: '/admin/caregiver-enquiries', label: 'Caregiver Enqs', icon: Heart },
   { path: '/admin/careers', label: 'Jobs', icon: Briefcase },
   { path: '/admin/applications', label: 'Applications', icon: ClipboardList },
   { path: '/admin/admins', label: 'Manage Admins', icon: UserPlus }
