@@ -1014,63 +1014,159 @@ const Home = () => {
       )}
 
       {/* ══════════════════════════════════════
-          TESTIMONIALS SECTION
+          TESTIMONIALS SECTION — ULTRA PREMIUM
       ══════════════════════════════════════ */}
       {testimonials.length > 0 && (
-        <section className="testimonials-section relative" style={{
-          padding: '8rem 0', overflow: 'hidden', minHeight: '80vh', display: 'flex', alignItems: 'center'
+        <section style={{
+          padding: '7rem 0',
+          background: isDark
+            ? 'linear-gradient(180deg, #060608 0%, #0a0a10 50%, #060608 100%)'
+            : 'linear-gradient(180deg, #f8faff 0%, #f0f4ff 50%, #f8faff 100%)',
+          position: 'relative',
+          overflow: 'hidden',
         }}>
-          {/* Background image layer directly from the provided demo code */}
-          <div 
-              className="absolute inset-0 bg-cover bg-bottom bg-no-repeat opacity-[0.85] dark:opacity-40 scale-[1.2] md:scale-100 dark:mix-blend-color-dodge transition-opacity duration-500"
-              style={{ backgroundImage: 'url("https://res.cloudinary.com/drhx7imeb/image/upload/v1756215257/gradient-optimized_nfrakk.svg")' }}
-          />
+          {/* Ambient background glow blobs */}
+          <div style={{ position: 'absolute', top: '10%', left: '5%', width: '500px', height: '500px', background: 'radial-gradient(circle, rgba(68,176,255,0.12) 0%, transparent 65%)', filter: 'blur(60px)', pointerEvents: 'none', zIndex: 0 }} />
+          <div style={{ position: 'absolute', bottom: '10%', right: '5%', width: '500px', height: '500px', background: 'radial-gradient(circle, rgba(139,68,255,0.12) 0%, transparent 65%)', filter: 'blur(60px)', pointerEvents: 'none', zIndex: 0 }} />
+          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: '700px', height: '300px', background: 'radial-gradient(ellipse, rgba(255,102,68,0.07) 0%, transparent 60%)', filter: 'blur(80px)', pointerEvents: 'none', zIndex: 0 }} />
 
-          {/* Dark mode base layer so the colored image still looks good in dark mode */}
-          {isDark && <div className="absolute inset-0 bg-[#060608] z-[-1]" />}
+          <div className="container" style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 2rem', position: 'relative', zIndex: 2 }}>
 
-          <div className="container" style={{ position: 'relative', zIndex: 2 }}>
+            {/* Section Header */}
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              style={{ textAlign: 'center', marginBottom: '5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+              style={{ textAlign: 'center', marginBottom: '5rem' }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1rem', color: isDark ? '#fff' : 'var(--color-secondary)', fontWeight: '700', fontSize: '0.85rem', letterSpacing: '3px', textTransform: 'uppercase' }}>
-                <span style={{ width: '30px', height: '2px', backgroundColor: isDark ? '#fff' : 'var(--color-secondary)', borderRadius: '2px' }}></span>
-                Client Reviews
-                <span style={{ width: '30px', height: '2px', backgroundColor: isDark ? '#fff' : 'var(--color-secondary)', borderRadius: '2px' }}></span>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1.2rem', padding: '0.5rem 1.4rem', borderRadius: '50px', border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(1,50,78,0.12)'}`, background: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.8)', backdropFilter: 'blur(10px)' }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style={{ color: '#FDB241' }}><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <span style={{ fontSize: '0.78rem', fontWeight: 700, letterSpacing: '2.5px', textTransform: 'uppercase', color: isDark ? 'rgba(255,255,255,0.6)' : 'var(--color-text-muted)' }}>
+                  Client Stories
+                </span>
               </div>
-              <h2 style={{ fontSize: 'clamp(2.8rem, 5vw, 4rem)', fontWeight: '900', color: isDark ? 'white' : 'var(--color-primary-dark)', lineHeight: '1.1', marginBottom: '1.2rem', letterSpacing: '-1px' }}>
-                What Our Customers Say
+
+              <h2 style={{ fontSize: 'clamp(2.2rem, 4vw, 3.5rem)', fontWeight: 900, color: isDark ? '#ffffff' : 'var(--color-primary-dark)', lineHeight: 1.1, marginBottom: '1.2rem', letterSpacing: '-1px' }}>
+                What Our Clients{' '}
+                <span style={{ background: 'linear-gradient(135deg, #44b0ff 0%, #8b44ff 50%, #ff6644 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                  Say About Us
+                </span>
               </h2>
+              <p style={{ fontSize: '1.1rem', color: 'var(--color-text-muted)', maxWidth: '560px', margin: '0 auto', lineHeight: 1.7 }}>
+                {testimonials.length}+ professionals and organizations trust us — here's what they say.
+              </p>
             </motion.div>
 
-            <div style={{ padding: '0 1rem' }}>
-              <TestimonialStack
-                isDark={isDark}
-                autoplay={true}
-                testimonials={testimonials.map((t, idx) => {
-                  const gradients = [
-                    'linear-gradient(135deg, #0ea5e9, #2563eb)',
-                    'linear-gradient(135deg, #10b981, #059669)',
-                    'linear-gradient(135deg, #f59e0b, #d97706)',
-                    'linear-gradient(135deg, #ec4899, #d946ef)',
-                    'linear-gradient(135deg, #3b82f6, #6366f1)'
-                  ];
-                  return {
-                    id: t._id || idx,
-                    name: t.clientName,
-                    role: t.designation || 'Client',
-                    quote: t.description,
-                    rating: t.rating || 5,
-                    initials: t.clientName ? t.clientName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'C',
-                    avatarGradient: gradients[idx % gradients.length],
-                    tags: [{ text: 'Verified Client', type: 'featured' }]
-                  };
-                })}
-              />
+            {/* Rainbow Glow Bar */}
+            <div style={{ position: 'relative', margin: '0 auto', maxWidth: '1100px', paddingBottom: '1rem' }}>
+              <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', width: '80%', height: '100%', background: 'linear-gradient(90deg, #44ff9a -0.55%, #44b0ff 22.86%, #8b44ff 48.36%, #ff6644 73.33%, #ebff70 99.34%)', borderRadius: '3rem', opacity: isDark ? 0.18 : 0.12, filter: 'blur(55px)', pointerEvents: 'none', zIndex: 0 }} />
+
+              {/* Cards Grid — masonry columns, dynamic height per description */}
+              <div style={{
+                columns: 'auto 300px',
+                columnGap: '1.8rem',
+                position: 'relative',
+                zIndex: 1,
+              }}>
+                {testimonials.map((t, idx) => (
+                  <motion.div
+                    key={t._id || idx}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-60px' }}
+                    transition={{ duration: 0.55, delay: idx * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                    whileHover={{ y: -6, transition: { duration: 0.3 } }}
+                    style={{
+                      breakInside: 'avoid',
+                      marginBottom: '1.8rem',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      background: isDark
+                        ? 'linear-gradient(160deg, rgba(30,30,40,0.95) 0%, rgba(18,18,28,0.98) 100%)'
+                        : 'linear-gradient(160deg, rgba(255,255,255,0.98) 0%, rgba(248,250,255,0.98) 100%)',
+                      borderRadius: '28px',
+                      border: isDark
+                        ? '1px solid rgba(255,255,255,0.07)'
+                        : '1px solid rgba(1,50,78,0.09)',
+                      boxShadow: isDark
+                        ? '0 24px 60px -12px rgba(0,0,0,0.7), 0 0 0 0.5px rgba(255,255,255,0.04) inset'
+                        : '0 24px 60px -12px rgba(2,132,199,0.12), 0 0 0 0.5px rgba(255,255,255,0.8) inset',
+                      overflow: 'hidden',
+                      cursor: 'default',
+                      backdropFilter: 'blur(20px)',
+                      WebkitBackdropFilter: 'blur(20px)',
+                    }}
+                  >
+                    {/* Subtle top gradient accent */}
+                    <div style={{ height: '3px', background: `linear-gradient(90deg, #44b0ff, #8b44ff, #ff6644)`, opacity: 0.7 }} />
+
+                    <div style={{ padding: '2.2rem 2.4rem', display: 'flex', flexDirection: 'column' }}>
+                      {/* Top row: stars + rating badge */}
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.6rem' }}>
+                        <div style={{ display: 'flex', gap: '3px' }}>
+                          {[...Array(5)].map((_, i) => {
+                            const filled = i < (t.rating || 5);
+                            return (
+                              <svg key={i} width="18" height="18" viewBox="0 0 20 20" fill={filled ? '#FDB241' : (isDark ? '#333' : '#e5e7eb')} xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                              </svg>
+                            );
+                          })}
+                        </div>
+                        <span style={{ fontSize: '0.72rem', fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#FDB241', background: isDark ? 'rgba(253,178,65,0.12)' : 'rgba(253,178,65,0.1)', padding: '0.3rem 0.8rem', borderRadius: '50px', border: '1px solid rgba(253,178,65,0.25)' }}>
+                          {t.rating || 5}.0 ★
+                        </span>
+                      </div>
+
+                      {/* Quote icon */}
+                      <div style={{ marginBottom: '0.8rem' }}>
+                        <svg width="32" height="24" viewBox="0 0 32 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M0 24V14.4C0 10.4 1.06667 7.06667 3.2 4.4C5.33333 1.6 8.4 0 12.4 0L13.6 2.4C11.3333 3.06667 9.46667 4.4 8 6.4C6.66667 8.4 6 10.5333 6 12.8H12V24H0ZM18.4 24V14.4C18.4 10.4 19.4667 7.06667 21.6 4.4C23.7333 1.6 26.8 0 30.8 0L32 2.4C29.7333 3.06667 27.8667 4.4 26.4 6.4C25.0667 8.4 24.4 10.5333 24.4 12.8H30.4V24H18.4Z" fill={isDark ? 'rgba(139,68,255,0.3)' : 'rgba(68,176,255,0.2)'} />
+                        </svg>
+                      </div>
+
+                      {/* Quote text */}
+                      <blockquote style={{ flex: 1, fontSize: '1.05rem', lineHeight: 1.75, color: isDark ? 'rgba(255,255,255,0.82)' : 'rgba(15,23,42,0.82)', fontStyle: 'italic', letterSpacing: '0.1px', marginBottom: '2rem' }}>
+                        {t.description}
+                      </blockquote>
+
+                      {/* Divider */}
+                      <div style={{ height: '1px', background: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)', marginBottom: '1.4rem', borderRadius: '1px' }} />
+
+                      {/* Author row */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                        {t.imageUrl ? (
+                          <img
+                            src={t.imageUrl}
+                            alt={t.clientName}
+                            style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0, border: isDark ? '2px solid rgba(255,255,255,0.1)' : '2px solid rgba(2,132,199,0.15)', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
+                          />
+                        ) : (
+                          <div style={{
+                            width: '48px', height: '48px', borderRadius: '50%', flexShrink: 0,
+                            background: `linear-gradient(135deg, hsl(${(idx * 60 + 200) % 360}, 70%, 55%), hsl(${(idx * 60 + 260) % 360}, 65%, 50%))`,
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            color: 'white', fontWeight: 800, fontSize: '1.2rem',
+                            boxShadow: '0 4px 14px rgba(0,0,0,0.2)',
+                            border: isDark ? '2px solid rgba(255,255,255,0.1)' : '2px solid rgba(255,255,255,0.8)',
+                          }}>
+                            {t.clientName ? t.clientName.charAt(0).toUpperCase() : 'C'}
+                          </div>
+                        )}
+                        <div>
+                          <p style={{ fontSize: '1rem', fontWeight: 700, color: isDark ? '#ffffff' : 'var(--color-primary-dark)', lineHeight: 1.2, marginBottom: '0.25rem' }}>
+                            {t.clientName}
+                          </p>
+                          <p style={{ fontSize: '0.82rem', color: 'var(--color-text-muted)', fontWeight: 500 }}>
+                            {t.designation || 'Client'}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
         </section>

@@ -63,7 +63,6 @@ const JobCard = ({ job, index, onApply }) => {
   const [hovered, setHovered] = useState(false);
 
   const gradient = getCardGradient(index);
-  const accentColor = getAccentColor(index);
 
   return (
     <motion.div
@@ -76,146 +75,86 @@ const JobCard = ({ job, index, onApply }) => {
       onHoverEnd={() => setHovered(false)}
       style={{
         backgroundColor: 'var(--color-card-bg)',
-        borderRadius: '20px',
+        borderRadius: '24px',
         overflow: 'hidden',
-        boxShadow: '0 6px 30px rgba(0,0,0,0.08)',
+        boxShadow: hovered ? '0 20px 40px rgba(0,0,0,0.12)' : '0 10px 30px rgba(0,0,0,0.06)',
         display: 'flex',
         flexDirection: 'column',
         cursor: 'pointer',
-        border: '1px solid var(--border-color-strong)',
+        border: '1px solid var(--border-color)',
         breakInside: 'avoid',
+        transition: 'all 0.3s'
       }}
       onClick={() => onApply(job)}
     >
-      {/* ── Card Banner ── */}
-      <div className="job-card-banner" style={{
+      {/* ── Top Image Area ── */}
+      <div style={{
+        height: '220px',
         position: 'relative',
         overflow: 'hidden',
-        background: job.image ? '#000' : gradient,
-        minHeight: job.image ? 'auto' : '220px',
+        background: gradient,
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
+        alignItems: 'center',
+        justifyContent: 'center'
       }}>
-        {job.image && (
+        {job.image ? (
           <img
             src={job.image}
             alt={job.title}
             style={{
               width: '100%',
-              height: 'auto',
-              display: 'block',
-              position: 'relative',
-              zIndex: 0
+              height: '100%',
+              objectFit: 'cover',
+              transition: 'transform 0.5s',
+              transform: hovered ? 'scale(1.08)' : 'scale(1)'
             }}
           />
+        ) : (
+          <Briefcase size={56} color="rgba(255,255,255,0.3)" />
         )}
-
-        {/* Dark overlay for text readability + hover effect (Image Only) */}
-        {job.image && (
-          <motion.div
-            animate={{
-              background: hovered
-                ? 'linear-gradient(to bottom, rgba(1,40,68,0.3) 0%, rgba(1,40,68,0.95) 100%)'
-                : 'linear-gradient(to top, rgba(1,40,68,0.95) 0%, rgba(1,40,68,0) 100%)'
-            }}
-            transition={{ duration: 0.4 }}
-            style={{ position: 'absolute', inset: 0, zIndex: 1 }}
-          />
-        )}
-
-        {/* Top-Left Floating Icon */}
-        <motion.div
-          animate={{ rotate: hovered ? 8 : 0, scale: hovered ? 1.1 : 1 }}
-          transition={{ type: 'spring', stiffness: 300, damping: 18 }}
-          style={{
-            position: 'absolute', zIndex: 10,
-            top: '1.25rem', left: '1.25rem',
-            display: 'inline-flex',
-            filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.7))',
-          }}
-        >
-          <Briefcase size={20} color="white" />
-        </motion.div>
-
-        {/* Content Box Overlay */}
-        <div style={{
-          position: job.image ? 'absolute' : 'relative',
-          bottom: 0, left: 0, right: 0,
-          padding: '2rem 2rem 1.5rem',
-          zIndex: 2,
-          display: 'flex',
-          flexDirection: 'column'
-        }}>
-          {/* Animated background blobs on hover (Gradient Only) */}
-          {!job.image && (
-            <>
-              <motion.div
-                animate={{ scale: hovered ? 1.3 : 1, opacity: hovered ? 0.18 : 0.07 }}
-                transition={{ duration: 0.6, ease: 'easeOut' }}
-                style={{
-                  position: 'absolute', top: '-20px', right: '-20px',
-                  width: '140px', height: '140px', borderRadius: '50%',
-                  background: 'white',
-                }}
-              />
-              <motion.div
-                animate={{ scale: hovered ? 1.4 : 1, opacity: hovered ? 0.12 : 0.05 }}
-                transition={{ duration: 0.7, ease: 'easeOut', delay: 0.05 }}
-                style={{
-                  position: 'absolute', bottom: '-30px', right: '30px',
-                  width: '90px', height: '90px', borderRadius: '50%',
-                  background: 'white',
-                }}
-              />
-            </>
-          )}
-
-          <motion.h3
-            animate={{ x: hovered ? 4 : 0 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-            style={{ position: 'relative', zIndex: 1, color: 'white', fontSize: '1.35rem', fontWeight: '800', marginBottom: '0.3rem', textShadow: job.image ? '0 2px 10px rgba(0,0,0,0.6)' : 'none' }}
-          >
-            {job.title}
-          </motion.h3>
-
-          <div style={{ position: 'relative', zIndex: 1, display: 'flex', gap: '0.8rem', color: job.image ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.85)', fontSize: '0.85rem', fontWeight: '600', marginTop: '0.5rem', textShadow: job.image ? '0 2px 8px rgba(0,0,0,0.6)' : 'none' }}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><MapPin size={14} /> {job.location}</span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><Briefcase size={14} /> {job.experience}</span>
-          </div>
+        
+        {/* Subtle overlay */}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 40%)' }} />
+        
+        {/* Top-Right Experience Badge */}
+        <div style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)', color: 'white', padding: '0.4rem 0.8rem', borderRadius: '50px', fontSize: '0.75rem', fontWeight: '700', border: '1px solid rgba(255,255,255,0.3)' }}>
+          {job.experience}
         </div>
       </div>
 
       {/* ── Card Body ── */}
-      <div className="job-card-body" style={{ padding: '1.75rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-        <p style={{ color: 'var(--color-text-muted)', lineHeight: '1.75', marginBottom: '1.5rem', fontSize: '0.95rem', flex: 1 }}>
-          {job.description}
-        </p>
+      <div style={{ padding: '1.75rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <h3 style={{ fontSize: '1.35rem', fontWeight: '800', color: 'var(--color-text-heading)', marginBottom: '0.6rem', lineHeight: '1.3' }}>
+          {job.title}
+        </h3>
+        
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-muted)', fontSize: '0.95rem', fontWeight: '600', marginBottom: '1.75rem' }}>
+          <MapPin size={16} color="var(--color-primary)" /> {job.location}
+        </div>
 
-        {/* Apply Now Button */}
-        <motion.button
+        {/* Read More Button */}
+        <button
           onClick={e => { e.stopPropagation(); onApply(job); }}
-          whileTap={{ scale: 0.97 }}
           style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
-            background: gradient, color: 'white',
-            border: 'none', borderRadius: '50px',
-            padding: '0.85rem 1.5rem', fontWeight: '700',
-            fontSize: '0.95rem', cursor: 'pointer',
+            marginTop: 'auto',
             width: '100%',
-            boxShadow: '0 4px 14px rgba(0,0,0,0.15)',
-            marginTop: 'auto'
+            padding: '0.85rem',
+            borderRadius: '14px',
+            background: hovered ? 'var(--color-primary)' : 'transparent',
+            color: hovered ? 'white' : 'var(--color-primary)',
+            border: `1.5px solid ${hovered ? 'transparent' : 'var(--color-primary)'}`,
+            fontWeight: '700',
+            fontSize: '0.95rem',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.6rem',
+            transition: 'all 0.3s'
           }}
         >
-          <span>Apply Now</span>
-          <motion.span
-            animate={{ x: hovered ? 5 : 0 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-            style={{ display: 'flex', alignItems: 'center' }}
-          >
-            <ArrowRight size={16} />
-          </motion.span>
-        </motion.button>
+          Read More <ArrowRight size={18} />
+        </button>
       </div>
     </motion.div>
   );
@@ -227,6 +166,7 @@ const JobCard = ({ job, index, onApply }) => {
 const ApplicationModal = ({ job, onClose }) => {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', cv: null });
   const [submitStatus, setSubmitStatus] = useState('');
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     if (job) document.body.style.overflow = 'hidden';
@@ -283,10 +223,10 @@ const ApplicationModal = ({ job, onClose }) => {
           onClick={e => e.stopPropagation()}
           style={{
             backgroundColor: 'var(--color-card-bg)', border: '1px solid var(--border-color)',
-            borderRadius: '22px', padding: '3rem 2.75rem',
-            maxWidth: '680px', width: '100%', position: 'relative',
-            boxShadow: '0 32px 80px -16px rgba(0,0,0,0.4)',
-            maxHeight: '90vh', overflowY: 'auto',
+            borderRadius: '24px', padding: '3rem',
+            maxWidth: '750px', width: '100%', position: 'relative',
+            boxShadow: '0 40px 100px -16px rgba(0,0,0,0.5)',
+            maxHeight: '92vh', overflowY: 'auto',
           }}
         >
           {/* Close Button */}
@@ -296,86 +236,137 @@ const ApplicationModal = ({ job, onClose }) => {
             whileHover={{ rotate: 90, scale: 1.1 }}
             transition={{ type: 'spring', stiffness: 400, damping: 20 }}
             style={{
-              position: 'absolute', top: '1.25rem', right: '1.5rem',
-              background: 'none', border: 'none',
-              fontSize: '2.2rem', cursor: 'pointer',
-              color: '#94a3b8', lineHeight: 1,
+              position: 'absolute', top: '1.5rem', right: '1.5rem',
+              background: 'var(--color-bg-light)', border: '1px solid var(--border-color)',
+              width: '40px', height: '40px', borderRadius: '50%',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer', color: 'var(--color-text-main)', zIndex: 10
             }}
           >
-            &times;
+            <X size={20} />
           </motion.button>
 
-          <motion.h2
-            className="app-modal-title"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, delay: 0.1 }}
-            style={{
-              fontSize: '1.85rem', color: 'var(--color-text-heading)',
-              marginBottom: '0.5rem', borderBottom: '3px solid #b12023',
-              paddingBottom: '0.8rem', display: 'inline-block',
-              fontWeight: '800', lineHeight: '1.2',
-            }}
-          >
-            Apply for {job.title}
-          </motion.h2>
-
-          <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
-            style={{ display: 'flex', gap: '1rem', color: 'var(--color-text-muted)', fontWeight: '600', fontSize: '0.85rem', marginBottom: '2rem', textTransform: 'uppercase' }}
-          >
-            <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><MapPin size={14} /> {job.location}</span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><Briefcase size={14} /> {job.experience}</span>
-          </motion.div>
-
-          {submitStatus === 'success' ? (
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: 'center', padding: '2rem 0' }}>
-              <CheckCircle size={60} color="#10b981" style={{ margin: '0 auto 1rem' }} />
-              <h3 style={{ color: 'var(--color-text-heading)', fontSize: '1.5rem', fontWeight: '800', marginBottom: '0.5rem' }}>Application Submitted!</h3>
-              <p style={{ color: 'var(--color-text-muted)' }}>Thank you. Check your email for confirmation.</p>
-            </motion.div>
-          ) : (
-            <motion.form
-              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-              onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '2rem', marginBottom: '2rem' }}>
+            <motion.h2
+              className="app-modal-title"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.1 }}
+              style={{
+                fontSize: '2.2rem', color: 'var(--color-text-heading)',
+                fontWeight: '800', lineHeight: '1.2', margin: 0
+              }}
             >
-              {/* Responsive Grid applied here */}
-              <div className="app-modal-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                  <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--color-text-heading)' }}>Full Name *</label>
-                  <input required type="text" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} style={{ padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color-strong)', outline: 'none', backgroundColor: 'var(--color-bg-light)', color: 'var(--color-text-main)', fontSize: '0.95rem' }} />
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                  <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--color-text-heading)' }}>Email Address *</label>
-                  <input required type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} style={{ padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color-strong)', outline: 'none', backgroundColor: 'var(--color-bg-light)', color: 'var(--color-text-main)', fontSize: '0.95rem' }} />
-                </div>
-              </div>
+              {job.title}
+            </motion.h2>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--color-text-heading)' }}>Phone Number *</label>
-                <input required type="tel" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} style={{ padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color-strong)', outline: 'none', backgroundColor: 'var(--color-bg-light)', color: 'var(--color-text-main)', fontSize: '0.95rem' }} />
-              </div>
+            <motion.div
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
+              style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem', color: 'var(--color-text-muted)', fontWeight: '600', fontSize: '0.95rem' }}
+            >
+              <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', backgroundColor: 'var(--color-bg-light)', padding: '0.4rem 0.8rem', borderRadius: '8px' }}>
+                <MapPin size={16} color="var(--color-primary)" /> {job.location}
+              </span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', backgroundColor: 'var(--color-bg-light)', padding: '0.4rem 0.8rem', borderRadius: '8px' }}>
+                <Briefcase size={16} color="var(--color-primary)" /> {job.experience}
+              </span>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
+              style={{ 
+                color: 'var(--color-text-main)', fontSize: '1.05rem', lineHeight: '1.7', 
+                whiteSpace: 'pre-wrap', wordBreak: 'break-word', marginTop: '1rem',
+                backgroundColor: 'rgba(0,0,0,0.02)', padding: '1.5rem', 
+                borderRadius: '16px', border: '1px solid var(--border-color)',
+                boxShadow: 'inset 0 2px 10px rgba(0,0,0,0.03)'
+              }}
+            >
+              {job.description}
+            </motion.div>
+          </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--color-text-heading)' }}>Upload CV (PDF/DOC) *</label>
-                <input required type="file" accept=".pdf,.doc,.docx" onChange={e => setFormData({ ...formData, cv: e.target.files[0] })} style={{ padding: '0.65rem', borderRadius: '12px', border: '1px dashed var(--border-color-strong)', outline: 'none', backgroundColor: 'var(--color-bg-light)', color: 'var(--color-text-main)', cursor: 'pointer', fontSize: '0.9rem' }} />
-              </div>
-
-              <motion.button
-                className="app-modal-submit"
-                whileTap={{ scale: 0.97 }}
-                type="submit" disabled={submitStatus === 'submitting'}
-                style={{
-                  marginTop: '1rem', background: 'linear-gradient(135deg, #01324e 0%, #024b76 100%)',
-                  color: 'white', border: 'none', borderRadius: '50px', padding: '1rem 2rem',
-                  fontWeight: '700', fontSize: '1rem', cursor: submitStatus === 'submitting' ? 'wait' : 'pointer',
-                  boxShadow: '0 4px 14px rgba(0,0,0,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', opacity: submitStatus === 'submitting' ? 0.7 : 1
-                }}
+          <AnimatePresence mode="wait">
+            {!showForm ? (
+              <motion.div
+                key="apply-btn"
+                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, height: 0 }}
+                style={{ display: 'flex', justifyContent: 'center', marginTop: '1.5rem', marginBottom: '1rem' }}
               >
-                {submitStatus === 'submitting' ? 'Submitting...' : 'Submit Profile'}
-              </motion.button>
-            </motion.form>
-          )}
+                <motion.button
+                  onClick={() => setShowForm(true)}
+                  whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+                  style={{
+                    background: 'linear-gradient(135deg, #01324e 0%, #024b76 100%)',
+                    color: 'white', border: 'none', borderRadius: '50px', padding: '1.2rem 3rem',
+                    fontWeight: '800', fontSize: '1.1rem', cursor: 'pointer',
+                    boxShadow: '0 8px 25px rgba(2,75,118,0.3)',
+                    display: 'flex', alignItems: 'center', gap: '0.6rem'
+                  }}
+                >
+                  Apply for this Job
+                </motion.button>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="application-form"
+                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                style={{ marginTop: '1.5rem' }}
+              >
+                <h3 style={{ fontSize: '1.4rem', fontWeight: '700', color: 'var(--color-text-heading)', marginBottom: '1.5rem' }}>Submit Your Application</h3>
+
+                {submitStatus === 'success' ? (
+                  <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: 'center', padding: '2rem 0', backgroundColor: 'rgba(16,185,129,0.1)', borderRadius: '16px', border: '1px solid rgba(16,185,129,0.3)' }}>
+                    <CheckCircle size={50} color="#10b981" style={{ margin: '0 auto 1rem' }} />
+                    <h3 style={{ color: '#10b981', fontSize: '1.5rem', fontWeight: '800', marginBottom: '0.5rem' }}>Application Submitted!</h3>
+                    <p style={{ color: 'var(--color-text-main)', opacity: 0.8 }}>Thank you! We'll review your details and get back to you shortly.</p>
+                  </motion.div>
+                ) : (
+                  <motion.form
+                    initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+                    onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}
+                  >
+                    <div className="app-modal-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--color-text-heading)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Full Name *</label>
+                        <input required type="text" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} style={{ padding: '0.9rem 1.2rem', borderRadius: '12px', border: '1.5px solid rgba(148, 163, 184, 0.6)', outline: 'none', backgroundColor: 'transparent', color: 'var(--color-text-main)', fontSize: '1rem', transition: 'border-color 0.3s' }} onFocus={e => e.target.style.borderColor = 'var(--color-primary)'} onBlur={e => e.target.style.borderColor = 'rgba(148, 163, 184, 0.6)'} />
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--color-text-heading)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Email Address *</label>
+                        <input required type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} style={{ padding: '0.9rem 1.2rem', borderRadius: '12px', border: '1.5px solid rgba(148, 163, 184, 0.6)', outline: 'none', backgroundColor: 'transparent', color: 'var(--color-text-main)', fontSize: '1rem', transition: 'border-color 0.3s' }} onFocus={e => e.target.style.borderColor = 'var(--color-primary)'} onBlur={e => e.target.style.borderColor = 'rgba(148, 163, 184, 0.6)'} />
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--color-text-heading)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Phone Number *</label>
+                      <input required type="tel" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} style={{ padding: '0.9rem 1.2rem', borderRadius: '12px', border: '1.5px solid rgba(148, 163, 184, 0.6)', outline: 'none', backgroundColor: 'transparent', color: 'var(--color-text-main)', fontSize: '1rem', transition: 'border-color 0.3s' }} onFocus={e => e.target.style.borderColor = 'var(--color-primary)'} onBlur={e => e.target.style.borderColor = 'rgba(148, 163, 184, 0.6)'} />
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--color-text-heading)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Upload CV (PDF/DOC) *</label>
+                      <input required type="file" accept=".pdf,.doc,.docx" onChange={e => setFormData({ ...formData, cv: e.target.files[0] })} style={{ padding: '0.75rem', borderRadius: '12px', border: '1.5px dashed rgba(148, 163, 184, 0.6)', outline: 'none', backgroundColor: 'transparent', color: 'var(--color-text-main)', cursor: 'pointer', fontSize: '0.95rem', transition: 'border-color 0.3s' }} onFocus={e => e.target.style.borderColor = 'var(--color-primary)'} onBlur={e => e.target.style.borderColor = 'rgba(148, 163, 184, 0.6)'} />
+                    </div>
+
+                    <motion.button
+                      className="app-modal-submit"
+                      whileTap={{ scale: 0.97 }}
+                      type="submit" disabled={submitStatus === 'submitting'}
+                      style={{
+                        marginTop: '1.5rem', background: 'linear-gradient(135deg, #01324e 0%, #024b76 100%)',
+                        color: 'white', border: 'none', borderRadius: '12px', padding: '1.2rem',
+                        fontWeight: '800', fontSize: '1.05rem', cursor: submitStatus === 'submitting' ? 'wait' : 'pointer',
+                        boxShadow: '0 8px 25px rgba(2,75,118,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem', opacity: submitStatus === 'submitting' ? 0.7 : 1, transition: 'all 0.3s'
+                      }}
+                      onMouseEnter={e => { if(!submitStatus) { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 12px 30px rgba(2,75,118,0.4)'; } }}
+                      onMouseLeave={e => { if(!submitStatus) { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 8px 25px rgba(2,75,118,0.3)'; } }}
+                    >
+                      {submitStatus === 'submitting' ? 'Submitting Application...' : 'Submit Final Application'}
+                    </motion.button>
+                  </motion.form>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
       </motion.div>
     </AnimatePresence>,

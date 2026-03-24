@@ -171,7 +171,7 @@ const Footer = () => {
               Stay connected with us for the latest industry insights and updates.
             </p>
             <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-              <a href="https://www.linkedin.com/in/tiis-thoughtful-institute-of-innovative-solutions-llpa05675382/" aria-label="LinkedIn" className="footer-social-btn" target="_blank" rel="noopener noreferrer"><Linkedin size={18} /></a>
+              <a href="https://www.linkedin.com/company/tiisllp/" aria-label="LinkedIn" className="footer-social-btn" target="_blank" rel="noopener noreferrer"><Linkedin size={18} /></a>
               <a href="#" aria-label="Twitter" className="footer-social-btn"><Twitter size={18} /></a>
               <a href="#" aria-label="Facebook" className="footer-social-btn"><Facebook size={18} /></a>
               <a href="#" aria-label="Instagram" className="footer-social-btn"><Instagram size={18} /></a>

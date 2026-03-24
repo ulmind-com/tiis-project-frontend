@@ -276,7 +276,7 @@ const ManageTeam = () => {
             </div>
 
             <div>
-              <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.82rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.3px', display: 'flex', alignItems: 'center', gap: '0.3rem' }}><Linkedin size={13} /> LinkedIn URL</label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', marginBottom: '0.35rem', fontSize: '0.82rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.3px' }}><Linkedin size={13} /> LinkedIn URL</label>
               <input type="url" placeholder="https://linkedin.com/in/..." value={formData.linkedIn} onChange={e => setFormData({ ...formData, linkedIn: e.target.value })} style={inputStyle} onFocus={focusIn} onBlur={focusOut} />
             </div>
 
