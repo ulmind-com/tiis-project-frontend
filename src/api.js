@@ -10,9 +10,6 @@ export const API_BASE = import.meta.env.VITE_API_URL || '';
 const api = axios.create({
   baseURL: API_BASE,
   timeout: 15000, // 15 second timeout per request
-  headers: {
-    'Content-Type': 'application/json',
-  },
 });
 
 // Request interceptor — attach JWT if present
