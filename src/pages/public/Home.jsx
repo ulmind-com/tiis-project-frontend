@@ -435,7 +435,7 @@ const Home = () => {
               transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
               style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', marginBottom: '0.8rem', fontWeight: '900', lineHeight: '1.15', color: 'var(--color-primary-dark)', letterSpacing: '-0.5px' }}
             >
-              TIIS<br />
+              (TIIS)<br />
               Thoughtful <br />
               Institute of<br />
               <span style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 50%, var(--color-secondary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'inline-block', paddingTop: '0.2rem' }}>

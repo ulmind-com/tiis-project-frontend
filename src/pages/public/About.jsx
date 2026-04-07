@@ -183,7 +183,7 @@ const About = () => {
                 marginBottom: '1.5rem',
                 letterSpacing: '-0.5px'
               }}>
-                TIIS <br />
+                (TIIS) <br />
                 Thoughtful Institute of Innovative Solutions, LLP
               </h2>
               <div style={{ color: 'var(--color-text-muted)', fontSize: '1.15rem', lineHeight: '1.8', display: 'flex', flexDirection: 'column', gap: '1.2rem', textAlign: 'justify' }}>
