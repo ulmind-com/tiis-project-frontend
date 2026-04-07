@@ -183,6 +183,7 @@ const About = () => {
                 marginBottom: '1.5rem',
                 letterSpacing: '-0.5px'
               }}>
+                TIIS <br />
                 Thoughtful Institute of Innovative Solutions, LLP
               </h2>
               <div style={{ color: 'var(--color-text-muted)', fontSize: '1.15rem', lineHeight: '1.8', display: 'flex', flexDirection: 'column', gap: '1.2rem', textAlign: 'justify' }}>
@@ -602,7 +603,25 @@ const About = () => {
           <div className="solutions-cards-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.75rem' }}>
             {[
               {
-                name: 'Hiring Solutions',
+                name: 'Business Solutions',
+                color: '#f59e0b',
+                bg: 'rgba(245,158,11,0.08)',
+                border: 'rgba(245,158,11,0.2)',
+                tag: 'Enterprise Growth',
+                icon: (
+                  <svg viewBox="0 0 80 80" width="80" height="80">
+                    <defs><linearGradient id="bsG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#f59e0b" /><stop offset="100%" stopColor="#fbbf24" /></linearGradient></defs>
+                    <circle cx="40" cy="40" r="38" fill="rgba(245,158,11,0.1)" />
+                    <rect x="20" y="32" width="16" height="26" rx="3" fill="url(#bsG)" />
+                    <rect x="32" y="24" width="16" height="34" rx="3" fill="url(#bsG)" opacity="0.85" />
+                    <rect x="44" y="18" width="16" height="40" rx="3" fill="url(#bsG)" opacity="0.7" />
+                    <polyline points="24,44 36,36 48,28 60,22" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <circle cx="60" cy="22" r="4" fill="white" />
+                  </svg>
+                )
+              },
+              {
+                name: 'Talent Hiring & Advisory Services',
                 color: '#3b82f6',
                 bg: 'rgba(59,130,246,0.08)',
                 border: 'rgba(59,130,246,0.2)',
@@ -620,7 +639,7 @@ const About = () => {
                 )
               },
               {
-                name: 'Learning & Development',
+                name: 'Capacity Building',
                 color: '#8b5cf6',
                 bg: 'rgba(139,92,246,0.08)',
                 border: 'rgba(139,92,246,0.2)',
@@ -656,24 +675,6 @@ const About = () => {
                     <circle cx="56" cy="58" r="10" fill="#fbbf24" />
                     <path d="M52 62 l2-6 6-2-6 2z" fill="white" />
                     <line x1="57" y1="53" x2="60" y2="50" stroke="white" strokeWidth="2" strokeLinecap="round" />
-                  </svg>
-                )
-              },
-              {
-                name: 'Business Solutions',
-                color: '#f59e0b',
-                bg: 'rgba(245,158,11,0.08)',
-                border: 'rgba(245,158,11,0.2)',
-                tag: 'Enterprise Growth',
-                icon: (
-                  <svg viewBox="0 0 80 80" width="80" height="80">
-                    <defs><linearGradient id="bsG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#f59e0b" /><stop offset="100%" stopColor="#fbbf24" /></linearGradient></defs>
-                    <circle cx="40" cy="40" r="38" fill="rgba(245,158,11,0.1)" />
-                    <rect x="20" y="32" width="16" height="26" rx="3" fill="url(#bsG)" />
-                    <rect x="32" y="24" width="16" height="34" rx="3" fill="url(#bsG)" opacity="0.85" />
-                    <rect x="44" y="18" width="16" height="40" rx="3" fill="url(#bsG)" opacity="0.7" />
-                    <polyline points="24,44 36,36 48,28 60,22" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                    <circle cx="60" cy="22" r="4" fill="white" />
                   </svg>
                 )
               },
