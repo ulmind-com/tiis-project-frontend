@@ -44,7 +44,7 @@ const servicesList = [
     icon: Briefcase,
     gradient: 'linear-gradient(135deg, #01324e 0%, #024b76 100%)',
     accentColor: '#0ea5e9',
-    title: 'Business solution',
+    title: 'Business Solutions',
     tagline: 'Strategy That Scales',
     desc: 'Customized business solution to streamline operations and develop strategic roadmaps that unlock sustainable performance improvements',
     items: ['Design Business Process', 'Organisation Structuring', 'Strategic Advisory'],
@@ -54,7 +54,7 @@ const servicesList = [
     icon: Users,
     gradient: 'linear-gradient(135deg, #7c1015 0%, #b12023 100%)',
     accentColor: '#f43f5e',
-    title: 'Talent Hiring & Advisory Service',
+    title: 'Talent Hiring & Advisory Services',
     tagline: 'Right People, Right Roles',
     desc: "Customized talent solutions and advisory services to fulfill the growth plan of the organization.",
     items: ['Design & Implementation of Talent Management System', 'Permanent Staffing', 'Temp Staffing'],
@@ -84,7 +84,7 @@ const servicesList = [
     icon: ShieldCheck,
     gradient: 'linear-gradient(135deg, #78350f 0%, #d97706 100%)',
     accentColor: '#fbbf24',
-    title: 'Compliance Service',
+    title: 'Compliance Services',
     tagline: 'Stay Protected, Stay Compliant',
     desc: 'Designing robust compliance frameworks and providing ongoing support to organization',
     items: ['Design & Compliance System', 'Labour Law Compliance', 'Legal Disputes'],
@@ -522,7 +522,7 @@ const Services = () => {
         />
 
         <div className="container services-hero-grid" style={{ position: 'relative', zIndex: 1, maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center' }}>
-          
+
           {/* Text Content */}
           <div className="services-hero-content" style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
             {/* Badge */}
@@ -585,7 +585,7 @@ const Services = () => {
           >
             {/* Glowing Backdrop */}
             <div style={{ position: 'absolute', inset: '-10px', background: 'radial-gradient(circle, rgba(14,165,233,0.3) 0%, transparent 60%)', filter: 'blur(20px)', zIndex: 0 }} />
-            
+
             <motion.img
               animate={{ y: [-15, 15, -15] }}
               transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}

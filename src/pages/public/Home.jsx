@@ -7,6 +7,21 @@ import { TestimonialStack } from '../../components/ui/glass-testimonial-swiper';
 import api from '../../api';
 import { useTheme } from '../../hooks/useTheme';
 
+const renderTextWithLinks = (text) => {
+  if (!text) return text;
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  return text.split(urlRegex).map((part, i) => {
+    if (part.match(urlRegex)) {
+      return (
+        <a key={i} href={part} target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6', textDecoration: 'underline', wordBreak: 'break-all' }}>
+          {part}
+        </a>
+      );
+    }
+    return part;
+  });
+};
+
 const capabilitiesData = [
   {
     icon: Briefcase,
@@ -388,7 +403,7 @@ const Home = () => {
       )}
 
       {/* Premium Split Hero Section */}
-      <section className="hero-section" style={{ backgroundColor: 'var(--color-bg-light)', padding: '7rem 0 16rem 0', overflow: 'hidden', position: 'relative' }}>
+      <section className="hero-section" style={{ backgroundColor: 'var(--color-bg-light)', padding: '2rem 0 16rem 0', overflow: 'hidden', position: 'relative' }}>
 
         {/* Animated Background Blobs */}
         <motion.div animate={{ scale: [1, 1.15, 1], opacity: [0.1, 0.18, 0.1] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }} style={{ position: 'absolute', top: '-10%', right: '-5%', width: '500px', height: '500px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--color-primary) 0%, #0ea5e9 100%)', filter: 'blur(80px)', pointerEvents: 'none', zIndex: 0 }} />
@@ -408,7 +423,7 @@ const Home = () => {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.8rem', marginBottom: '1.5rem', color: 'var(--color-secondary)', fontWeight: '700', fontSize: '0.9rem', letterSpacing: '2px', textTransform: 'uppercase' }}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.8rem', marginBottom: '0.8rem', color: 'var(--color-secondary)', fontWeight: '700', fontSize: '0.9rem', letterSpacing: '2px', textTransform: 'uppercase' }}
             >
               <span style={{ width: '40px', height: '3px', backgroundColor: 'var(--color-secondary)', borderRadius: '2px' }}></span>
               Premium Consulting
@@ -418,9 +433,11 @@ const Home = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-              style={{ fontSize: 'clamp(2.8rem, 5vw, 4.5rem)', marginBottom: '1.5rem', fontWeight: '900', lineHeight: '1.15', color: 'var(--color-primary-dark)', letterSpacing: '-0.5px' }}
+              style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', marginBottom: '0.8rem', fontWeight: '900', lineHeight: '1.15', color: 'var(--color-primary-dark)', letterSpacing: '-0.5px' }}
             >
-              Thoughtful Institute of<br />
+              TIIS<br />
+              Thoughtful <br />
+              Institute of<br />
               <span style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 50%, var(--color-secondary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'inline-block', paddingTop: '0.2rem' }}>
                 Innovative Solutions, LLP
               </span>
@@ -430,9 +447,9 @@ const Home = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.5 }}
-              style={{ fontSize: '1.15rem', color: 'var(--color-text-muted)', marginBottom: '3rem', lineHeight: '1.8', maxWidth: '600px' }}
+              style={{ fontSize: '1rem', color: 'var(--color-text-muted)', marginBottom: '1.5rem', lineHeight: '1.8', maxWidth: '600px' }}
             >
-              TIIS offers the full spectrum of thoughtful researched-based innovative solutions to help organizations and institutions plan better, work better & deliver better in this VUCA world.
+              TIIS offers the full spectrum of thoughtful researched-based innovative solutions to help organizations and institutions to improve productivity & growth innovative business solutions.
             </motion.p>
 
             <motion.div
@@ -443,7 +460,7 @@ const Home = () => {
               style={{ display: 'flex', gap: '1.2rem', flexWrap: 'wrap' }}
             >
               <Link to="/services" onClick={() => window.scrollTo(0, 0)} className="btn-pill-primary" style={{ padding: '0.9rem 2.2rem', fontSize: '1.05rem', boxShadow: '0 10px 25px -5px rgba(1, 50, 78, 0.4)' }}>
-                Get Started
+                OUR SERVICES
                 <ArrowRight size={18} style={{ marginLeft: '0.5rem' }} />
               </Link>
               <button onClick={() => setIsMottoModalOpen(true)} className="btn-pill-secondary" style={{ border: '2px solid rgba(1, 50, 78, 0.1)', color: isDark ? '#000000' : 'var(--color-text-main)', padding: '0.9rem 2.2rem', fontSize: '1.05rem', background: '#fff' }}>
@@ -455,7 +472,7 @@ const Home = () => {
           {/* Right Visual Block */}
           <motion.div
             className="hero-visual-block"
-            style={{ flex: '1 1 450px', display: 'flex', justifyContent: 'center' }}
+            style={{ flex: '1 1 450px', display: 'flex', justifyContent: 'center', marginTop: '3rem' }}
             initial={{ opacity: 0, scale: 0.9, x: 30 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
             transition={{ duration: 0.9, delay: 0.4, ease: "easeOut" }}
@@ -862,29 +879,29 @@ const Home = () => {
         </div>
 
         <div style={{ position: 'relative', overflow: 'hidden', padding: '1rem 0 3rem 0', width: '100vw', left: '50%', transform: 'translateX(-50%)', maxWidth: '100vw' }}>
-            <div className="industry-track">
-              {/* Duplicate array for infinite scroll */}
-              {[...Array(2)].map((_, setIdx) => (
-                <React.Fragment key={setIdx}>
-                  {[
-                    { name: 'Healthcare', icon: <HeartPulse size={48} strokeWidth={1.5} />, desc: 'Connecting top-tier medical professionals—from specialists to researchers—with leading institutions.' },
-                    { name: 'Medical Devices', icon: <Microscope size={48} strokeWidth={1.5} />, desc: 'Sourcing visionary engineers and regulatory experts to drive innovation in medical technology.' },
-                    { name: 'Eldercare', icon: <HeartHandshake size={48} strokeWidth={1.5} />, desc: 'Empowering specialized care facilities with compassionate, highly-trained geriatric professionals.' },
-                    { name: 'Hospitality', icon: <Hotel size={48} strokeWidth={1.5} />, desc: 'Providing exceptional service talent to elevate guest experiences globally.' },
-                    { name: 'IT', icon: <Monitor size={48} strokeWidth={1.5} />, desc: 'Fueling digital transformation with elite software developers and systems architects.' }
-                  ].map((ind, i) => (
-                    <div className="industry-card" key={i}>
-                      <div className="industry-icon-wrapper">
-                        {ind.icon}
-                      </div>
-                      <h3 className="industry-title">{ind.name}</h3>
-                      <p className="industry-desc">{ind.desc}</p>
+          <div className="industry-track">
+            {/* Duplicate array for infinite scroll */}
+            {[...Array(2)].map((_, setIdx) => (
+              <React.Fragment key={setIdx}>
+                {[
+                  { name: 'Healthcare', icon: <HeartPulse size={48} strokeWidth={1.5} />, desc: 'Connecting top-tier medical professionals—from specialists to researchers—with leading institutions.' },
+                  { name: 'Medical Devices', icon: <Microscope size={48} strokeWidth={1.5} />, desc: 'Sourcing visionary engineers and regulatory experts to drive innovation in medical technology.' },
+                  { name: 'Eldercare', icon: <HeartHandshake size={48} strokeWidth={1.5} />, desc: 'Empowering specialized care facilities with compassionate, highly-trained geriatric professionals.' },
+                  { name: 'Hospitality', icon: <Hotel size={48} strokeWidth={1.5} />, desc: 'Providing exceptional service talent to elevate guest experiences globally.' },
+                  { name: 'IT', icon: <Monitor size={48} strokeWidth={1.5} />, desc: 'Fueling digital transformation with elite software developers and systems architects.' }
+                ].map((ind, i) => (
+                  <div className="industry-card" key={i}>
+                    <div className="industry-icon-wrapper">
+                      {ind.icon}
                     </div>
-                  ))}
-                </React.Fragment>
-              ))}
-            </div>
+                    <h3 className="industry-title">{ind.name}</h3>
+                    <p className="industry-desc">{ind.desc}</p>
+                  </div>
+                ))}
+              </React.Fragment>
+            ))}
           </div>
+        </div>
       </section>
 
       {/* News Bento Grid Section */}
@@ -1041,7 +1058,7 @@ const Home = () => {
               style={{ textAlign: 'center', marginBottom: '5rem' }}
             >
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1.2rem', padding: '0.5rem 1.4rem', borderRadius: '50px', border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(1,50,78,0.12)'}`, background: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.8)', backdropFilter: 'blur(10px)' }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style={{ color: '#FDB241' }}><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style={{ color: '#FDB241' }}><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
                 <span style={{ fontSize: '0.78rem', fontWeight: 700, letterSpacing: '2.5px', textTransform: 'uppercase', color: isDark ? 'rgba(255,255,255,0.6)' : 'var(--color-text-muted)' }}>
                   Client Stories
                 </span>
@@ -1310,7 +1327,7 @@ const Home = () => {
                 <span className="drop-cap" style={{ float: 'left', fontSize: '4.5rem', lineHeight: '0.8', paddingTop: '0.3rem', paddingRight: '0.8rem', color: 'var(--color-primary-dark)', fontWeight: '900', fontFamily: 'Georgia, serif' }}>
                   {selectedNews.content.charAt(0)}
                 </span>
-                {selectedNews.content.substring(1)}
+                {renderTextWithLinks(selectedNews.content.substring(1))}
               </div>
             </div>
           </motion.div>

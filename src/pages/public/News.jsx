@@ -5,6 +5,20 @@ import { ArrowLeft, ArrowRight, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import api from '../../api';
 
+const renderTextWithLinks = (text) => {
+  if (!text) return text;
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  return text.split(urlRegex).map((part, i) => {
+    if (part.match(urlRegex)) {
+      return (
+        <a key={i} href={part} target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6', textDecoration: 'underline', wordBreak: 'break-all' }}>
+          {part}
+        </a>
+      );
+    }
+    return part;
+  });
+};
 const News = () => {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -206,7 +220,7 @@ const News = () => {
                 <span className="drop-cap" style={{ float: 'left', fontSize: '4.5rem', lineHeight: '0.8', paddingTop: '0.3rem', paddingRight: '0.8rem', color: 'var(--color-primary-dark)', fontWeight: '900', fontFamily: 'Georgia, serif' }}>
                   {selectedNews.content.charAt(0)}
                 </span>
-                {selectedNews.content.substring(1)}
+                {renderTextWithLinks(selectedNews.content.substring(1))}
               </div>
             </div>
           </motion.div>
