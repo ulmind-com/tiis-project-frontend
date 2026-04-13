@@ -197,8 +197,43 @@ const Footer = () => {
         }}>
           <div>
             &copy; {new Date().getFullYear()} <span style={{ color: 'white', fontWeight: '600' }}>TIIS</span>. All rights reserved.
-            <span style={{ margin: '0 0.5rem' }}>|</span>
-            Designed & Developed by <a href="https://www.ulmind.com" target="_blank" rel="noopener noreferrer" style={{ color: '#60a5fa', fontWeight: '600', textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = '#93c5fd'} onMouseLeave={e => e.currentTarget.style.color = '#60a5fa'}>ULMiND</a>
+            <span style={{ margin: '0 0.75rem', opacity: 0.3 }}>|</span>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+              Design & Developed by{' '}
+              <a
+                href="https://www.ulmind.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  opacity: 0.85,
+                  filter: 'drop-shadow(0 0 0px transparent)',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.opacity = '1';
+                  e.currentTarget.style.filter = 'drop-shadow(0 0 8px rgba(96, 165, 250, 0.5))';
+                  e.currentTarget.style.transform = 'scale(1.05)';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.opacity = '0.85';
+                  e.currentTarget.style.filter = 'drop-shadow(0 0 0px transparent)';
+                  e.currentTarget.style.transform = 'scale(1)';
+                }}
+              >
+                <img
+                  src="/ULMIND_logo.png"
+                  alt="ULMiND"
+                  style={{
+                    height: '32px',
+                    width: 'auto',
+                    objectFit: 'contain',
+                    verticalAlign: 'middle',
+                  }}
+                />
+              </a>
+            </span>
           </div>
 
           <div className="footer-bottom-links" style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
