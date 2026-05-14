@@ -447,7 +447,7 @@ const Home = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.5 }}
-              style={{ fontSize: '1rem', color: 'var(--color-text-muted)', marginBottom: '1.5rem', lineHeight: '1.8', maxWidth: '600px' }}
+              style={{ fontSize: '1rem', color: 'var(--color-text-muted)', marginBottom: '1.5rem', lineHeight: '1.8', maxWidth: '700px' }}
             >
               TIIS offers the full spectrum of thoughtful researched-based innovative solutions to help organizations and institutions to improve productivity & growth innovative business solutions.
             </motion.p>
@@ -477,72 +477,26 @@ const Home = () => {
             animate={{ opacity: 1, scale: 1, x: 0 }}
             transition={{ duration: 0.9, delay: 0.4, ease: "easeOut" }}
           >
-            <div className="hero-visual-wrapper" style={{ position: 'relative', width: '100%', maxWidth: '550px' }}>
+            <div className="hero-visual-wrapper" style={{ position: 'relative', width: '100%', maxWidth: '680px' }}>
 
               {/* Glowing Outline / Shadow */}
               <div style={{ position: 'absolute', inset: '-25px', background: 'radial-gradient(circle, rgba(14,165,233,0.3) 0%, transparent 65%)', filter: 'blur(35px)', zIndex: 0 }} />
 
-              <motion.img
-                animate={{ y: [-15, 15, -15] }}
-                transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
-                src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1000&q=80"
-                alt="Premium Strategy & Innovation"
+              <img
+                src="/IMG-20260511-WA0002.jpg.jpeg"
+                alt="TIIS – Your Trusted Partner in Human Capital & Business Excellence"
                 style={{
                   width: '100%',
                   height: 'auto',
-                  aspectRatio: '4/3',
-                  objectFit: 'cover',
-                  borderRadius: '32px',
-                  boxShadow: '0 30px 60px -15px rgba(0,0,0,0.3)',
+                  objectFit: 'contain',
+                  borderRadius: '24px',
+                  boxShadow: '0 30px 60px -15px rgba(0,0,0,0.25)',
                   position: 'relative',
                   zIndex: 1,
-                  border: '1px solid rgba(255,255,255,0.6)'
+                  display: 'block',
+                  marginTop: '3rem',
                 }}
               />
-
-              {/* Floating Element 1 - Innovation */}
-              <motion.div
-                className="premium-badge"
-                animate={{ y: [12, -12, 12] }}
-                transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                style={{
-                  position: 'absolute', top: '15%', right: '-12%',
-                  background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(16px)',
-                  padding: '1.2rem 1.5rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,1)',
-                  zIndex: 2, boxShadow: '0 15px 35px rgba(0,0,0,0.15)',
-                  display: 'flex', alignItems: 'center', gap: '1rem'
-                }}
-              >
-                <div style={{ background: 'rgba(14,165,233,0.15)', padding: '0.8rem', borderRadius: '50%', color: '#0ea5e9' }}>
-                  <Star size={24} />
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
-                  <span style={{ fontWeight: 800, color: 'var(--color-primary-dark)', fontSize: '1.1rem', lineHeight: '1.2' }}>Premium</span>
-                  <span style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>Solutions</span>
-                </div>
-              </motion.div>
-
-              {/* Floating Element 2 - Excellence */}
-              <motion.div
-                className="global-badge"
-                animate={{ y: [-10, 10, -10] }}
-                transition={{ duration: 6.5, repeat: Infinity, ease: 'easeInOut', delay: 2.5 }}
-                style={{
-                  position: 'absolute', bottom: '15%', left: '-10%',
-                  background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(16px)',
-                  padding: '1.2rem 1.5rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,1)',
-                  zIndex: 2, boxShadow: '0 15px 35px rgba(0,0,0,0.15)',
-                  display: 'flex', alignItems: 'center', gap: '1rem'
-                }}
-              >
-                <div style={{ background: 'rgba(244,63,94,0.12)', padding: '0.8rem', borderRadius: '50%', color: '#f43f5e' }}>
-                  <Briefcase size={24} />
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
-                  <span style={{ fontWeight: 800, color: 'var(--color-primary-dark)', fontSize: '1.1rem', lineHeight: '1.2' }}>Global</span>
-                  <span style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>Expertise</span>
-                </div>
-              </motion.div>
 
             </div>
           </motion.div>
@@ -608,7 +562,7 @@ const Home = () => {
             </h2>
 
             <p style={{ fontSize: '1.1rem', color: 'var(--color-text-muted)', lineHeight: '1.8', marginBottom: '1.5rem', textAlign: 'justify' }}>
-              We at TIIS offer customized-based solutions that help increase productivity, performance, and profitability. We believe in customizing and developing specific solutions through a collaborative process designed to identify a client’s needs. Our approach is based on experiential learning combined with the technology and strong faculty of experts and competent solutions providers.
+              We at TIIS offer customized solutions that help increase productivity, performance, and profitability. We believe in customizing and developing specific solutions through a collaborative process designed to identify client's needs. Our approach is based on experiential learning combined with the technology and strong faculty of experts and competent solutions providers.
             </p>
 
             <p style={{ fontSize: '1.1rem', color: 'var(--color-text-muted)', lineHeight: '1.8', marginBottom: '2.5rem', textAlign: 'justify' }}>
