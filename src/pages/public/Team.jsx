@@ -64,17 +64,6 @@ const Team = () => {
           
           {/* Text Content */}
           <div className="team-hero-content" style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6 }}
-              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1.5rem', color: 'var(--color-secondary)', fontWeight: '700', fontSize: '0.85rem', letterSpacing: '3px', textTransform: 'uppercase' }}
-            >
-              <span style={{ width: '30px', height: '2px', backgroundColor: 'var(--color-secondary)', borderRadius: '2px' }}></span>
-              Leadership
-              <span style={{ width: '30px', height: '2px', backgroundColor: 'var(--color-secondary)', borderRadius: '2px' }}></span>
-            </motion.div>
-
             <motion.h1
               className="team-hero-title"
               initial={{ opacity: 0, y: -20 }}
@@ -89,24 +78,8 @@ const Team = () => {
                 lineHeight: 1.1
               }}
             >
-              Our Core <span style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-secondary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'inline-block', transform: 'translateZ(0)', isolation: 'isolate' }}>Team</span>
+              TIIS <span style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-secondary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'inline-block', transform: 'translateZ(0)', isolation: 'isolate' }}>Team</span>
             </motion.h1>
-
-            <motion.p
-              className="team-hero-subtitle"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              style={{
-                color: 'var(--color-text-muted)',
-                fontSize: '1.2rem',
-                lineHeight: '1.8',
-                maxWidth: '600px',
-                margin: 0
-              }}
-            >
-              Meet the experienced leaders and solutionaries driving innovation, growth, and sustainable solutions at TIIS.
-            </motion.p>
           </div>
 
           {/* Premium SVG Team Illustration */}
@@ -208,12 +181,10 @@ const Team = () => {
         <div className="container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
           {loading ? (
             <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--color-text-muted)' }}>Loading our team...</div>
-          ) : team.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--color-text-muted)' }}>No team members added yet.</div>
           ) : (
             <div className="team-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2.5rem' }}>
               {team.map((member, index) => (
-              <motion.div
+                <motion.div
                   key={member._id}
                   initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
